@@ -1,0 +1,158 @@
+.home-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('/assets/main_bg.jpg') no-repeat center center / cover;
+  z-index: 1; /* 메인 배경을 덮지만 헤더와 네비(z-index: 1000) 보다는 아래 */
+}
+
+/* 1. 상단 타이틀 영역 */
+.home-header-section {
+  text-align: center;
+  padding: 10px 0 30px;
+}
+
+.home-header-korean {
+  font-family: 'Pretendard', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 5px;
+}
+
+.home-header-cursive {
+  font-family: 'Dancing Script', cursive;
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--primary); /* 골드 컬러 */
+  margin: 0;
+  line-height: 1;
+}
+
+/* 2. 이미지 카드 영역 */
+.info-card {
+  background-color: var(--surface);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  margin-bottom: var(--spacing-xl);
+}
+
+.info-card-image {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 이미지를 어둡게 처리하여 위 글씨가 잘 보이게 함 */
+.info-card-image::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.about-us-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: white;
+  color: #1a237e; /* 딥 인디고 */
+  font-weight: 800;
+  font-size: 0.75rem;
+  padding: 6px 12px;
+  border-radius: 4px;
+  border: none;
+  z-index: 2;
+  letter-spacing: 1px;
+}
+
+.info-card-overlay {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.overlay-cursive {
+  font-family: 'Dancing Script', cursive;
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: -15px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  margin-right: 60px; /* 살짝 왼쪽으로 치우치게 */
+}
+
+.overlay-main {
+  font-family: 'Pretendard', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.info-card-content {
+  padding: var(--spacing-lg);
+  text-align: center;
+}
+
+.info-card-content h2 {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+}
+
+.info-card-content p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+/* 하단 액션 버튼들 (기존 유지) */
+.action-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.action-card {
+  background-color: var(--primary); 
+  color: white;
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  height: 120px;
+  justify-content: center;
+  border: none;
+}
+
+.action-card:active {
+  transform: scale(0.96);
+}
+
+.action-card .action-icon {
+  margin-bottom: var(--spacing-sm);
+  color: white;
+}
+
+.action-card span {
+  font-size: 0.95rem;
+  font-weight: 700;
+}

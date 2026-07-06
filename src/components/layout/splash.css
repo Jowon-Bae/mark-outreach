@@ -1,0 +1,53 @@
+.splash-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff; /* 화이트 배경 */
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* 2.5초 유지 후 0.5초 동안 서서히 사라짐 (총 3초) */
+  animation: hideSplash 3s forwards ease-out;
+}
+
+@keyframes hideSplash {
+  0% { opacity: 1; visibility: visible; }
+  83% { opacity: 1; visibility: visible; } /* 3초 중 2.5초(약 83%)까지 100% 보임 유지 */
+  100% { opacity: 0; visibility: hidden; pointer-events: none; z-index: -10; }
+}
+
+.splash-logo-wrapper {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.splash-logo {
+  width: 100%;
+  height: 100%;
+  /* 마스크 기법을 사용하여 원본 이미지 형태만 남기고 골드 색상으로 채움 */
+  background-color: var(--primary);
+  -webkit-mask-image: url('/assets/logo.png');
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-image: url('/assets/logo.png');
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+}
+
+.pulse {
+  animation: pulse-anim 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse-anim {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0.8; }
+}

@@ -1,0 +1,139 @@
+.schedule-container {
+  padding: 20px;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.schedule-tabs {
+  display: flex;
+  background-color: var(--border);
+  border-radius: 12px;
+  padding: 4px;
+  margin-bottom: 32px;
+}
+
+.tab {
+  flex: 1;
+  padding: 10px;
+  text-align: center;
+  font-weight: 600;
+  border-radius: 8px;
+  color: var(--secondary);
+  transition: all 0.2s;
+  font-size: 0.95rem;
+}
+
+.tab.active {
+  background-color: var(--surface);
+  color: var(--foreground);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+}
+
+.timeline-item {
+  display: flex;
+  min-height: 100px;
+}
+
+.time-col {
+  width: 70px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--secondary);
+  padding-top: 14px;
+  text-align: right;
+}
+
+.timeline-divider {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 16px;
+  position: relative;
+}
+
+.dot {
+  width: 14px;
+  height: 14px;
+  background-color: var(--border);
+  border-radius: 50%;
+  margin-top: 14px;
+  z-index: 2;
+  border: 3px solid var(--surface);
+  transition: all 0.3s;
+}
+
+.line {
+  width: 2px;
+  background-color: var(--border);
+  flex: 1;
+  position: absolute;
+  top: 28px;
+  bottom: -14px;
+  z-index: 1;
+}
+
+.timeline-item:last-child .line {
+  display: none;
+}
+
+.content-col {
+  flex: 1;
+  padding-bottom: 24px;
+}
+
+.timeline-card {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  padding: 16px 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+  position: relative;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.timeline-card h4 {
+  font-size: 1.05rem;
+  margin-bottom: 6px;
+  color: var(--foreground);
+  font-weight: 700;
+}
+
+.timeline-card p {
+  font-size: 0.9rem;
+  color: var(--secondary);
+}
+
+.timeline-item.current .dot {
+  background-color: var(--primary);
+  border-color: var(--primary-hover);
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.2);
+}
+
+.timeline-item.current .timeline-card {
+  border-color: var(--primary);
+  background-color: rgba(79, 70, 229, 0.02);
+  box-shadow: 0 8px 24px rgba(79, 70, 229, 0.1);
+  transform: translateY(-2px);
+}
+
+.current-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background-color: var(--primary);
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 12px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .timeline-item.current .timeline-card {
+    background-color: rgba(79, 70, 229, 0.1);
+  }
+}
