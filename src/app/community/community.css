@@ -23,10 +23,17 @@
   font-weight: 600;
   border: none;
   cursor: pointer;
+  position: relative;
+  z-index: 9999;
+  touch-action: manipulation;
 }
 
 .interaction-btn:active {
   background-color: var(--surface-hover, #f0f0f0);
+}
+
+.interaction-btn > *, .write-btn > * {
+  pointer-events: none;
 }
 
 /* 글쓰기 모달 스타일 */

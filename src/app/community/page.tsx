@@ -45,9 +45,11 @@ export default function Community() {
       return;
     }
 
+    const currentUsername = localStorage.getItem('username') || '익명';
+
     const newPost = {
       id: Date.now(),
-      author: '나',
+      author: currentUsername,
       content: newContent,
       likes: 0,
       isLiked: false,
@@ -86,12 +88,14 @@ export default function Community() {
   const handleCommentSubmit = (postId: number) => {
     const text = commentInputs[postId];
     if (!text || !text.trim()) return;
+    
+    const currentUsername = localStorage.getItem('username') || '익명';
 
     setPosts(posts.map(post => {
       if (post.id === postId) {
         return {
           ...post,
-          comments: [...post.comments, { id: Date.now(), author: '나', text: text.trim() }]
+          comments: [...post.comments, { id: Date.now(), author: currentUsername, text: text.trim() }]
         };
       }
       return post;
@@ -104,7 +108,19 @@ export default function Community() {
     <div className="community-container">
       <div className="board-header">
         <h2>자유 게시판</h2>
-        <button className="write-btn" onClick={() => setShowWriteModal(true)}>글쓰기</button>
+        <button 
+          className="write-btn" 
+          onClick={(e) => {
+            e.preventDefault();
+            setShowWriteModal(true);
+          }}
+          onTouchEnd={(e) => {
+            e.preventDefault();
+            setShowWriteModal(true);
+          }}
+        >
+          글쓰기
+        </button>
       </div>
 
       <div className="post-list">
@@ -118,14 +134,16 @@ export default function Community() {
             <div className="post-footer">
               <button 
                 className={`interaction-btn ${post.isLiked ? 'liked' : ''}`}
-                onClick={() => toggleLike(post.id)}
+                onClick={(e) => { e.preventDefault(); toggleLike(post.id); }}
+                onTouchEnd={(e) => { e.preventDefault(); toggleLike(post.id); }}
               >
                 <Heart size={16} fill={post.isLiked ? "currentColor" : "none"} />
                 <span>{post.likes}</span>
               </button>
               <button 
                 className={`interaction-btn ${post.showComments ? 'active' : ''}`}
-                onClick={() => toggleComments(post.id)}
+                onClick={(e) => { e.preventDefault(); toggleComments(post.id); }}
+                onTouchEnd={(e) => { e.preventDefault(); toggleComments(post.id); }}
               >
                 <MessageCircle size={16} fill={post.showComments ? "currentColor" : "none"} />
                 <span>{post.comments.length}</span>

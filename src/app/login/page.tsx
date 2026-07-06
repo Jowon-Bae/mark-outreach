@@ -4,54 +4,47 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import './login.css';
 
-export default function Login() {
+export default function LoginPage() {
+  const [username, setUsername] = useState('');
   const router = useRouter();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    // TODO: Supabase Auth 연동 (현재는 하드코딩 패스)
-    router.push('/');
+  const handleLogin = () => {
+    if (!username.trim()) {
+      alert('이름 또는 닉네임을 입력해주세요!');
+      return;
+    }
+    
+    // 로컬 스토리지에 이름 저장
+    localStorage.setItem('username', username.trim());
+    
+    // 홈 화면으로 이동
+    router.replace('/');
   };
 
   return (
     <div className="login-container">
-      <div className="login-header">
-        <h1 className="login-title">환영합니다</h1>
-        <p className="login-subtitle">등록된 계정으로 로그인해 주세요.</p>
-      </div>
-
-      <form className="login-form" onSubmit={handleLogin}>
-        <div className="input-group">
-          <label>이메일 또는 휴대폰 번호</label>
+      <div className="login-content">
+        <div className="login-logo-wrapper">
+          <img src="/assets/logo_transparent.png" alt="Logo" className="login-logo" />
+        </div>
+        
+        <h1 className="login-title">마가공동체<br/>국내아웃리치</h1>
+        <p className="login-subtitle">환영합니다! 시작하기 위해<br/>이름(또는 닉네임)을 입력해주세요.</p>
+        
+        <div className="login-input-group">
           <input 
             type="text" 
-            placeholder="example@email.com" 
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
+            className="login-input" 
+            placeholder="이름을 입력하세요" 
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
           />
         </div>
         
-        <div className="input-group">
-          <label>비밀번호</label>
-          <input 
-            type="password" 
-            placeholder="비밀번호를 입력하세요" 
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-
-        <button type="submit" className="login-submit-btn">
-          로그인
+        <button className="login-submit-btn" onClick={handleLogin}>
+          시작하기
         </button>
-      </form>
-
-      <div className="login-footer">
-        <p>계정이 없으신가요? 관리자에게 문의하세요.</p>
       </div>
     </div>
   );

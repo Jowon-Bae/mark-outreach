@@ -7,13 +7,13 @@
   width: 100%;
   max-width: 480px; /* 데스크톱 브라우저에서 화면 전체로 늘어나는 것 방지 */
   z-index: 1000;
-  padding: var(--spacing-sm) var(--spacing-md); /* 상하 여백 줄임 */
-  padding-top: max(var(--spacing-sm), env(safe-area-inset-top)); /* 노치 대응 시 위쪽 여백도 약간 줄임 */
+  padding: 2px var(--spacing-md); /* 상하 여백을 2px로 대폭 줄임 */
+  padding-top: max(2px, env(safe-area-inset-top)); /* 노치 대응 시 위쪽 여백도 최소화 */
   box-shadow: var(--shadow-md);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  min-height: 60px; /* 최소 높이를 80px에서 60px로 축소 */
+  min-height: 40px; /* 최소 높이를 60px에서 40px로 축소 (약 0.5cm 감소) */
   
   /* 가운데 정렬을 위해 추가 */
   left: 50%;
@@ -78,7 +78,8 @@
   bottom: 0;
   width: 100%;
   max-width: 480px;
-  height: 65px;
+  min-height: 85px; /* 기본 65px에서 85px로 증가 */
+  padding-bottom: max(20px, env(safe-area-inset-bottom)); /* 아이콘들을 위로 0.5cm 밀어올림 */
   background: var(--surface);
   display: flex;
   justify-content: space-around;
@@ -96,7 +97,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100%;
+  height: 65px; /* 내부 아이콘 영역은 기존 크기 유지 */
   color: var(--text-sub);
   font-size: 0.75rem;
   cursor: pointer;

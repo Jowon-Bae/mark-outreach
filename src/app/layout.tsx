@@ -7,6 +7,15 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "마가공동체 아웃리치",
   description: "서울드림교회 마가공동체 국내 아웃리치 앱",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "마가공동체",
+  },
+  formatDetection: {
+    telephone: false,
+  },
 };
 
 export const viewport: Viewport = {
@@ -17,6 +26,8 @@ export const viewport: Viewport = {
   userScalable: false,
 };
 
+import AppWrapper from "@/components/layout/AppWrapper";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -24,14 +35,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
+      <head>
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="mobile-web-app-capable" content="yes" />
+      </head>
       <body>
         <div id="app-container">
-          <SplashScreen />
-          <Header />
-          <main className="main-content">
-            {children}
-          </main>
-          <BottomNav />
+          <AppWrapper>{children}</AppWrapper>
         </div>
       </body>
     </html>
