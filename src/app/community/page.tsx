@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { MessageCircle, Heart, Trash2 } from 'lucide-react';
+import { MessageSquare, ThumbsUp, MoreVertical, Send } from 'lucide-react';
 import { supabase } from '@/lib/supabaseClient';
 import './community.css';
 
@@ -78,9 +78,8 @@ export default function Community() {
     fetchPosts();
   };
 
-  // 좋아요 (간단 구현)
+  // 좋아요
   const toggleLike = async (postId: string, currentLikes: number, isLiked: boolean) => {
-    // 로컬 상태 즉시 업데이트 (Optimistic UI)
     setPosts(posts.map(post => {
       if (post.id === postId) {
         return {
@@ -92,7 +91,6 @@ export default function Community() {
       return post;
     }));
 
-    // DB 업데이트
     const newLikes = isLiked ? currentLikes - 1 : currentLikes + 1;
     await supabase
       .from('community_posts')
@@ -144,7 +142,7 @@ export default function Community() {
   return (
     <div className="community-container">
       <div className="board-header">
-        <h2>자유 게시판</h2>
+        <h2>동네생활 💬</h2>
         <button 
           className="write-btn" 
           onClick={(e) => {
@@ -162,76 +160,126 @@ export default function Community() {
         ) : posts.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '40px', color: '#888' }}>첫 번째 글을 작성해보세요!</div>
         ) : (
-          posts.map(post => (
-            <div key={post.id} className="post-card">
-              <div className="post-header">
-                <div className="post-author-info">
-                  <div className="author-avatar">{post.author.substring(0, 1)}</div>
-                  <div>
-                    <span className="post-author">{post.author}</span>
-                    <span className="post-time">{formatTime(post.created_at)}</span>
-                  </div>
+          posts.map(post => {
+            const lines = post.content.split('\n');
+            const title = lines[0];
+            const body = lines.slice(1).join('\n');
+
+            return (
+              <div key={post.id} className="post-item-flat">
+                {/* 상단 태그 및 더보기 */}
+                <div className="post-item-header">
+                  <span className="category-tag">자유질문</span>
+                  <button className="more-options-btn">
+                    <MoreVertical size={16} color="#888" />
+                  </button>
                 </div>
-              </div>
-              
-              <div className="post-content">
-                {post.content.split('\n').map((line: string, i: number) => (
-                  <p key={i}>{line}</p>
-                ))}
-              </div>
 
-              <div className="post-actions">
-                <button 
-                  className={`action-btn ${post.isLiked ? 'liked' : ''}`}
-                  onClick={() => toggleLike(post.id, post.likes, post.isLiked)}
-                >
-                  <Heart size={18} fill={post.isLiked ? "#ff4b4b" : "none"} color={post.isLiked ? "#ff4b4b" : "#666"} />
-                  <span>{post.likes}</span>
-                </button>
-                <button 
-                  className="action-btn"
-                  onClick={() => toggleComments(post.id)}
-                >
-                  <MessageCircle size={18} />
-                  <span>{post.comments?.length || 0}</span>
-                </button>
-              </div>
+                {/* 본문 영역 */}
+                <div className="post-item-body" onClick={() => toggleComments(post.id)}>
+                  <h3 className="post-title">{title}</h3>
+                  {body && <p className="post-content-preview">{body}</p>}
+                </div>
 
-              {post.showComments && (
-                <div className="comments-section">
-                  <div className="comments-list">
-                    {post.comments?.map((comment: any) => (
-                      <div key={comment.id} className="comment">
-                        <span className="comment-author">{comment.author}</span>
-                        <span className="comment-text">{comment.text}</span>
-                      </div>
-                    ))}
+                {/* 메타 정보 및 반응 버튼 */}
+                <div className="post-item-footer">
+                  <div className="post-meta-text">
+                    <span>{post.author}</span>
+                    <span className="dot">·</span>
+                    <span>{formatTime(post.created_at)}</span>
                   </div>
-                  <div className="comment-input-area">
-                    <input 
-                      type="text" 
-                      placeholder="댓글을 입력하세요..." 
-                      className="comment-input"
-                      value={commentInputs[post.id] || ''}
-                      onChange={(e) => setCommentInputs({
-                        ...commentInputs,
-                        [post.id]: e.target.value
-                      })}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter') handleCommentSubmit(post.id);
-                      }}
-                    />
+                  
+                  <div className="post-interactions">
                     <button 
-                      className="comment-submit-btn"
-                      onClick={() => handleCommentSubmit(post.id)}
+                      className={`like-action-btn ${post.isLiked ? 'liked' : ''}`}
+                      onClick={() => toggleLike(post.id, post.likes, post.isLiked)}
                     >
-                      등록
+                      <ThumbsUp size={16} />
+                      <span>{post.likes > 0 && post.likes}</span>
+                    </button>
+                    <button 
+                      className="comment-action-btn"
+                      onClick={() => toggleComments(post.id)}
+                    >
+                      <MessageSquare size={16} />
+                      <span>{post.comments?.length > 0 && post.comments.length}</span>
                     </button>
                   </div>
                 </div>
-              )}
-            </div>
-          ))
+
+                {/* 댓글 영역 (당근마켓 상세 스타일) */}
+                {post.showComments && (
+                  <div className="comments-drawer">
+                    <div className="comments-header">
+                      <span className="comments-count">댓글 {post.comments?.length || 0}</span>
+                      <div className="comments-sort">
+                        <span className="active">등록순</span>
+                        <span>최신순</span>
+                      </div>
+                    </div>
+
+                    <div className="comments-list">
+                      {post.comments?.map((comment: any, idx: number) => {
+                        const isPostAuthor = comment.author === post.author;
+                        return (
+                          <div key={comment.id} className="comment-item">
+                            <div className="comment-avatar">
+                              {comment.author.substring(0, 1)}
+                            </div>
+                            <div className="comment-content-box">
+                              <div className="comment-user-info">
+                                <span className="comment-user-name">{comment.author}</span>
+                                {isPostAuthor && <span className="badge-author">작성자</span>}
+                                {idx === 0 && !isPostAuthor && <span className="badge-first">첫 댓글</span>}
+                                <span className="comment-time-text">· {formatTime(comment.created_at)}</span>
+                              </div>
+                              <p className="comment-text-body">{comment.text}</p>
+                              <div className="comment-sub-actions">
+                                <button className="comment-like-btn">
+                                  <ThumbsUp size={12} /> 좋아요
+                                </button>
+                                <button className="comment-reply-btn">답글</button>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                      {(!post.comments || post.comments.length === 0) && (
+                        <div className="empty-comments">아직 댓글이 없습니다. 첫 댓글을 남겨보세요!</div>
+                      )}
+                    </div>
+
+                    {/* 알약 모양 댓글 입력창 */}
+                    <div className="comment-input-container">
+                      <div className="comment-input-avatar">
+                        {(localStorage.getItem('username') || '익').substring(0, 1)}
+                      </div>
+                      <div className="comment-pill-input">
+                        <input 
+                          type="text" 
+                          placeholder="댓글을 입력해주세요." 
+                          value={commentInputs[post.id] || ''}
+                          onChange={(e) => setCommentInputs({
+                            ...commentInputs,
+                            [post.id]: e.target.value
+                          })}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') handleCommentSubmit(post.id);
+                          }}
+                        />
+                        <button 
+                          className="comment-send-btn"
+                          onClick={() => handleCommentSubmit(post.id)}
+                        >
+                          <Send size={16} />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })
         )}
       </div>
 
@@ -239,18 +287,18 @@ export default function Community() {
         <div className="write-modal-overlay">
           <div className="write-modal">
             <div className="write-modal-header">
-              <h3>새 글 쓰기</h3>
+              <h3>동네생활 글쓰기</h3>
               <button className="close-btn" onClick={() => setShowWriteModal(false)}>✕</button>
             </div>
             <textarea 
               className="write-textarea" 
-              placeholder="나누고 싶은 이야기를 자유롭게 적어주세요."
+              placeholder="우리 동네 이웃들과 나누고 싶은 이야기를 자유롭게 적어주세요."
               value={newContent}
               onChange={(e) => setNewContent(e.target.value)}
               autoFocus
             />
             <button className="submit-btn" onClick={handlePostSubmit}>
-              게시물 등록
+              작성 완료
             </button>
           </div>
         </div>
