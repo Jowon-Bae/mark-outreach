@@ -3,35 +3,7 @@ import { useState } from 'react';
 import { MessageCircle, Heart } from 'lucide-react';
 import './community.css';
 
-const initialPosts = [
-  { 
-    id: 1, 
-    author: '김마가', 
-    content: '오늘 오전 사역 너무 은혜로웠습니다. 아이들과 함께 찬양하며 율동하는 시간이 참 기뻤습니다. 오후 사역도 파이팅!', 
-    likes: 12, 
-    isLiked: false,
-    comments: [
-      { id: 101, author: '이누가', text: '아멘! 수고 많으셨습니다.' },
-      { id: 102, author: '박요한', text: '오후도 파이팅입니다~' },
-      { id: 103, author: '최바울', text: '너무 은혜롭네요 ㅠㅠ' }
-    ], 
-    showComments: false,
-    time: '2시간 전' 
-  },
-  { 
-    id: 2, 
-    author: '이누가', 
-    content: '점심 식사 메뉴 공유해요! 오늘 점심은 제육볶음입니다! 다들 맛있게 드세요~', 
-    likes: 25, 
-    isLiked: true,
-    comments: [
-      { id: 201, author: '김마가', text: '우와 제육볶음! 기대됩니다.' },
-      { id: 202, author: '최바울', text: '식당으로 바로 갈게요!' }
-    ], 
-    showComments: false,
-    time: '3시간 전' 
-  },
-];
+const initialPosts: any[] = [];
 
 export default function Community() {
   const [posts, setPosts] = useState(initialPosts);
