@@ -27,6 +27,7 @@ export const viewport: Viewport = {
 };
 
 import AppWrapper from "@/components/layout/AppWrapper";
+import PageTracker from "@/components/PageTracker";
 
 export default function RootLayout({
   children,
@@ -41,6 +42,7 @@ export default function RootLayout({
         <meta name="mobile-web-app-capable" content="yes" />
       </head>
       <body>
+        <PageTracker />
         <div id="app-container">
           <AppWrapper>{children}</AppWrapper>
         </div>
