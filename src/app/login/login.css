@@ -55,7 +55,7 @@
 }
 
 .login-input-group {
-  width: 100%;
+  width: 80%;
   margin-bottom: 20px;
 }
 
@@ -78,7 +78,7 @@
 }
 
 .login-submit-btn {
-  width: 100%;
+  width: 80%;
   padding: 16px;
   border-radius: 12px;
   background-color: var(--primary);
