@@ -65,6 +65,7 @@
   border-radius: 12px;
   border: 2px solid #e0e0e0;
   font-size: 1.1rem;
+  text-align: center;
   transition: all 0.3s;
   background-color: white;
   color: var(--text-main);
