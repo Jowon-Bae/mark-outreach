@@ -37,12 +37,9 @@ export default function Home() {
           onClick={handleClose}
         >
           <div className="welcome-popup-content" onClick={(e) => e.stopPropagation()}>
-            <p className="welcome-message">
-              <strong>{username}</strong> 님<br />
-              마가공동체 국내 아웃리치에<br />
-              함께 하시게 된 것을<br />
-              진심으로 환영합니다!
-            </p>
+            <div className="welcome-overlay-text">
+              {username} 님 환영합니다!
+            </div>
           </div>
         </div>
       )}

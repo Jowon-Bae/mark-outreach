@@ -182,16 +182,16 @@
 }
 
 .welcome-popup-content {
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  padding: 28px 24px;
+  background: url('/assets/welcome_bg.jpg') no-repeat center center / cover;
+  padding: 0;
   border-radius: 18px;
-  width: 80%;
-  max-width: 300px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  text-align: center;
+  width: 90%;
+  max-width: 450px;
+  aspect-ratio: 16 / 9;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  position: relative;
+  overflow: hidden;
   transform: scale(0.9);
   animation: welcomeZoomIn 0.5s forwards cubic-bezier(0.34, 1.56, 0.64, 1);
 }
@@ -200,18 +200,17 @@
   animation: welcomeZoomOut 0.4s forwards ease-in;
 }
 
-.welcome-message {
-  font-size: 1.05rem;
-  line-height: 1.7;
-  color: #1e1e1e;
-  margin: 0;
-  font-weight: 500;
-}
-
-.welcome-message strong {
-  font-size: 1.3rem;
-  color: var(--primary);
+.welcome-overlay-text {
+  position: absolute;
+  top: 70%; /* 'Welcome to' 글자 바로 밑에 오도록 위치 조정 */
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 1.25rem;
   font-weight: 800;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.9), 0 0 10px rgba(0, 0, 0, 0.6);
+  white-space: nowrap;
+  letter-spacing: 0.5px;
 }
 
 @keyframes welcomeFadeIn {
