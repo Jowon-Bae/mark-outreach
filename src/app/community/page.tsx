@@ -62,7 +62,7 @@ export default function Community() {
       return;
     }
 
-    const currentUsername = localStorage.getItem('username') || '익명';
+    const currentUsername = sessionStorage.getItem('username') || '익명';
 
     const { error } = await supabase
       .from('community_posts')
@@ -112,7 +112,7 @@ export default function Community() {
     const text = commentInputs[postId];
     if (!text || !text.trim()) return;
     
-    const currentUsername = localStorage.getItem('username') || '익명';
+    const currentUsername = sessionStorage.getItem('username') || '익명';
 
     const { error } = await supabase
       .from('community_comments')
@@ -251,7 +251,7 @@ export default function Community() {
                     {/* 알약 모양 댓글 입력창 */}
                     <div className="comment-input-container">
                       <div className="comment-input-avatar">
-                        {(localStorage.getItem('username') || '익').substring(0, 1)}
+                        {(sessionStorage.getItem('username') || '익').substring(0, 1)}
                       </div>
                       <div className="comment-pill-input">
                         <input 

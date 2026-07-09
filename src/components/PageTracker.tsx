@@ -11,7 +11,7 @@ export default function PageTracker() {
     if (pathname.startsWith('/admin')) return;
 
     const trackVisit = async () => {
-      const username = localStorage.getItem('username') || '익명';
+      const username = sessionStorage.getItem('username') || '익명';
       
       // 메뉴 이름 매핑
       let menuName = '기타';

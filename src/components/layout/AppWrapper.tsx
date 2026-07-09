@@ -25,7 +25,7 @@ export default function AppWrapper({ children }: { children: React.ReactNode }) 
   useEffect(() => {
     if (!isHydrated) return;
     
-    const username = localStorage.getItem('username');
+    const username = sessionStorage.getItem('username');
     if (!username && pathname !== '/login') {
       router.replace('/login');
     } else if (username && pathname === '/login') {
