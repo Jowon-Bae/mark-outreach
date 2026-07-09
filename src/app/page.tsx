@@ -38,7 +38,9 @@ export default function Home() {
         >
           <div className="welcome-popup-content" onClick={(e) => e.stopPropagation()}>
             <div className="welcome-overlay-text">
-              {username} 님 환영합니다!
+              <span className="welcome-name">{username} 님</span>
+              <br />
+              <span className="welcome-greet">환영합니다!</span>
             </div>
           </div>
         </div>
