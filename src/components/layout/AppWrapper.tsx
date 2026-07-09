@@ -12,9 +12,14 @@ export default function AppWrapper({ children }: { children: React.ReactNode }) 
   const pathname = usePathname();
   const router = useRouter();
 
-  // 1. 스플래시 화면 타이머 (처음 한 번만 실행)
+  // 1. 스플래시 화면 타이머 및 앱 최초 진입 시 세션 초기화
   useEffect(() => {
     setIsHydrated(true);
+    
+    // 앱을 새로 실행하거나 페이지를 처음 로드할 때 로그인 정보와 팝업 상태를 강제로 초기화
+    sessionStorage.removeItem('username');
+    sessionStorage.removeItem('welcomeShown');
+
     const timer = setTimeout(() => {
       setIsSplash(false);
     }, 3000); // CSS 애니메이션(3초)과 동일하게 맞춤
