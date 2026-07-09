@@ -190,7 +190,7 @@
   overflow: hidden;
   opacity: 0; /* 초기 상태 투명 */
   transform: scale(0.9);
-  animation: welcomeZoomIn 1.2s forwards cubic-bezier(0.34, 1.56, 0.64, 1); /* 카드만 페이드인+줌인 */
+  animation: welcomeZoomIn 1.3s forwards cubic-bezier(0.34, 1.56, 0.64, 1); /* 카드만 페이드인+줌인 1.3초 */
 }
 
 .welcome-popup-overlay.fade-out .welcome-popup-content {
