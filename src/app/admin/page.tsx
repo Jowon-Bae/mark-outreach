@@ -147,6 +147,7 @@ export default function AdminPage() {
           <br/>
           <input 
             type="password" 
+            autoComplete="new-password"
             placeholder="비밀번호 입력" 
             value={password}
             onChange={(e) => setPassword(e.target.value)}

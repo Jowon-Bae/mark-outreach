@@ -142,7 +142,7 @@ export default function Community() {
   return (
     <div className="community-container">
       <div className="board-header">
-        <h2>동네생활 💬</h2>
+        <h2>동네생활</h2>
         <button 
           className="write-btn" 
           onClick={(e) => {
@@ -169,7 +169,6 @@ export default function Community() {
               <div key={post.id} className="post-item-flat">
                 {/* 상단 태그 및 더보기 */}
                 <div className="post-item-header">
-                  <span className="category-tag">자유질문</span>
                   <button className="more-options-btn">
                     <MoreVertical size={16} color="#888" />
                   </button>

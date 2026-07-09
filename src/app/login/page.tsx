@@ -34,6 +34,9 @@ export default function LoginPage() {
         <div className="login-input-group">
           <input 
             type="text" 
+            id="user-name-input"
+            name="user-name-input"
+            autoComplete="off"
             className="login-input" 
             placeholder="이름을 입력하세요" 
             value={username}
