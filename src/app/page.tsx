@@ -15,8 +15,12 @@ export default function Home() {
     
     if (user && !welcomeShown) {
       setUsername(user);
-      setShowWelcome(true);
-      sessionStorage.setItem('welcomeShown', 'true');
+      const timer = setTimeout(() => {
+        setShowWelcome(true);
+        sessionStorage.setItem('welcomeShown', 'true');
+      }, 1000); // 1초 뒤에 팝업 등장
+      
+      return () => clearTimeout(timer);
     }
   }, []);
 
