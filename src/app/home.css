@@ -168,17 +168,13 @@
   align-items: center;
   justify-content: center;
   z-index: 9999;
-  background-color: rgba(0, 0, 0, 0.78); /* 배경을 더욱 어둡게 변경 */
+  background-color: rgba(0, 0, 0, 0.78);
   cursor: pointer;
-  opacity: 0;
-}
-
-.welcome-popup-overlay.fade-in {
-  animation: welcomeFadeIn 1.2s forwards ease-out;
+  opacity: 1; /* 배경은 즉시 완전히 어두운 상태로 노출 */
 }
 
 .welcome-popup-overlay.fade-out {
-  animation: welcomeFadeOut 1.2s forwards ease-in;
+  animation: welcomeFadeOut 1.2s forwards ease-in; /* 닫힐 때는 전체 디졸브로 서서히 사라짐 */
 }
 
 .welcome-popup-content {
@@ -192,8 +188,9 @@
   border: 1px solid rgba(255, 255, 255, 0.15);
   position: relative;
   overflow: hidden;
+  opacity: 0; /* 초기 상태 투명 */
   transform: scale(0.9);
-  animation: welcomeZoomIn 1.2s forwards cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: welcomeZoomIn 1.2s forwards cubic-bezier(0.34, 1.56, 0.64, 1); /* 카드만 페이드인+줌인 */
 }
 
 .welcome-popup-overlay.fade-out .welcome-popup-content {
@@ -202,7 +199,7 @@
 
 .welcome-overlay-text {
   position: absolute;
-  top: 70%; /* 위치 살짝 아래로 유지 */
+  top: 70%;
   left: 50%;
   transform: translate(-50%, -50%);
   color: white;
@@ -216,7 +213,7 @@
 .welcome-name {
   font-size: 1.35rem;
   font-weight: 800;
-  color: #ffdf9e; /* 골드 계열 포인트 컬러로 이름 강조 */
+  color: #ffdf9e;
 }
 
 .welcome-greet {
@@ -234,11 +231,12 @@
 }
 
 @keyframes welcomeZoomIn {
-  to { transform: scale(1); }
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
 }
 
 @keyframes welcomeZoomOut {
-  from { transform: scale(1); }
-  to { transform: scale(0.85); }
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(0.85); }
 }
 
