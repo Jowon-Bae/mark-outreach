@@ -168,17 +168,17 @@
   align-items: center;
   justify-content: center;
   z-index: 9999;
-  background-color: rgba(0, 0, 0, 0.45);
+  background-color: rgba(0, 0, 0, 0.6); /* 배경 어두워짐 강도 증가 */
   cursor: pointer;
   opacity: 0;
 }
 
 .welcome-popup-overlay.fade-in {
-  animation: welcomeFadeIn 1s forwards ease-out;
+  animation: welcomeFadeIn 1.2s forwards ease-out;
 }
 
 .welcome-popup-overlay.fade-out {
-  animation: welcomeFadeOut 1s forwards ease-in;
+  animation: welcomeFadeOut 1.2s forwards ease-in;
 }
 
 .welcome-popup-content {
@@ -193,11 +193,11 @@
   position: relative;
   overflow: hidden;
   transform: scale(0.9);
-  animation: welcomeZoomIn 1s forwards cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: welcomeZoomIn 1.2s forwards cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .welcome-popup-overlay.fade-out .welcome-popup-content {
-  animation: welcomeZoomOut 1s forwards ease-in;
+  animation: welcomeZoomOut 1.2s forwards ease-in;
 }
 
 .welcome-overlay-text {

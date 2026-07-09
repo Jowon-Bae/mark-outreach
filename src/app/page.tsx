@@ -24,7 +24,7 @@ export default function Home() {
     setIsFadingOut(true);
     setTimeout(() => {
       setShowWelcome(false);
-    }, 1000); // fade-out 애니메이션 시간(1초)에 맞춤
+    }, 1200); // fade-out 애니메이션 시간(1.2초)에 맞춤
   };
 
   return (
