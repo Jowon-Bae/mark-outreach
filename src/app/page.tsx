@@ -4,21 +4,30 @@ import { useState, useEffect } from 'react';
 import './home.css';
 
 export default function Home() {
-  const [showWelcome, setShowWelcome] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const user = sessionStorage.getItem('username') || '';
+      const welcomeShown = sessionStorage.getItem('welcomeShown');
+      if (user && !welcomeShown) {
+        return true;
+      }
+    }
+    return false;
+  });
+
   const [isFadingOut, setIsFadingOut] = useState(false);
-  const [username, setUsername] = useState('');
+  const [username, setUsername] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return sessionStorage.getItem('username') || '';
+    }
+    return '';
+  });
 
   useEffect(() => {
-    // 세션 스토리지에서 username 조회
-    const user = sessionStorage.getItem('username') || '';
-    const welcomeShown = sessionStorage.getItem('welcomeShown');
-    
-    if (user && !welcomeShown) {
-      setUsername(user);
-      setShowWelcome(true);
+    if (showWelcome) {
       sessionStorage.setItem('welcomeShown', 'true');
     }
-  }, []);
+  }, [showWelcome]);
 
   const handleClose = () => {
     setIsFadingOut(true);
