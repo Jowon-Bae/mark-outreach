@@ -100,7 +100,7 @@ export default function Community() {
       return;
     }
 
-    const currentUsername = sessionStorage.getItem('username') || '익명';
+    const currentUsername = localStorage.getItem('username') || '익명';
 
     const { error } = await supabase
       .from('community_posts')
@@ -150,7 +150,7 @@ export default function Community() {
     const text = commentInputs[postId];
     if (!text || !text.trim()) return;
     
-    const currentUsername = sessionStorage.getItem('username') || '익명';
+    const currentUsername = localStorage.getItem('username') || '익명';
 
     const { error } = await supabase
       .from('community_comments')
@@ -339,8 +339,16 @@ export default function Community() {
 
                       {/* 알약 모양 댓글 입력창 */}
                       <div className="comment-input-container">
-                        <div className="comment-input-avatar">
-                          {(sessionStorage.getItem('username') || '익').substring(0, 1)}
+                        <div className="comment-input-avatar" style={{ overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          {(() => {
+                            const curUser = localStorage.getItem('username') || '';
+                            const avatar = avatarMap[curUser];
+                            return avatar ? (
+                              <img src={avatar} alt="me" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                            ) : (
+                              (curUser || '익').substring(0, 1)
+                            );
+                          })()}
                         </div>
                         <div className="comment-pill-input">
                           <input 

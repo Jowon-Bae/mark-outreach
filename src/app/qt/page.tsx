@@ -62,7 +62,7 @@ export default function QuietTime() {
 
   const fetchQTCompletions = async (dateKey: string) => {
     setIsLoading(true);
-    const currentUsername = sessionStorage.getItem('username') || '';
+    const currentUsername = localStorage.getItem('username') || '';
 
     // 오늘 날짜 완료자 조회
     const { data, error } = await supabase
@@ -110,7 +110,7 @@ export default function QuietTime() {
   }, []);
 
   const handleComplete = async () => {
-    const currentUsername = sessionStorage.getItem('username');
+    const currentUsername = localStorage.getItem('username');
     if (!currentUsername) {
       alert('로그인이 필요합니다.');
       router.push('/login');
@@ -142,7 +142,7 @@ export default function QuietTime() {
       return;
     }
 
-    const currentUsername = sessionStorage.getItem('username') || '익명';
+    const currentUsername = localStorage.getItem('username') || '익명';
     setIsSubmitting(true);
 
     const { error } = await supabase

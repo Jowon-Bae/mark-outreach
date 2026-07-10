@@ -41,7 +41,7 @@ export default function Home() {
   // 웰컴 팝업 상태
   const [showWelcome, setShowWelcome] = useState(() => {
     if (typeof window !== 'undefined') {
-      const user = sessionStorage.getItem('username') || '';
+      const user = localStorage.getItem('username') || '';
       const welcomeShown = sessionStorage.getItem('welcomeShown');
       if (user && !welcomeShown) {
         return true;
@@ -53,7 +53,7 @@ export default function Home() {
   const [isFadingOut, setIsFadingOut] = useState(false);
   const [username, setUsername] = useState(() => {
     if (typeof window !== 'undefined') {
-      return sessionStorage.getItem('username') || '';
+      return localStorage.getItem('username') || '';
     }
     return '';
   });
