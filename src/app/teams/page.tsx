@@ -241,22 +241,16 @@ const INITIAL_TEAMS: Team[] = [
 
 const MAP_LOCATIONS: MapLocation[] = [
   {
-    name: '아웃리치 사역 본부 (충주 방주교회)',
+    name: '아웃리치 사역 교회 (신광교회)',
     description: '사역 총괄 본부 및 예배 처소',
-    naverUrl: 'https://map.naver.com/v5/entry/place/13490713',
-    kakaoUrl: 'https://map.kakao.com/?itemId=8110992'
+    naverUrl: 'https://naver.me/xF4hudjw',
+    kakaoUrl: 'https://map.kakao.com/?q=%EC%98%81%EC%A3%BC%20%EC%8B%A0%EA%B4%91%EA%B5%90%ED%9A%8C'
   },
   {
-    name: '메인 숙소 (방주 샬롬관)',
-    description: '전체 지체 공동 숙소',
-    naverUrl: 'https://map.naver.com/',
-    kakaoUrl: 'https://map.kakao.com/'
-  },
-  {
-    name: '노방 전도 사역지 (충주 중앙시장)',
-    description: '오후 문화 사역 및 관계 전도 장소',
-    naverUrl: 'https://map.naver.com/',
-    kakaoUrl: 'https://map.kakao.com/'
+    name: '숙소 (복된교회 영주수련원)',
+    description: '전체 지체 공동 숙소 및 수련처',
+    naverUrl: 'https://naver.me/5kxZAFyk',
+    kakaoUrl: 'https://map.kakao.com/?q=%EB%B3%B5%EB%90%9C%EA%B5%90%ED%9A%8C%20%EC%98%81%EC%A3%BC%EC%88%98%EB%A0%A8%EC%9B%90'
   }
 ];
 
