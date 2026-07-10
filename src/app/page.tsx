@@ -221,6 +221,17 @@ export default function Home() {
 
     if (!error) {
       alert('공지가 실시간 등록되었습니다.');
+      
+      // 웹 푸시 API 호출 (백그라운드 스마트폰 알림 발송)
+      fetch('/api/push', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: '📢 마가공동체 아웃리치 긴급 공지',
+          body: newNoticeText.trim()
+        })
+      }).catch(err => console.error('Failed to send push notifications:', err));
+
       setNewNoticeText('');
       setShowNoticeInput(false);
       setIsNoticeDismissed(false); // 직접 등록 시에도 노출 보장
