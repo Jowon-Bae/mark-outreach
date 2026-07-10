@@ -145,6 +145,14 @@ export default function Home() {
         setNotice(cleanContent);
         setNoticePostId(latest.id);
 
+        // 현재 공지가 로컬스토리지에 의해 이미 읽음 처리되었는지 체크
+        const dismissedId = localStorage.getItem('dismissedNoticeId');
+        if (dismissedId === latest.id) {
+          setIsNoticeDismissed(true);
+        } else {
+          setIsNoticeDismissed(false);
+        }
+
         // 새로운 공지 감지 (이전 ID와 다른 경우에만 알림 실행 및 숨김 상태 해제)
         const storedId = localStorage.getItem('lastSeenNoticeId');
         if (storedId && storedId !== latest.id) {
@@ -155,6 +163,7 @@ export default function Home() {
           setAlertNoticeContent(cleanContent);
           setShowNoticeAlert(true);
           setIsNoticeDismissed(false); // 새 공지가 오면 배너 다시 노출
+          localStorage.removeItem('dismissedNoticeId'); // 읽음 상태 초기화
         }
         localStorage.setItem('lastSeenNoticeId', latest.id);
       } else {
@@ -169,6 +178,14 @@ export default function Home() {
     setTimeout(() => {
       setShowWelcome(false);
     }, 1200); // fade-out 애니메이션 시간(1.2초)에 맞춤
+  };
+
+  // 공지 읽음(숨김) 처리 - 로컬스토리지 저장
+  const handleDismissNotice = () => {
+    if (noticePostId) {
+      localStorage.setItem('dismissedNoticeId', noticePostId);
+      setIsNoticeDismissed(true);
+    }
   };
 
   // 랜덤 기도 뽑기 로직
@@ -271,7 +288,7 @@ export default function Home() {
 
       {/* 실시간 공지 배너 영역 */}
       {(notice || isAdmin) && !isNoticeDismissed && (
-        <div className="home-notice-bar" onClick={() => setIsNoticeDismissed(true)} style={{ cursor: 'pointer' }} title="터치하여 공지 숨기기">
+        <div className="home-notice-bar" onClick={handleDismissNotice} style={{ cursor: 'pointer' }} title="터치하여 공지 숨기기">
           <div className="notice-inner-content">
             <Megaphone size={16} className="notice-icon" />
             <div className="notice-text-marquee">
