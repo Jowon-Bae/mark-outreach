@@ -28,12 +28,14 @@ interface MapLocation {
 // 예시 마가 공동체 조직도 데이터 (아웃리치 사역에 최적화)
 const INITIAL_TEAMS: Team[] = [
   {
-    teamName: '총괄 및 사역자본부',
+    teamName: '총무단',
     icon: Crown,
     members: [
-      { name: '김동혁', role: '담당 목사 (총괄 총무)', phone: '010-1234-5678' },
-      { name: '이은혜', role: '담당 전도사 (양육)', phone: '010-8765-4321' },
-      { name: '배주원', role: '총괄 팀장 (진행 리더)', phone: '010-5555-4444' }
+      { name: '배주원', role: '담당 목사', phone: '010-9017-1848' },
+      { name: '두진문', role: '담당 장로', phone: '010-4020-1389' },
+      { name: '김민우', role: '총무', phone: '010-4020-1389' },
+      { name: '신민재', role: '부총무', phone: '010-5292-5620' },
+      { name: '선우진', role: '회계', phone: '010-8781-8806' }
     ]
   },
   {
