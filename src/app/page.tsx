@@ -6,6 +6,35 @@ import { supabase } from '@/lib/supabaseClient';
 import { Megaphone, Plus, Trash2, X, Lock } from 'lucide-react';
 import './home.css';
 
+// 오디오 컨텍스트 전역 선언 및 브라우저 보안 해제(잠금 해제)
+let sharedAudioCtx: AudioContext | null = null;
+
+const initAudioContext = () => {
+  if (typeof window === 'undefined') return;
+  try {
+    const AudioCtxClass = window.AudioContext || (window as any).webkitAudioContext;
+    if (!AudioCtxClass) return;
+    if (!sharedAudioCtx) {
+      sharedAudioCtx = new AudioCtxClass();
+    }
+    if (sharedAudioCtx.state === 'suspended') {
+      sharedAudioCtx.resume();
+    }
+  } catch (e) {
+    console.error('Failed to init AudioContext:', e);
+  }
+};
+
+if (typeof window !== 'undefined') {
+  const unlock = () => {
+    initAudioContext();
+    window.removeEventListener('click', unlock);
+    window.removeEventListener('touchstart', unlock);
+  };
+  window.addEventListener('click', unlock);
+  window.addEventListener('touchstart', unlock);
+}
+
 export default function Home() {
   const router = useRouter();
   
@@ -51,9 +80,12 @@ export default function Home() {
   // Web Audio API 기반 알림음 합성음 재생
   const playNotificationSound = () => {
     try {
-      const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
-      if (!AudioContext) return;
-      const ctx = new AudioContext();
+      initAudioContext();
+      if (!sharedAudioCtx) return;
+      const ctx = sharedAudioCtx;
+      if (ctx.state === 'suspended') {
+        ctx.resume();
+      }
       const now = ctx.currentTime;
       
       // 첫 번째 음 (도5 - 523.25Hz)
