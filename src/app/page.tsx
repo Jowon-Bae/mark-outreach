@@ -37,15 +37,17 @@ export default function Home() {
   };
 
   return (
-    <div className="home-container">
-      {/* 그래피티 배경 이미지만 온전히 보이도록 다른 요소들은 임시로 비워둡니다 */}
+    <>
+      <div className="home-container">
+        {/* 그래피티 배경 이미지만 온전히 보이도록 다른 요소들은 임시로 비워둡니다 */}
+      </div>
 
       {showWelcome && (
         <div 
           className={`welcome-popup-overlay ${isFadingOut ? 'fade-out' : 'fade-in'}`}
           onClick={handleClose}
         >
-          <div className="welcome-popup-content" onClick={(e) => e.stopPropagation()}>
+          <div className="welcome-popup-content">
             <div className="welcome-overlay-text">
               <span className="welcome-name">{username} 님</span>
               <br />
@@ -54,6 +56,6 @@ export default function Home() {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }
