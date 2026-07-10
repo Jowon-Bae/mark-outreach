@@ -274,14 +274,27 @@ export default function Teams() {
     }));
   };
 
-  // 검색 필터링 로직
+  // 검색 필터링 및 가나다 순 정렬 로직
   const filteredTeams = INITIAL_TEAMS.map(team => {
+    // 1. 검색어 필터링
     const matchedMembers = team.members.filter(
       member =>
         member.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         member.role.toLowerCase().includes(searchQuery.toLowerCase())
     );
-    return { ...team, members: matchedMembers };
+
+    // 2. 핵심 직책(목사, 장로, 총무단, 팀장)과 일반 팀원 구분하여 정렬
+    const coreRoles = ['담당 목사', '담당 장로', '총무', '부총무', '회계', '팀장'];
+    const coreMembers = matchedMembers.filter(m => coreRoles.includes(m.role));
+    const regularMembers = matchedMembers.filter(m => !coreRoles.includes(m.role));
+
+    // 일반 팀원 이름순(가나다) 정렬
+    regularMembers.sort((a, b) => a.name.localeCompare(b.name, 'ko'));
+
+    return { 
+      ...team, 
+      members: [...coreMembers, ...regularMembers] 
+    };
   }).filter(team => team.members.length > 0);
 
   return (
