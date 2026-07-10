@@ -63,7 +63,7 @@ export default function SettingsPage() {
       setUploading(true);
       const file = e.target.files[0];
       const fileExt = file.name.split('.').pop();
-      const filePath = `avatars/${username}_${Date.now()}.${fileExt}`;
+      const filePath = `avatar_${username}_${Date.now()}.${fileExt}`;
 
       const { supabase: supabaseClient } = await import('@/lib/supabaseClient');
 
