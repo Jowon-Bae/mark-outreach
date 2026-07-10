@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Settings, LogOut, Bell, Info, Shield, User } from 'lucide-react';
+import { Settings, LogOut, Bell, Info, Shield, User, X } from 'lucide-react';
 import './settings.css';
 
 export default function SettingsPage() {
@@ -10,6 +10,8 @@ export default function SettingsPage() {
   const [username, setUsername] = useState('');
   const [isAdmin, setIsAdmin] = useState(false);
   const [pushPermission, setPushPermission] = useState<NotificationPermission>('default');
+  const [showGuideModal, setShowGuideModal] = useState(false);
+  const [guideTab, setGuideTab] = useState<'ios' | 'android'>('ios');
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -45,6 +47,19 @@ export default function SettingsPage() {
       return;
     }
 
+    // 이미 권한이 차단된 경우, 알림 설정 안내 모달 오픈
+    if (Notification.permission === 'denied') {
+      // 접속 환경을 분석해 기본 가이드 탭 자동 선택
+      const ua = navigator.userAgent.toLowerCase();
+      if (/iphone|ipad|ipod/.test(ua)) {
+        setGuideTab('ios');
+      } else {
+        setGuideTab('android');
+      }
+      setShowGuideModal(true);
+      return;
+    }
+
     Notification.requestPermission().then((permission) => {
       setPushPermission(permission);
       if (permission === 'granted') {
@@ -64,8 +79,8 @@ export default function SettingsPage() {
             await supabase.from('push_subscriptions').insert([{ subscription: subscription }]);
           });
         }
-      } else {
-        alert('알림 권한이 거부되었습니다. 휴대폰의 시스템 설정에서 알림을 직접 허용해 주세요.');
+      } else if (permission === 'denied') {
+        setShowGuideModal(true);
       }
     });
   };
@@ -147,6 +162,81 @@ export default function SettingsPage() {
           <span>로그아웃</span>
         </button>
       </div>
+
+      {/* 알림 설정 해결 가이드 모달 */}
+      {showGuideModal && (
+        <div className="guide-modal-overlay">
+          <div className="guide-modal">
+            <div className="guide-modal-header">
+              <h3>🔔 알림 수동 허용 가이드</h3>
+              <button className="guide-close-btn" onClick={() => setShowGuideModal(false)}>
+                <X size={20} />
+              </button>
+            </div>
+            
+            <p className="guide-subtitle-text">
+              현재 기기의 브라우저 알림 권한이 차단되어 있습니다. 긴급 공지를 정상적으로 받으려면 아래 가이드에 따라 직접 권한을 켜주셔야 합니다.
+            </p>
+
+            <div className="guide-tabs">
+              <button 
+                className={`guide-tab ${guideTab === 'ios' ? 'active' : ''}`}
+                onClick={() => setGuideTab('ios')}
+              >
+                아이폰 (iOS)
+              </button>
+              <button 
+                className={`guide-tab ${guideTab === 'android' ? 'active' : ''}`}
+                onClick={() => setGuideTab('android')}
+              >
+                안드로이드 / PC
+              </button>
+            </div>
+
+            <div className="guide-tab-content">
+              {guideTab === 'ios' ? (
+                <ol className="guide-list">
+                  <li>
+                    먼저 어플이 <strong>[홈 화면에 추가]</strong>(아이콘 설치) 되어 있는지 확인해 주세요.
+                    <span className="guide-note">* 홈 화면에 추가하지 않은 일반 브라우저 창 상태에서는 아이폰 알림 기능이 나타나지 않습니다.</span>
+                  </li>
+                  <li>
+                    아이폰 시스템 <strong>[설정]</strong> 앱을 켭니다.
+                  </li>
+                  <li>
+                    설정 메뉴에서 <strong>[알림]</strong>을 선택합니다.
+                  </li>
+                  <li>
+                    목록에서 설치된 어플 이름(예: <strong>[마가아웃리치]</strong>)을 찾아서 선택합니다.
+                  </li>
+                  <li>
+                    <strong>[알림 허용]</strong> 스위치를 초록색(활성화)으로 켜줍니다.
+                  </li>
+                </ol>
+              ) : (
+                <ol className="guide-list">
+                  <li>
+                    인터넷 주소창(상단 주소창)의 왼쪽 끝에 있는 <strong>자물쇠 아이콘(⚙️ 또는 슬라이더)</strong>을 터치합니다.
+                  </li>
+                  <li>
+                    메뉴 목록 중에서 <strong>[알림]</strong> 권한 항목을 찾습니다.
+                  </li>
+                  <li>
+                    차단된 알림 권한을 <strong>[허용]</strong>으로 스위치를 켜주거나 직접 설정을 해제합니다.
+                  </li>
+                  <li>
+                    권한을 변경하신 뒤 화면을 새로고침 하시면 알림 구독이 자동으로 연동됩니다!
+                  </li>
+                </ol>
+              )}
+            </div>
+
+            <button className="guide-confirm-btn" onClick={() => setShowGuideModal(false)}>
+              확인했습니다
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
