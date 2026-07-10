@@ -123,7 +123,17 @@ const INITIAL_TEAMS: Team[] = [
     teamName: '키즈케어팀',
     icon: Baby,
     members: [
-      { name: '박제윤', role: '팀장', phone: '010-0000-0000' }
+      { name: '박제윤', role: '팀장', phone: '010-5392-7838' },
+      { name: '전민기', role: '팀원', phone: '010-3761-0004' },
+      { name: '김태희', role: '팀원', phone: '010-4731-8340' },
+      { name: '안승국', role: '팀원', phone: '010-8878-4920' },
+      { name: '이혜수', role: '팀원', phone: '010-3669-9318' },
+      { name: '강진규', role: '팀원', phone: '010-5152-0401' },
+      { name: '김지현', role: '팀원', phone: '010-2778-5853' },
+      { name: '김영민', role: '팀원', phone: '010-2718-4682' },
+      { name: '문정은', role: '팀원', phone: '010-4702-8587' },
+      { name: '노소영', role: '팀원', phone: '010-4818-4015' },
+      { name: '박순호', role: '팀원', phone: '010-9996-4877' }
     ]
   },
   {
