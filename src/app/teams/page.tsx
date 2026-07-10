@@ -41,13 +41,6 @@ const INITIAL_TEAMS: Team[] = [
     ]
   },
   {
-    teamName: '예배팀',
-    icon: Music,
-    members: [
-      { name: '전승우', role: '팀장', phone: '010-0000-0000' }
-    ]
-  },
-  {
     teamName: '전도팀',
     icon: HeartHandshake,
     members: [
@@ -228,6 +221,13 @@ const INITIAL_TEAMS: Team[] = [
       { name: '심이안', role: '팀원', phone: '010-0000-0000' },
       { name: '이하은', role: '팀원', phone: '010-0000-0000' },
       { name: '태현영', role: '팀원', phone: '010-0000-0000' }
+    ]
+  },
+  {
+    teamName: '예배팀',
+    icon: Music,
+    members: [
+      { name: '전승우', role: '팀장', phone: '010-0000-0000' }
     ]
   },
   {
