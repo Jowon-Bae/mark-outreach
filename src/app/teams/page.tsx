@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Phone, Search, ArrowLeft, MapPin, ExternalLink, ShieldAlert, Crown, Music, Video, Shield, User, Utensils, Baby, Paintbrush, Scissors, Laugh, HeartHandshake, Activity, Sparkles, X } from 'lucide-react';
+import { Phone, Search, ArrowLeft, MapPin, ExternalLink, ShieldAlert, Crown, Music, Video, Shield, User, Utensils, Baby, Paintbrush, Scissors, Laugh, HeartHandshake, Activity, Sparkles, X, ChevronDown, ChevronUp } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import './teams.css';
 
@@ -265,6 +265,14 @@ export default function Teams() {
   const [activeTab, setActiveTab] = useState<'contact' | 'safety'>('contact');
   const [searchQuery, setSearchQuery] = useState('');
   const [showSafetyRules, setShowSafetyRules] = useState(false);
+  const [expandedTeams, setExpandedTeams] = useState<Record<string, boolean>>({});
+
+  const toggleTeam = (teamName: string) => {
+    setExpandedTeams(prev => ({
+      ...prev,
+      [teamName]: !prev[teamName]
+    }));
+  };
 
   // 검색 필터링 로직
   const filteredTeams = INITIAL_TEAMS.map(team => {
@@ -325,27 +333,37 @@ export default function Teams() {
             ) : (
               filteredTeams.map((team, idx) => {
                 const TeamIcon = team.icon;
+                const isExpanded = searchQuery.trim() !== '' ? true : !!expandedTeams[team.teamName];
+                
                 return (
-                  <div key={idx} className="team-group-card">
-                    <h3 className="team-title">
-                      <TeamIcon size={16} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
-                      <span style={{ verticalAlign: 'middle' }}>{team.teamName}</span>
-                    </h3>
-                    <div className="team-members-list">
-                      {team.members.map((member, mIdx) => (
-                        <div key={mIdx} className="member-row">
-                          <div className="member-info">
-                            <span className="member-name">{member.name}</span>
-                            <span className="member-role">{member.role}</span>
-                          </div>
-                          {/* 전화 걸기 버튼 */}
-                          <a href={`tel:${member.phone}`} className="phone-call-btn">
-                            <Phone size={16} />
-                            <span>통화</span>
-                          </a>
-                        </div>
-                      ))}
+                  <div key={idx} className={`team-group-card ${isExpanded ? 'expanded' : ''}`}>
+                    <div className="team-header-row" onClick={() => toggleTeam(team.teamName)} style={{ cursor: 'pointer' }}>
+                      <h3 className="team-title" style={{ margin: 0 }}>
+                        <TeamIcon size={16} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
+                        <span style={{ verticalAlign: 'middle' }}>{team.teamName}</span>
+                        <span className="member-count-badge">{team.members.length}명</span>
+                      </h3>
+                      <div className="chevron-icon">
+                        {isExpanded ? <ChevronUp size={18} color="#8b95a1" /> : <ChevronDown size={18} color="#8b95a1" />}
+                      </div>
                     </div>
+                    {isExpanded && (
+                      <div className="team-members-list">
+                        {team.members.map((member, mIdx) => (
+                          <div key={mIdx} className="member-row">
+                            <div className="member-info">
+                              <span className="member-name">{member.name}</span>
+                              <span className="member-role">{member.role}</span>
+                            </div>
+                            {/* 전화 걸기 버튼 */}
+                            <a href={`tel:${member.phone}`} className="phone-call-btn">
+                              <Phone size={16} />
+                              <span>통화</span>
+                            </a>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 );
               })

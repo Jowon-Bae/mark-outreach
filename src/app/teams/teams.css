@@ -74,21 +74,56 @@
   padding: 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
   border: 1px solid #e5e8eb;
+  transition: all 0.2s ease-in-out;
+}
+
+.team-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  user-select: none;
 }
 
 .team-title {
   font-size: 15px;
   font-weight: 700;
   color: var(--primary);
-  margin: 0 0 12px 0;
-  padding-bottom: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.member-count-badge {
+  font-size: 11px;
+  background-color: #f1f3f5;
+  color: #8b95a1;
+  padding: 2px 6px;
+  border-radius: 8px;
+  margin-left: 6px;
+  font-weight: 700;
+}
+
+.chevron-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.team-group-card.expanded .team-header-row {
+  padding-bottom: 12px;
   border-bottom: 1px solid #f1f3f5;
+  margin-bottom: 12px;
 }
 
 .team-members-list {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  animation: fadeInMembers 0.2s ease-in-out;
+}
+
+@keyframes fadeInMembers {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .member-row {
