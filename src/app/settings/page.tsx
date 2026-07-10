@@ -12,6 +12,7 @@ export default function SettingsPage() {
   const [pushPermission, setPushPermission] = useState<NotificationPermission>('default');
   const [showGuideModal, setShowGuideModal] = useState(false);
   const [guideTab, setGuideTab] = useState<'ios' | 'android'>('ios');
+  const [isPushEnabled, setIsPushEnabled] = useState(false);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -19,6 +20,14 @@ export default function SettingsPage() {
       setIsAdmin(sessionStorage.getItem('isAdmin') === 'true');
       if ('Notification' in window) {
         setPushPermission(Notification.permission);
+      }
+      
+      // 실제 서비스 워커의 푸시 구독 상태를 체크하여 토글 스위치 상태 동기화
+      if ('serviceWorker' in navigator && 'PushManager' in window) {
+        navigator.serviceWorker.ready.then(async (registration) => {
+          const subscription = await registration.pushManager.getSubscription();
+          setIsPushEnabled(!!subscription);
+        }).catch(err => console.error('Error checking SW subscription status:', err));
       }
     }
   }, []);
@@ -40,49 +49,86 @@ export default function SettingsPage() {
     window.location.href = '/login';
   };
 
-  // 알림 신청 유도
-  const requestNotificationPermission = () => {
-    if (typeof window === 'undefined' || !('Notification' in window)) {
+  // 알림 설정 온오프 토글 처리
+  const handleTogglePush = async () => {
+    if (typeof window === 'undefined' || !('serviceWorker' in navigator) || !('PushManager' in window)) {
       alert('이 기기는 알림 기능을 지원하지 않습니다.');
       return;
     }
 
-    // 이미 권한이 차단된 경우, 알림 설정 안내 모달 오픈
-    if (Notification.permission === 'denied') {
-      // 접속 환경을 분석해 기본 가이드 탭 자동 선택
-      const ua = navigator.userAgent.toLowerCase();
-      if (/iphone|ipad|ipod/.test(ua)) {
-        setGuideTab('ios');
-      } else {
-        setGuideTab('android');
-      }
-      setShowGuideModal(true);
-      return;
-    }
+    const registration = await navigator.serviceWorker.ready;
 
-    Notification.requestPermission().then((permission) => {
-      setPushPermission(permission);
-      if (permission === 'granted') {
-        alert('알림 권한이 승인되었습니다! 실시간 긴급 공지를 즉시 받아보실 수 있습니다.');
-        // 서비스워커를 통한 구독 재생성 유도
-        if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.ready.then(async (registration) => {
-            const publicVapidKey = 'BB611KNZS2KvEkk7Nystn0Mvdk35Cdks3yaRJy8txCNb0FAHiIcLw8S9nHVK-NbZEiOM8F4dFEsN-n7V0oxIGlA';
-            let subscription = await registration.pushManager.getSubscription();
-            if (!subscription) {
-              subscription = await registration.pushManager.subscribe({
-                userVisibleOnly: true,
-                applicationServerKey: publicVapidKey
-              });
-            }
-            const { supabase } = await import('@/lib/supabaseClient');
-            await supabase.from('push_subscriptions').insert([{ subscription: subscription }]);
-          });
+    if (isPushEnabled) {
+      // 1. 알림 끄기 (구독 해제)
+      try {
+        const subscription = await registration.pushManager.getSubscription();
+        if (subscription) {
+          await subscription.unsubscribe();
+          
+          const { supabase: supabaseClient } = await import('@/lib/supabaseClient');
+          await supabaseClient
+            .from('push_subscriptions')
+            .delete()
+            .eq('subscription->>endpoint', subscription.endpoint);
         }
-      } else if (permission === 'denied') {
-        setShowGuideModal(true);
+        setIsPushEnabled(false);
+        alert('실시간 긴급 공지 알림 수신을 껐습니다.');
+      } catch (err) {
+        console.error('Failed to unsubscribe:', err);
+        alert('알림을 끄는 데 실패했습니다.');
       }
-    });
+    } else {
+      // 2. 알림 켜기 (구독 신청)
+      if (Notification.permission === 'denied') {
+        const ua = navigator.userAgent.toLowerCase();
+        if (/iphone|ipad|ipod/.test(ua)) {
+          setGuideTab('ios');
+        } else {
+          setGuideTab('android');
+        }
+        setShowGuideModal(true);
+        return;
+      }
+
+      try {
+        const permission = await Notification.requestPermission();
+        setPushPermission(permission);
+
+        if (permission === 'granted') {
+          const publicVapidKey = 'BB611KNZS2KvEkk7Nystn0Mvdk35Cdks3yaRJy8txCNb0FAHiIcLw8S9nHVK-NbZEiOM8F4dFEsN-n7V0oxIGlA';
+          let subscription = await registration.pushManager.getSubscription();
+          
+          if (!subscription) {
+            subscription = await registration.pushManager.subscribe({
+              userVisibleOnly: true,
+              applicationServerKey: publicVapidKey
+            });
+          }
+
+          const { supabase: supabaseClient } = await import('@/lib/supabaseClient');
+          
+          // 중복 검사 후 저장
+          const { data, error } = await supabaseClient
+            .from('push_subscriptions')
+            .select('*')
+            .eq('subscription->>endpoint', subscription.endpoint);
+
+          if (!error && (!data || data.length === 0)) {
+            await supabaseClient
+              .from('push_subscriptions')
+              .insert([{ subscription: subscription }]);
+          }
+
+          setIsPushEnabled(true);
+          alert('실시간 긴급 공지 알림 수신을 켰습니다! 🔊');
+        } else if (permission === 'denied') {
+          setShowGuideModal(true);
+        }
+      } catch (err) {
+        console.error('Failed to subscribe:', err);
+        alert('알림 권한 요청에 실패했습니다.');
+      }
+    }
   };
 
   return (
@@ -118,7 +164,7 @@ export default function SettingsPage() {
           <div className="group-title">수신 및 보안</div>
           
           {/* 알림 설정 */}
-          <div className="settings-row" onClick={requestNotificationPermission} style={{ cursor: 'pointer' }}>
+          <div className="settings-row" onClick={handleTogglePush} style={{ cursor: 'pointer' }}>
             <div className="row-left">
               <Bell size={18} className="row-icon notification" />
               <div className="row-meta">
@@ -127,12 +173,12 @@ export default function SettingsPage() {
               </div>
             </div>
             <div className="row-right">
-              {pushPermission === 'granted' ? (
-                <span className="status-badge active">활성화됨</span>
-              ) : pushPermission === 'denied' ? (
-                <span className="status-badge blocked">차단됨</span>
+              {pushPermission === 'denied' ? (
+                <span className="status-badge blocked">차단됨 (설정 안내)</span>
               ) : (
-                <span className="status-badge pending">신청하기</span>
+                <div className={`switch-toggle ${isPushEnabled ? 'active' : ''}`}>
+                  <div className="switch-handle" />
+                </div>
               )}
             </div>
           </div>

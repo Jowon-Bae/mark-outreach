@@ -209,6 +209,38 @@
   background-color: #fcc2c2;
 }
 
+/* 커스텀 토글 스위치 */
+.switch-toggle {
+  width: 51px;
+  height: 31px;
+  background-color: #e5e8eb;
+  border-radius: 31px;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.25s ease;
+  box-sizing: border-box;
+}
+
+.switch-toggle.active {
+  background-color: #1b64da;
+}
+
+.switch-handle {
+  width: 27px;
+  height: 27px;
+  background-color: white;
+  border-radius: 50%;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateX(0);
+}
+
+.switch-toggle.active .switch-handle {
+  transform: translateX(20px);
+}
+
 /* 알림 설정 가이드 모달 */
 .guide-modal-overlay {
   position: fixed;
