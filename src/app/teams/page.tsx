@@ -262,6 +262,7 @@ export default function Teams() {
   const [expandedTeams, setExpandedTeams] = useState<Record<string, boolean>>({});
   const [avatarMap, setAvatarMap] = useState<Record<string, string>>({});
   const [fullscreenImage, setFullscreenImage] = useState<string | null>(null);
+  const [isClosing, setIsClosing] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -591,53 +592,90 @@ export default function Teams() {
       )}
       {/* 아바타 이미지 풀스크린 확대 모달 */}
       {fullscreenImage && (
-        <div 
-          className="fullscreen-overlay" 
-          onClick={() => setFullscreenImage(null)}
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.9)',
-            backdropFilter: 'blur(5px)',
-            zIndex: 2000,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: '24px'
-          }}
-        >
-          <button 
-            onClick={() => setFullscreenImage(null)}
+        <>
+          <style>{`
+            @keyframes avatarZoomIn {
+              from { transform: scale(0.8); opacity: 0; }
+              to { transform: scale(1); opacity: 1; }
+            }
+            .avatar-zoom-in-ani {
+              animation: avatarZoomIn 0.22s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            }
+          `}</style>
+          <div 
+            className="fullscreen-overlay" 
+            onClick={() => {
+              setIsClosing(true);
+              setTimeout(() => {
+                setFullscreenImage(null);
+                setIsClosing(false);
+              }, 200);
+            }}
             style={{
-              position: 'absolute',
-              top: '20px',
-              right: '20px',
-              background: 'none',
-              border: 'none',
-              color: 'white',
-              fontSize: '24px',
-              cursor: 'pointer',
-              padding: '8px',
-              zIndex: 2100
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: 'rgba(0, 0, 0, 0.15)', // 투명 배경으로 지체 리스트가 보이도록 조정
+              backdropFilter: 'blur(8px)', // 세련된 블러 처리
+              zIndex: 2000,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '24px',
+              transition: 'opacity 0.2s ease-out, backdrop-filter 0.2s ease-out',
+              opacity: isClosing ? 0 : 1
             }}
           >
-            ✕
-          </button>
-          <img 
-            src={fullscreenImage} 
-            alt="Zoomed Avatar" 
-            style={{
-              maxWidth: '90%',
-              maxHeight: '80%',
-              borderRadius: '16px',
-              objectFit: 'contain',
-              boxShadow: '0 10px 30px rgba(0,0,0,0.5)'
-            }} 
-          />
-        </div>
+            <button 
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsClosing(true);
+                setTimeout(() => {
+                  setFullscreenImage(null);
+                  setIsClosing(false);
+                }, 200);
+              }}
+              style={{
+                position: 'absolute',
+                top: '20px',
+                right: '20px',
+                background: 'rgba(0,0,0,0.2)',
+                border: 'none',
+                color: 'white',
+                fontSize: '20px',
+                cursor: 'pointer',
+                width: '36px',
+                height: '36px',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                zIndex: 2100
+              }}
+            >
+              ✕
+            </button>
+            <img 
+              src={fullscreenImage} 
+              alt="Zoomed Avatar" 
+              className={isClosing ? '' : 'avatar-zoom-in-ani'}
+              style={{
+                maxWidth: '85%',
+                maxHeight: '75%',
+                borderRadius: '24px',
+                objectFit: 'contain',
+                boxShadow: '0 20px 50px rgba(0,0,0,0.2)',
+                border: '4px solid white',
+                backgroundColor: 'white',
+                transition: 'transform 0.2s cubic-bezier(0.3, 0, 0.8, 0.15), opacity 0.2s ease-out',
+                transform: isClosing ? 'scale(0.8) translateY(10px)' : 'scale(1)',
+                opacity: isClosing ? 0 : 1
+              }} 
+            />
+          </div>
+        </>
       )}
     </div>
   );
