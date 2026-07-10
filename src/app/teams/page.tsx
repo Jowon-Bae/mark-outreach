@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Phone, Search, ArrowLeft, MapPin, ExternalLink, ShieldAlert, Crown, Music, Video, Shield, User } from 'lucide-react';
+import { Phone, Search, ArrowLeft, MapPin, ExternalLink, ShieldAlert, Crown, Music, Video, Shield, User, Utensils, Baby, Paintbrush, Scissors, Laugh, HeartHandshake, Activity, Sparkles } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import './teams.css';
 
@@ -39,31 +39,87 @@ const INITIAL_TEAMS: Team[] = [
     ]
   },
   {
-    teamName: '예배 및 찬양팀',
+    teamName: '예배팀',
     icon: Music,
     members: [
-      { name: '김민준', role: '예배팀장 (싱어)', phone: '010-1111-2222' },
-      { name: '이서연', role: '반주자 (신디)', phone: '010-3333-4444' },
-      { name: '박건우', role: '어쿠스틱 기타', phone: '010-5555-6666' },
-      { name: '최다은', role: '싱어 (알토)', phone: '010-7777-8888' }
+      { name: '전승우', role: '팀장', phone: '010-0000-0000' }
     ]
   },
   {
-    teamName: '미디어 & 방송팀',
+    teamName: '전도팀',
+    icon: HeartHandshake,
+    members: [
+      { name: '류남현', role: '팀장', phone: '010-0000-0000' }
+    ]
+  },
+  {
+    teamName: '의료팀',
+    icon: Activity,
+    members: [
+      { name: '신재식', role: '팀장', phone: '010-0000-0000' }
+    ]
+  },
+  {
+    teamName: '미디어팀',
     icon: Video,
     members: [
-      { name: '정우진', role: '미디어팀장 (영상 촬영)', phone: '010-9999-0000' },
-      { name: '한소희', role: 'PPT/자막 총괄', phone: '010-2222-3333' },
-      { name: '강현우', role: '음향 엔지니어', phone: '010-4444-5555' }
+      { name: '허 민', role: '팀장', phone: '010-0000-0000' }
     ]
   },
   {
-    teamName: '안전 & 안내팀',
+    teamName: '식사팀',
+    icon: Utensils,
+    members: [
+      { name: '황상수', role: '팀장', phone: '010-0000-0000' }
+    ]
+  },
+  {
+    teamName: '키즈케어팀',
+    icon: Baby,
+    members: [
+      { name: '박제윤', role: '팀장', phone: '010-0000-0000' }
+    ]
+  },
+  {
+    teamName: '공연팀',
+    icon: Sparkles,
+    members: [
+      { name: '최지은', role: '팀장', phone: '010-0000-0000' }
+    ]
+  },
+  {
+    teamName: '발마사지',
+    icon: User,
+    members: [
+      { name: '이문석', role: '팀장', phone: '010-0000-0000' }
+    ]
+  },
+  {
+    teamName: '데코팀',
+    icon: Paintbrush,
+    members: [
+      { name: '장윤경', role: '팀장', phone: '010-0000-0000' }
+    ]
+  },
+  {
+    teamName: '이미용팀',
+    icon: Scissors,
+    members: [
+      { name: '이현신', role: '팀장', phone: '010-0000-0000' }
+    ]
+  },
+  {
+    teamName: '안내팀',
     icon: Shield,
     members: [
-      { name: '송지훈', role: '안전팀장 (차량 통제)', phone: '010-6666-7777' },
-      { name: '윤아름', role: '의료/비상 구호', phone: '010-8888-9999' },
-      { name: '임재희', role: '안내 및 주차', phone: '010-1212-3434' }
+      { name: '유상현', role: '팀장', phone: '010-0000-0000' }
+    ]
+  },
+  {
+    teamName: '레크레이션',
+    icon: Laugh,
+    members: [
+      { name: '유영삼', role: '팀장', phone: '010-0000-0000' }
     ]
   }
 ];
