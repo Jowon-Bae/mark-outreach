@@ -5,11 +5,17 @@ import { supabase } from '@/lib/supabaseClient';
 import './community.css';
 
 export default function Community() {
+  const [activeTab, setActiveTab] = useState<'board' | 'gallery'>('board');
   const [posts, setPosts] = useState<any[]>([]);
   const [showWriteModal, setShowWriteModal] = useState(false);
   const [newContent, setNewContent] = useState('');
   const [commentInputs, setCommentInputs] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(true);
+
+  // 사진첩 상태
+  const [photos, setPhotos] = useState<any[]>([]);
+  const [isPhotosLoading, setIsPhotosLoading] = useState(true);
+  const [fullscreenImage, setFullscreenImage] = useState<string | null>(null);
 
   // 데이터 불러오기
   const fetchPosts = async () => {
@@ -51,8 +57,22 @@ export default function Community() {
     setIsLoading(false);
   };
 
+  const fetchPhotos = async () => {
+    setIsPhotosLoading(true);
+    const { data, error } = await supabase
+      .from('community_gallery')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (!error && data) {
+      setPhotos(data);
+    }
+    setIsPhotosLoading(false);
+  };
+
   useEffect(() => {
     fetchPosts();
+    fetchPhotos();
   }, []);
 
   // 글쓰기
@@ -141,146 +161,202 @@ export default function Community() {
 
   return (
     <div className="community-container">
+      {/* 상단 헤더 */}
       <div className="board-header">
-        <h2>동네생활</h2>
+        <h2>소통 & 사진첩 💬</h2>
+        {activeTab === 'board' && (
+          <button 
+            className="write-btn" 
+            onClick={(e) => {
+              e.preventDefault();
+              setShowWriteModal(true);
+            }}
+          >
+            글쓰기
+          </button>
+        )}
+      </div>
+
+      {/* 상단 서브 탭 */}
+      <div className="top-tab-bar">
         <button 
-          className="write-btn" 
-          onClick={(e) => {
-            e.preventDefault();
-            setShowWriteModal(true);
-          }}
+          className={`tab-item ${activeTab === 'board' ? 'active' : ''}`}
+          onClick={() => setActiveTab('board')}
         >
-          글쓰기
+          소통 게시판
+        </button>
+        <button 
+          className={`tab-item ${activeTab === 'gallery' ? 'active' : ''}`}
+          onClick={() => setActiveTab('gallery')}
+        >
+          사진첩
         </button>
       </div>
 
-      <div className="post-list">
-        {isLoading ? (
-          <div style={{ textAlign: 'center', padding: '40px', color: '#888' }}>로딩 중...</div>
-        ) : posts.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '40px', color: '#888' }}>첫 번째 글을 작성해보세요!</div>
-        ) : (
-          posts.map(post => {
-            const lines = post.content.split('\n');
-            const title = lines[0];
-            const body = lines.slice(1).join('\n');
+      {activeTab === 'board' ? (
+        <div className="post-list">
+          {isLoading ? (
+            <div style={{ textAlign: 'center', padding: '40px', color: '#888' }}>로딩 중...</div>
+          ) : posts.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '40px', color: '#888' }}>첫 번째 글을 작성해보세요!</div>
+          ) : (
+            posts.map(post => {
+              const lines = post.content.split('\n');
+              const title = lines[0];
+              const body = lines.slice(1).join('\n');
 
-            return (
-              <div key={post.id} className="post-item-flat">
-                {/* 상단 태그 및 더보기 */}
-                <div className="post-item-header">
-                  <button className="more-options-btn">
-                    <MoreVertical size={16} color="#888" />
-                  </button>
-                </div>
-
-                {/* 본문 영역 */}
-                <div className="post-item-body" onClick={() => toggleComments(post.id)}>
-                  <h3 className="post-title">{title}</h3>
-                  {body && <p className="post-content-preview">{body}</p>}
-                </div>
-
-                {/* 메타 정보 및 반응 버튼 */}
-                <div className="post-item-footer">
-                  <div className="post-meta-text">
-                    <span>{post.author}</span>
-                    <span className="dot">·</span>
-                    <span>{formatTime(post.created_at)}</span>
-                  </div>
-                  
-                  <div className="post-interactions">
-                    <button 
-                      className={`like-action-btn ${post.isLiked ? 'liked' : ''}`}
-                      onClick={() => toggleLike(post.id, post.likes, post.isLiked)}
-                    >
-                      <ThumbsUp size={16} />
-                      <span>{post.likes > 0 && post.likes}</span>
-                    </button>
-                    <button 
-                      className="comment-action-btn"
-                      onClick={() => toggleComments(post.id)}
-                    >
-                      <MessageSquare size={16} />
-                      <span>{post.comments?.length > 0 && post.comments.length}</span>
+              return (
+                <div key={post.id} className="post-item-flat">
+                  {/* 상단 태그 및 더보기 */}
+                  <div className="post-item-header">
+                    <button className="more-options-btn">
+                      <MoreVertical size={16} color="#888" />
                     </button>
                   </div>
-                </div>
 
-                {/* 댓글 영역 (당근마켓 상세 스타일) */}
-                {post.showComments && (
-                  <div className="comments-drawer">
-                    <div className="comments-header">
-                      <span className="comments-count">댓글 {post.comments?.length || 0}</span>
-                      <div className="comments-sort">
-                        <span className="active">등록순</span>
-                        <span>최신순</span>
-                      </div>
+                  {/* 본문 영역 */}
+                  <div className="post-item-body" onClick={() => toggleComments(post.id)}>
+                    <h3 className="post-title">{title}</h3>
+                    {body && <p className="post-content-preview">{body}</p>}
+                  </div>
+
+                  {/* 메타 정보 및 반응 버튼 */}
+                  <div className="post-item-footer">
+                    <div className="post-meta-text">
+                      <span>{post.author}</span>
+                      <span className="dot">·</span>
+                      <span>{formatTime(post.created_at)}</span>
                     </div>
-
-                    <div className="comments-list">
-                      {post.comments?.map((comment: any, idx: number) => {
-                        const isPostAuthor = comment.author === post.author;
-                        return (
-                          <div key={comment.id} className="comment-item">
-                            <div className="comment-avatar">
-                              {comment.author.substring(0, 1)}
-                            </div>
-                            <div className="comment-content-box">
-                              <div className="comment-user-info">
-                                <span className="comment-user-name">{comment.author}</span>
-                                {isPostAuthor && <span className="badge-author">작성자</span>}
-                                {idx === 0 && !isPostAuthor && <span className="badge-first">첫 댓글</span>}
-                                <span className="comment-time-text">· {formatTime(comment.created_at)}</span>
-                              </div>
-                              <p className="comment-text-body">{comment.text}</p>
-                              <div className="comment-sub-actions">
-                                <button className="comment-like-btn">
-                                  <ThumbsUp size={12} /> 좋아요
-                                </button>
-                                <button className="comment-reply-btn">답글</button>
-                              </div>
-                            </div>
-                          </div>
-                        );
-                      })}
-                      {(!post.comments || post.comments.length === 0) && (
-                        <div className="empty-comments">아직 댓글이 없습니다. 첫 댓글을 남겨보세요!</div>
-                      )}
-                    </div>
-
-                    {/* 알약 모양 댓글 입력창 */}
-                    <div className="comment-input-container">
-                      <div className="comment-input-avatar">
-                        {(sessionStorage.getItem('username') || '익').substring(0, 1)}
-                      </div>
-                      <div className="comment-pill-input">
-                        <input 
-                          type="text" 
-                          placeholder="댓글을 입력해주세요." 
-                          value={commentInputs[post.id] || ''}
-                          onChange={(e) => setCommentInputs({
-                            ...commentInputs,
-                            [post.id]: e.target.value
-                          })}
-                          onKeyDown={(e) => {
-                            if (e.key === 'Enter') handleCommentSubmit(post.id);
-                          }}
-                        />
-                        <button 
-                          className="comment-send-btn"
-                          onClick={() => handleCommentSubmit(post.id)}
-                        >
-                          <Send size={16} />
-                        </button>
-                      </div>
+                    
+                    <div className="post-interactions">
+                      <button 
+                        className={`like-action-btn ${post.isLiked ? 'liked' : ''}`}
+                        onClick={() => toggleLike(post.id, post.likes, post.isLiked)}
+                      >
+                        <ThumbsUp size={16} />
+                        <span>{post.likes > 0 && post.likes}</span>
+                      </button>
+                      <button 
+                        className="comment-action-btn"
+                        onClick={() => toggleComments(post.id)}
+                      >
+                        <MessageSquare size={16} />
+                        <span>{post.comments?.length > 0 && post.comments.length}</span>
+                      </button>
                     </div>
                   </div>
-                )}
-              </div>
-            );
-          })
-        )}
-      </div>
+
+                  {/* 댓글 영역 (당근마켓 상세 스타일) */}
+                  {post.showComments && (
+                    <div className="comments-drawer">
+                      <div className="comments-header">
+                        <span className="comments-count">댓글 {post.comments?.length || 0}</span>
+                        <div className="comments-sort">
+                          <span className="active">등록순</span>
+                          <span>최신순</span>
+                        </div>
+                      </div>
+
+                      <div className="comments-list">
+                        {post.comments?.map((comment: any, idx: number) => {
+                          const isPostAuthor = comment.author === post.author;
+                          return (
+                            <div key={comment.id} className="comment-item">
+                              <div className="comment-avatar">
+                                {comment.author.substring(0, 1)}
+                              </div>
+                              <div className="comment-content-box">
+                                <div className="comment-user-info">
+                                  <span className="comment-user-name">{comment.author}</span>
+                                  {isPostAuthor && <span className="badge-author">작성자</span>}
+                                  {idx === 0 && !isPostAuthor && <span className="badge-first">첫 댓글</span>}
+                                  <span className="comment-time-text">· {formatTime(comment.created_at)}</span>
+                                </div>
+                                <p className="comment-text-body">{comment.text}</p>
+                                <div className="comment-sub-actions">
+                                  <button className="comment-like-btn">
+                                    <ThumbsUp size={12} /> 좋아요
+                                  </button>
+                                  <button className="comment-reply-btn">답글</button>
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                        {(!post.comments || post.comments.length === 0) && (
+                          <div className="empty-comments">아직 댓글이 없습니다. 첫 댓글을 남겨보세요!</div>
+                        )}
+                      </div>
+
+                      {/* 알약 모양 댓글 입력창 */}
+                      <div className="comment-input-container">
+                        <div className="comment-input-avatar">
+                          {(sessionStorage.getItem('username') || '익').substring(0, 1)}
+                        </div>
+                        <div className="comment-pill-input">
+                          <input 
+                            type="text" 
+                            placeholder="댓글을 입력해주세요." 
+                            value={commentInputs[post.id] || ''}
+                            onChange={(e) => setCommentInputs({
+                              ...commentInputs,
+                              [post.id]: e.target.value
+                            })}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') handleCommentSubmit(post.id);
+                            }}
+                          />
+                          <button 
+                            className="comment-send-btn"
+                            onClick={() => handleCommentSubmit(post.id)}
+                          >
+                            <Send size={16} />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })
+          )}
+        </div>
+      ) : (
+        <div className="gallery-tab-content">
+          <div className="gallery-grid">
+            {isPhotosLoading ? (
+              <div className="loading-gallery">사진을 불러오는 중입니다...</div>
+            ) : photos.length === 0 ? (
+              <div className="empty-gallery">아직 올라온 사진이 없습니다.</div>
+            ) : (
+              photos.map(photo => (
+                <div 
+                  key={photo.id} 
+                  className="gallery-item"
+                  onClick={() => setFullscreenImage(photo.image_url)}
+                >
+                  <img 
+                    src={photo.image_url} 
+                    alt="Gallery content" 
+                    className="gallery-img"
+                    loading="lazy"
+                  />
+                </div>
+              ))
+            )}
+          </div>
+
+          {fullscreenImage && (
+            <div className="fullscreen-overlay" onClick={() => setFullscreenImage(null)}>
+              <button className="close-fullscreen" onClick={(e) => {
+                e.stopPropagation();
+                setFullscreenImage(null);
+              }}>✕</button>
+              <img src={fullscreenImage} alt="Fullscreen" className="fullscreen-img" />
+            </div>
+          )}
+        </div>
+      )}
 
       {showWriteModal && (
         <div className="write-modal-overlay">

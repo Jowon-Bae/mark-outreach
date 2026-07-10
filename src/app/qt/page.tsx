@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabaseClient';
-import { BookOpen, CheckCircle, ArrowLeft, Users } from 'lucide-react';
+import { BookOpen, CheckCircle, ArrowLeft, Users, Heart, Send, MessageSquareHeart } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import './qt.css';
 
@@ -44,24 +44,21 @@ const DEFAULT_QT: QTContent = {
 
 export default function QuietTime() {
   const router = useRouter();
+  const [activeTab, setActiveTab] = useState<'qt' | 'prayer'>('qt');
   const [dateStr, setDateStr] = useState('');
   const [qt, setQt] = useState<QTContent>(DEFAULT_QT);
   const [isCompleted, setIsCompleted] = useState(false);
   const [completedUsers, setCompletedUsers] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    // 오늘 날짜 계산 (KST 기준)
-    const today = new Date();
-    const offset = today.getTimezoneOffset() * 60000;
-    const kstDate = new Date(today.getTime() - offset);
-    const kstDateString = kstDate.toISOString().split('T')[0];
-    
-    setDateStr(kstDateString);
-    setQt(QT_DATA[kstDateString] || DEFAULT_QT);
-
-    fetchQTCompletions(kstDateString);
-  }, []);
+  // 기도제목 상태
+  const [prayers, setPrayers] = useState<any[]>([]);
+  const [content, setContent] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isPrayersLoading, setIsPrayersLoading] = useState(true);
+  const [randomPrayer, setRandomPrayer] = useState<any>(null);
+  const [showPrayerPopup, setShowPrayerPopup] = useState(false);
+  const [isPrayerFadingOut, setIsPrayerFadingOut] = useState(false);
 
   const fetchQTCompletions = async (dateKey: string) => {
     setIsLoading(true);
@@ -84,6 +81,33 @@ export default function QuietTime() {
     }
     setIsLoading(false);
   };
+
+  const fetchPrayers = async () => {
+    setIsPrayersLoading(true);
+    const { data, error } = await supabase
+      .from('community_prayers')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (!error && data) {
+      setPrayers(data);
+    }
+    setIsPrayersLoading(false);
+  };
+
+  useEffect(() => {
+    // 오늘 날짜 계산 (KST 기준)
+    const today = new Date();
+    const offset = today.getTimezoneOffset() * 60000;
+    const kstDate = new Date(today.getTime() - offset);
+    const kstDateString = kstDate.toISOString().split('T')[0];
+    
+    setDateStr(kstDateString);
+    setQt(QT_DATA[kstDateString] || DEFAULT_QT);
+
+    fetchQTCompletions(kstDateString);
+    fetchPrayers();
+  }, []);
 
   const handleComplete = async () => {
     const currentUsername = sessionStorage.getItem('username');
@@ -112,6 +136,61 @@ export default function QuietTime() {
     fetchQTCompletions(dateStr);
   };
 
+  const handlePrayerSubmit = async () => {
+    if (!content.trim()) {
+      alert('기도제목을 입력해 주세요.');
+      return;
+    }
+
+    const currentUsername = sessionStorage.getItem('username') || '익명';
+    setIsSubmitting(true);
+
+    const { error } = await supabase
+      .from('community_prayers')
+      .insert([{ author: currentUsername, content: content.trim() }]);
+
+    setIsSubmitting(false);
+
+    if (error) {
+      alert('기도제목 등록에 실패했습니다.');
+      return;
+    }
+
+    setContent('');
+    fetchPrayers();
+  };
+
+  const drawRandomPrayer = () => {
+    if (prayers.length === 0) {
+      alert('등록된 기도제목이 없습니다. 먼저 첫 기도제목을 나누어보세요!');
+      return;
+    }
+    const randomIndex = Math.floor(Math.random() * prayers.length);
+    setRandomPrayer(prayers[randomIndex]);
+    setIsPrayerFadingOut(false);
+    setShowPrayerPopup(true);
+  };
+
+  const closePrayerPopup = () => {
+    setIsPrayerFadingOut(true);
+    setTimeout(() => {
+      setShowPrayerPopup(false);
+      setRandomPrayer(null);
+    }, 1200);
+  };
+
+  // 시간 포맷팅 함수
+  const formatTime = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diff = Math.floor((now.getTime() - date.getTime()) / 1000 / 60); // 분 단위
+    
+    if (diff < 1) return '방금 전';
+    if (diff < 60) return `${diff}분 전`;
+    if (diff < 24 * 60) return `${Math.floor(diff / 60)}시간 전`;
+    return `${date.getMonth() + 1}월 ${date.getDate()}일`;
+  };
+
   return (
     <div className="qt-container">
       {/* 상단 헤더 */}
@@ -119,68 +198,166 @@ export default function QuietTime() {
         <button className="back-btn" onClick={() => router.push('/')}>
           <ArrowLeft size={20} />
         </button>
-        <h2>오늘의 QT & 묵상 📖</h2>
+        <h2>묵상 & 기도 🙏</h2>
         <div style={{ width: 20 }}></div>
       </div>
 
-      {/* 날짜 표시 */}
-      <div className="qt-date-card">
-        <span className="qt-label">TODAY'S BREAD</span>
-        <span className="qt-date">{dateStr}</span>
+      {/* 상단 서브 탭 */}
+      <div className="top-tab-bar">
+        <button 
+          className={`tab-item ${activeTab === 'qt' ? 'active' : ''}`}
+          onClick={() => setActiveTab('qt')}
+        >
+          오늘의 QT
+        </button>
+        <button 
+          className={`tab-item ${activeTab === 'prayer' ? 'active' : ''}`}
+          onClick={() => setActiveTab('prayer')}
+        >
+          기도 릴레이
+        </button>
       </div>
 
-      {/* 말씀 카드 */}
-      <div className="qt-card">
-        <span className="qt-passage-badge">{qt.passage}</span>
-        <h3 className="qt-title">{qt.title}</h3>
-        <div className="qt-verses">
-          <p>{qt.verses}</p>
-        </div>
-      </div>
-
-      {/* 묵상 가이드 */}
-      <div className="meditation-card">
-        <h4>오늘의 묵상 나눔 💡</h4>
-        <p className="meditation-text">{qt.meditation}</p>
-      </div>
-
-      {/* 완료 상태 버튼 */}
-      <div className="action-section">
-        {isCompleted ? (
-          <div className="completed-badge">
-            <CheckCircle size={20} color="#1b64da" />
-            <span>오늘의 말씀 묵상을 완료했습니다! 은혜로운 하루 보내세요.</span>
+      {activeTab === 'qt' ? (
+        <div className="qt-tab-content">
+          {/* 날짜 표시 */}
+          <div className="qt-date-card">
+            <span className="qt-label">TODAY'S BREAD</span>
+            <span className="qt-date">{dateStr}</span>
           </div>
-        ) : (
-          <button className="complete-btn" onClick={handleComplete} disabled={isLoading}>
-            <CheckCircle size={20} />
-            <span>오늘 말씀 묵상 완료하기</span>
-          </button>
-        )}
-      </div>
 
-      {/* 실시간 묵상 완료자 목록 */}
-      <div className="completions-card">
-        <div className="completions-header">
-          <Users size={16} />
-          <h4>오늘 묵상을 완료한 지체들 ({completedUsers.length}명)</h4>
+          {/* 말씀 카드 */}
+          <div className="qt-card">
+            <span className="qt-passage-badge">{qt.passage}</span>
+            <h3 className="qt-title">{qt.title}</h3>
+            <div className="qt-verses">
+              <p>{qt.verses}</p>
+            </div>
+          </div>
+
+          {/* 묵상 가이드 */}
+          <div className="meditation-card">
+            <h4>오늘의 묵상 나눔 💡</h4>
+            <p className="meditation-text">{qt.meditation}</p>
+          </div>
+
+          {/* 완료 상태 버튼 */}
+          <div className="action-section">
+            {isCompleted ? (
+              <div className="completed-badge">
+                <CheckCircle size={20} color="#1b64da" />
+                <span>오늘의 말씀 묵상을 완료했습니다! 은혜로운 하루 보내세요.</span>
+              </div>
+            ) : (
+              <button className="complete-btn" onClick={handleComplete} disabled={isLoading}>
+                <CheckCircle size={20} />
+                <span>오늘 말씀 묵상 완료하기</span>
+              </button>
+            )}
+          </div>
+
+          {/* 실시간 묵상 완료자 목록 */}
+          <div className="completions-card">
+            <div className="completions-header">
+              <Users size={16} />
+              <h4>오늘 묵상을 완료한 지체들 ({completedUsers.length}명)</h4>
+            </div>
+            <div className="completions-list">
+              {isLoading ? (
+                <div className="loading-text">로딩 중...</div>
+              ) : completedUsers.length === 0 ? (
+                <div className="no-completions">가장 먼저 오늘의 말씀을 묵상해 보세요!</div>
+              ) : (
+                <div className="completions-tags">
+                  {completedUsers.map((name, index) => (
+                    <span key={index} className="completion-tag">
+                      👤 {name}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
         </div>
-        <div className="completions-list">
-          {isLoading ? (
-            <div className="loading-text">로딩 중...</div>
-          ) : completedUsers.length === 0 ? (
-            <div className="no-completions">가장 먼저 오늘의 말씀을 묵상해 보세요!</div>
-          ) : (
-            <div className="completions-tags">
-              {completedUsers.map((name, index) => (
-                <span key={index} className="completion-tag">
-                  👤 {name}
-                </span>
-              ))}
+      ) : (
+        <div className="prayer-tab-content">
+          {/* 랜덤 기도 뽑기 배너 */}
+          <div className="draw-prayer-banner" onClick={drawRandomPrayer}>
+            <span className="dice-icon">🎲</span>
+            <div className="banner-text">
+              <h4>기도제목 랜덤 뽑기</h4>
+              <p>지체들의 기도제목을 1개 뽑아 함께 기도해요!</p>
+            </div>
+          </div>
+
+          {/* 기도 올리기 카드 */}
+          <div className="write-prayer-card">
+            <div className="write-header">
+              <MessageSquareHeart size={18} color="var(--primary)" />
+              <h3>나의 기도제목 나누기</h3>
+            </div>
+            <textarea
+              placeholder="이곳에 사역 기간 동안 나눌 기도제목을 입력해 주세요. (올리신 기도제목은 지체들이 랜덤으로 뽑아 함께 기도합니다!)"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+            />
+            <button onClick={handlePrayerSubmit} disabled={isSubmitting} className="submit-prayer-btn">
+              <Send size={16} />
+              <span>기도제목 올리기</span>
+            </button>
+          </div>
+
+          {/* 기도제목 목록 피드 */}
+          <div className="prayer-feed-section">
+            <h3>지체들의 기도제목</h3>
+            <div className="prayer-list">
+              {isPrayersLoading ? (
+                <div className="loading-text">로딩 중...</div>
+              ) : prayers.length === 0 ? (
+                <div className="empty-feed">등록된 기도제목이 없습니다. 첫 기도제목을 나누어보세요!</div>
+              ) : (
+                prayers.map((prayer) => (
+                  <div key={prayer.id} className="prayer-feed-card">
+                    <div className="prayer-card-header">
+                      <div className="avatar">
+                        {prayer.author.substring(0, 1)}
+                      </div>
+                      <div className="meta">
+                        <span className="author">{prayer.author}</span>
+                        <span className="time">{formatTime(prayer.created_at)}</span>
+                      </div>
+                    </div>
+                    <p className="content">{prayer.content}</p>
+                    <div className="prayer-card-footer">
+                      <span className="amen-badge">
+                        <Heart size={12} fill="#ff4b4b" color="#ff4b4b" />
+                        아멘으로 함께합니다
+                      </span>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+
+          {/* 랜덤 기도 카드 팝업 */}
+          {showPrayerPopup && randomPrayer && (
+            <div 
+              className={`welcome-popup-overlay ${isPrayerFadingOut ? 'fade-out' : 'fade-in'}`}
+              onClick={closePrayerPopup}
+            >
+              <div className="prayer-popup-card" onClick={(e) => e.stopPropagation()}>
+                <div className="prayer-card-decor">🙏 PRAYER RELAY</div>
+                <div className="prayer-card-author">👤 {randomPrayer.author} 지체의 기도제목</div>
+                <p className="prayer-card-content">“ {randomPrayer.content} ”</p>
+                <div className="prayer-card-footer-btns">
+                  <button className="prayer-card-btn close" onClick={closePrayerPopup}>아멘 (기도했습니다)</button>
+                </div>
+              </div>
             </div>
           )}
         </div>
-      </div>
+      )}
     </div>
   );
 }

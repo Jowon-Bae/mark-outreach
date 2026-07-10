@@ -142,3 +142,234 @@
   font-size: 14px;
   padding: 40px 0;
 }
+
+/* 상단 탭 스타일 */
+.top-tab-bar {
+  display: flex;
+  background-color: #f1f3f5;
+  border-radius: 12px;
+  padding: 4px;
+  margin: 12px 0 20px 0;
+}
+
+.tab-item {
+  flex: 1;
+  border: none;
+  background: none;
+  font-size: 14px;
+  font-weight: 700;
+  color: #8b95a1;
+  padding: 10px 0;
+  text-align: center;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tab-item.active {
+  background-color: white;
+  color: #1e1e1e;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* 안전 정보 탭 통합 스타일 */
+.safety-section-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.emergency-alert-card {
+  background-color: #fff0f0;
+  border: 1px solid #ffe3e3;
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.alert-icon-wrapper {
+  color: #d32f2f;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.alert-text-wrapper h4 {
+  margin: 0 0 4px 0;
+  font-size: 14px;
+  font-weight: 800;
+  color: #d32f2f;
+}
+
+.alert-text-wrapper p {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #4e5968;
+}
+
+.safety-sub-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: #1e1e1e;
+  margin: 0 0 14px 0;
+}
+
+.sos-buttons-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sos-card {
+  background-color: white;
+  border-radius: 16px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  border: 1px solid #e5e8eb;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.sos-card:active {
+  transform: scale(0.98);
+}
+
+.sos-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #8b95a1;
+}
+
+.sos-number {
+  font-size: 20px;
+  font-weight: 800;
+  color: #1e1e1e;
+  letter-spacing: 0.5px;
+}
+
+.sos-icon-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  align-self: flex-start;
+  margin-top: 8px;
+  padding: 6px 12px;
+  border-radius: 20px;
+}
+
+.sos-card.hq {
+  border-left: 5px solid var(--primary);
+}
+.sos-card.hq .sos-icon-btn {
+  background-color: #fcf8f2;
+  color: var(--primary-dark);
+}
+
+.sos-card.medical {
+  border-left: 5px solid #2d7df6;
+}
+.sos-card.medical .sos-icon-btn {
+  background-color: #eef5ff;
+  color: #2d7df6;
+}
+
+.sos-card.public-119 {
+  border-left: 5px solid #d32f2f;
+}
+.sos-card.public-119 .sos-icon-btn {
+  background-color: #fff0f0;
+  color: #d32f2f;
+}
+
+.locations-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.location-card {
+  background-color: white;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  border: 1px solid #e5e8eb;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.location-info {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.location-icon {
+  background-color: #f1f3f5;
+  color: #4e5968;
+  padding: 8px;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.location-meta h4 {
+  margin: 0 0 2px 0;
+  font-size: 14px;
+  font-weight: 800;
+  color: #1e1e1e;
+}
+
+.location-meta p {
+  margin: 0;
+  font-size: 12px;
+  color: #8b95a1;
+}
+
+.map-links {
+  display: flex;
+  gap: 10px;
+}
+
+.map-link {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.map-link:active {
+  opacity: 0.8;
+}
+
+.map-link.naver {
+  background-color: #03c75a;
+  color: white;
+}
+
+.map-link.kakao {
+  background-color: #fee500;
+  color: #191919;
+}
+
