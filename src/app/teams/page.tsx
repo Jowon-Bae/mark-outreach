@@ -33,9 +33,11 @@ const INITIAL_TEAMS: Team[] = [
     members: [
       { name: '배주원', role: '담당 목사', phone: '010-9017-1848' },
       { name: '두진문', role: '담당 장로', phone: '010-4020-1389' },
-      { name: '김민우', role: '총무', phone: '010-4020-1389' },
+      { name: '김민우', role: '총무', phone: '010-7557-1090' },
       { name: '신민재', role: '부총무', phone: '010-5292-5620' },
-      { name: '선우진', role: '회계', phone: '010-8781-8806' }
+      { name: '선우진', role: '회계', phone: '010-8781-8806' },
+      { name: '성민선', role: '팀원', phone: '010-7122-1090' },
+      { name: '박소희', role: '팀원', phone: '010-3936-3656' }
     ]
   },
   {
@@ -49,14 +51,34 @@ const INITIAL_TEAMS: Team[] = [
     teamName: '전도팀',
     icon: HeartHandshake,
     members: [
-      { name: '류남현', role: '팀장', phone: '010-0000-0000' }
+      { name: '류남현', role: '팀장', phone: '010-9011-3270' },
+      { name: '장영철', role: '팀원', phone: '010-5672-6271' },
+      { name: '박형규', role: '팀원', phone: '010-8994-4430' },
+      { name: '김순정', role: '팀원', phone: '010-3546-4430' },
+      { name: '김상형', role: '팀원', phone: '010-7410-9185' },
+      { name: '박성연', role: '팀원', phone: '010-7192-4213' },
+      { name: '육양수', role: '팀원', phone: '010-9722-8972' },
+      { name: '최애진', role: '팀원', phone: '010-4171-3391' },
+      { name: '김신곤', role: '팀원', phone: '010-9058-7815' },
+      { name: '고은정', role: '팀원', phone: '010-2711-7724' },
+      { name: '김희준', role: '팀원', phone: '010-9208-7596' },
+      { name: '김지은', role: '팀원', phone: '010-7101-4158' },
+      { name: '임은주', role: '팀원', phone: '010-5048-7580' },
+      { name: '이광숙', role: '팀원', phone: '010-4425-3270' },
+      { name: '이용섭', role: '팀원', phone: '010-5298-3127' },
+      { name: '김경록', role: '팀원', phone: '010-9521-0066' }
     ]
   },
   {
     teamName: '의료팀',
     icon: Activity,
     members: [
-      { name: '신재식', role: '팀장', phone: '010-0000-0000' }
+      { name: '신재식', role: '팀장', phone: '010-7363-2610' },
+      { name: '박진은', role: '팀원', phone: '010-9429-9340' },
+      { name: '채양석', role: '팀원', phone: '010-3392-3297' },
+      { name: '조은혜', role: '팀원', phone: '010-5017-6620' },
+      { name: '신승주', role: '팀원', phone: '010-9956-9786' },
+      { name: '한은정', role: '팀원', phone: '010-9870-3147' }
     ]
   },
   {
@@ -75,7 +97,26 @@ const INITIAL_TEAMS: Team[] = [
     teamName: '식사팀',
     icon: Utensils,
     members: [
-      { name: '황상수', role: '팀장', phone: '010-0000-0000' }
+      { name: '황상수', role: '팀장', phone: '010-3765-8467' },
+      { name: '이지은', role: '팀원', phone: '010-7320-2081' },
+      { name: '김원영', role: '팀원', phone: '010-3858-7160' },
+      { name: '김산수', role: '팀원', phone: '010-3298-9089' },
+      { name: '박경현', role: '팀원', phone: '010-5394-4221' },
+      { name: '강수은', role: '팀원', phone: '010-5187-7948' },
+      { name: '두진문', role: '팀원', phone: '010-4020-1389' },
+      { name: '이석찬', role: '팀원', phone: '010-2539-5040' },
+      { name: '이희승', role: '팀원', phone: '010-4263-5040' },
+      { name: '강원균', role: '팀원', phone: '010-8500-7085' },
+      { name: '장영송', role: '팀원', phone: '010-2303-1990' },
+      { name: '김진한', role: '팀원', phone: '010-3138-3105' },
+      { name: '최연진', role: '팀원', phone: '010-8681-0753' },
+      { name: '심지호', role: '팀원', phone: '010-2121-8182' },
+      { name: '이민후', role: '팀원', phone: '010-9277-5502' },
+      { name: '전승우', role: '팀원', phone: '010-5413-7799' },
+      { name: '이현정', role: '팀원', phone: '010-6234-9512' },
+      { name: '김연주', role: '팀원', phone: '010-8513-9860' },
+      { name: '박순관', role: '팀원', phone: '010-2794-2017' },
+      { name: '하진수', role: '팀원', phone: '010-8919-4875' }
     ]
   },
   {
@@ -151,7 +192,16 @@ const INITIAL_TEAMS: Team[] = [
     teamName: '이미용팀',
     icon: Scissors,
     members: [
-      { name: '이현신', role: '팀장', phone: '010-0000-0000' }
+      { name: '이현신', role: '팀장', phone: '010-9265-5747' },
+      { name: '송은지', role: '팀원', phone: '010-3808-9718' },
+      { name: '심연옥', role: '팀원', phone: '010-7131-8833' },
+      { name: '유숙희', role: '팀원', phone: '010-7123-6407' },
+      { name: '정수현', role: '팀원', phone: '010-3758-1452' },
+      { name: '이혜인', role: '팀원', phone: '010-4948-3870' },
+      { name: '이지영', role: '팀원', phone: '010-5260-2624' },
+      { name: '구량주', role: '팀원', phone: '010-3720-7336' },
+      { name: '최혜남', role: '팀원', phone: '010-3035-6570' },
+      { name: '송영선', role: '팀원', phone: '010-3765-8487' }
     ]
   },
   {
