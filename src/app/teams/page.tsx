@@ -261,6 +261,7 @@ export default function Teams() {
   const [showSafetyRules, setShowSafetyRules] = useState(false);
   const [expandedTeams, setExpandedTeams] = useState<Record<string, boolean>>({});
   const [avatarMap, setAvatarMap] = useState<Record<string, string>>({});
+  const [fullscreenImage, setFullscreenImage] = useState<string | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -382,7 +383,8 @@ export default function Teams() {
                                 <img 
                                   src={avatarMap[member.name]} 
                                   alt={member.name} 
-                                  style={{ width: '32px', height: '32px', borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }} 
+                                  onClick={() => setFullscreenImage(avatarMap[member.name])}
+                                  style={{ width: '32px', height: '32px', borderRadius: '50%', objectFit: 'cover', flexShrink: 0, cursor: 'pointer' }} 
                                 />
                               ) : (
                                 <div style={{ 
@@ -585,6 +587,56 @@ export default function Teams() {
               </div>
             </div>
           )}
+        </div>
+      )}
+      {/* 아바타 이미지 풀스크린 확대 모달 */}
+      {fullscreenImage && (
+        <div 
+          className="fullscreen-overlay" 
+          onClick={() => setFullscreenImage(null)}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.9)',
+            backdropFilter: 'blur(5px)',
+            zIndex: 2000,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '24px'
+          }}
+        >
+          <button 
+            onClick={() => setFullscreenImage(null)}
+            style={{
+              position: 'absolute',
+              top: '20px',
+              right: '20px',
+              background: 'none',
+              border: 'none',
+              color: 'white',
+              fontSize: '24px',
+              cursor: 'pointer',
+              padding: '8px',
+              zIndex: 2100
+            }}
+          >
+            ✕
+          </button>
+          <img 
+            src={fullscreenImage} 
+            alt="Zoomed Avatar" 
+            style={{
+              maxWidth: '90%',
+              maxHeight: '80%',
+              borderRadius: '16px',
+              objectFit: 'contain',
+              boxShadow: '0 10px 30px rgba(0,0,0,0.5)'
+            }} 
+          />
         </div>
       )}
     </div>
