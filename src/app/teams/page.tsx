@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Phone, Search, ArrowLeft, MapPin, ExternalLink, ShieldAlert, Crown, Music, Video, Shield, User, Utensils, Baby, Paintbrush, Scissors, Laugh, HeartHandshake, Activity, Sparkles, X, ChevronDown, ChevronUp } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import './teams.css';
@@ -260,6 +260,25 @@ export default function Teams() {
   const [searchQuery, setSearchQuery] = useState('');
   const [showSafetyRules, setShowSafetyRules] = useState(false);
   const [expandedTeams, setExpandedTeams] = useState<Record<string, boolean>>({});
+  const [avatarMap, setAvatarMap] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const { supabase: supabaseClient } = await import('@/lib/supabaseClient');
+        const { data } = await supabaseClient.from('user_profiles').select('*');
+        if (data) {
+          const mapping: Record<string, string> = {};
+          data.forEach((p: any) => {
+            mapping[p.username] = p.avatar_url;
+          });
+          setAvatarMap(mapping);
+        }
+      } catch (e) {
+        console.error('Failed to load user avatars:', e);
+      }
+    })();
+  }, []);
 
   const toggleTeam = (teamName: string) => {
     setExpandedTeams(prev => ({
@@ -358,9 +377,31 @@ export default function Teams() {
                       <div className="team-members-list">
                         {team.members.map((member, mIdx) => (
                           <div key={mIdx} className="member-row">
-                            <div className="member-info">
-                              <span className="member-name">{member.name}</span>
-                              <span className="member-role">{member.role}</span>
+                            <div className="member-info" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                              {avatarMap[member.name] ? (
+                                <img 
+                                  src={avatarMap[member.name]} 
+                                  alt={member.name} 
+                                  style={{ width: '32px', height: '32px', borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }} 
+                                />
+                              ) : (
+                                <div style={{ 
+                                  width: '32px', 
+                                  height: '32px', 
+                                  borderRadius: '50%', 
+                                  backgroundColor: '#f1f3f5', 
+                                  display: 'flex', 
+                                  alignItems: 'center', 
+                                  justifyContent: 'center', 
+                                  flexShrink: 0 
+                                }}>
+                                  <User size={15} color="#8b95a1" />
+                                </div>
+                              )}
+                              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                <span className="member-name">{member.name}</span>
+                                <span className="member-role">{member.role}</span>
+                              </div>
                             </div>
                             {/* 전화 걸기 버튼 */}
                             <a href={`tel:${member.phone}`} className="phone-call-btn">

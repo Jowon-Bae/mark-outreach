@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { MessageSquare, ThumbsUp, MoreVertical, Send } from 'lucide-react';
+import { MessageSquare, ThumbsUp, MoreVertical, Send, User } from 'lucide-react';
 import { supabase } from '@/lib/supabaseClient';
 import './community.css';
 
@@ -11,11 +11,28 @@ export default function Community() {
   const [newContent, setNewContent] = useState('');
   const [commentInputs, setCommentInputs] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(true);
+  const [avatarMap, setAvatarMap] = useState<Record<string, string>>({});
 
   // 사진첩 상태
   const [photos, setPhotos] = useState<any[]>([]);
   const [isPhotosLoading, setIsPhotosLoading] = useState(true);
   const [fullscreenImage, setFullscreenImage] = useState<string | null>(null);
+
+  // 아바타 목록 로드
+  const fetchAvatars = async () => {
+    try {
+      const { data, error } = await supabase.from('user_profiles').select('*');
+      if (!error && data) {
+        const mapping: Record<string, string> = {};
+        data.forEach((p: any) => {
+          mapping[p.username] = p.avatar_url;
+        });
+        setAvatarMap(mapping);
+      }
+    } catch (e) {
+      console.error('Failed to fetch avatars:', e);
+    }
+  };
 
   // 데이터 불러오기
   const fetchPosts = async () => {
@@ -73,6 +90,7 @@ export default function Community() {
   useEffect(() => {
     fetchPosts();
     fetchPhotos();
+    fetchAvatars();
   }, []);
 
   // 글쓰기
@@ -208,7 +226,32 @@ export default function Community() {
               return (
                 <div key={post.id} className="post-item-flat">
                   {/* 상단 태그 및 더보기 */}
-                  <div className="post-item-header">
+                  <div className="post-item-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+                    <div className="post-author-profile" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      {avatarMap[post.author] ? (
+                        <img 
+                          src={avatarMap[post.author]} 
+                          alt={post.author} 
+                          style={{ width: '36px', height: '36px', borderRadius: '50%', objectFit: 'cover' }} 
+                        />
+                      ) : (
+                        <div style={{ 
+                          width: '36px', 
+                          height: '36px', 
+                          borderRadius: '50%', 
+                          backgroundColor: '#f1f3f5', 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          justifyContent: 'center' 
+                        }}>
+                          <User size={16} color="#8b95a1" />
+                        </div>
+                      )}
+                      <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <span style={{ fontSize: '14px', fontWeight: '700', color: '#1e1e1e' }}>{post.author}</span>
+                        <span style={{ fontSize: '11px', color: '#8b95a1' }}>{formatTime(post.created_at)}</span>
+                      </div>
+                    </div>
                     <button className="more-options-btn">
                       <MoreVertical size={16} color="#888" />
                     </button>
@@ -223,9 +266,7 @@ export default function Community() {
                   {/* 메타 정보 및 반응 버튼 */}
                   <div className="post-item-footer">
                     <div className="post-meta-text">
-                      <span>{post.author}</span>
-                      <span className="dot">·</span>
-                      <span>{formatTime(post.created_at)}</span>
+                      {/* 헤더로 이동하여 풋터는 깔끔히 비움 */}
                     </div>
                     
                     <div className="post-interactions">
@@ -262,8 +303,16 @@ export default function Community() {
                           const isPostAuthor = comment.author === post.author;
                           return (
                             <div key={comment.id} className="comment-item">
-                              <div className="comment-avatar">
-                                {comment.author.substring(0, 1)}
+                              <div className="comment-avatar" style={{ overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                {avatarMap[comment.author] ? (
+                                  <img 
+                                    src={avatarMap[comment.author]} 
+                                    alt={comment.author} 
+                                    style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                                  />
+                                ) : (
+                                  comment.author.substring(0, 1)
+                                )}
                               </div>
                               <div className="comment-content-box">
                                 <div className="comment-user-info">

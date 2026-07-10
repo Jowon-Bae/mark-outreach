@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Settings, LogOut, Bell, Info, Shield, User, X } from 'lucide-react';
+import { Settings, LogOut, Bell, Info, Shield, User, X, Camera } from 'lucide-react';
 import './settings.css';
 
 export default function SettingsPage() {
@@ -13,10 +13,13 @@ export default function SettingsPage() {
   const [showGuideModal, setShowGuideModal] = useState(false);
   const [guideTab, setGuideTab] = useState<'ios' | 'android'>('ios');
   const [isPushEnabled, setIsPushEnabled] = useState(false);
+  const [avatarUrl, setAvatarUrl] = useState('');
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      setUsername(localStorage.getItem('username') || '');
+      const storedName = localStorage.getItem('username') || '';
+      setUsername(storedName);
       setIsAdmin(sessionStorage.getItem('isAdmin') === 'true');
       if ('Notification' in window) {
         setPushPermission(Notification.permission);
@@ -29,8 +32,72 @@ export default function SettingsPage() {
           setIsPushEnabled(!!subscription);
         }).catch(err => console.error('Error checking SW subscription status:', err));
       }
+
+      // 프로필 이미지 조회
+      if (storedName) {
+        (async () => {
+          try {
+            const { supabase: supabaseClient } = await import('@/lib/supabaseClient');
+            const { data } = await supabaseClient
+              .from('user_profiles')
+              .select('*')
+              .eq('username', storedName)
+              .maybeSingle();
+            
+            if (data && data.avatar_url) {
+              setAvatarUrl(data.avatar_url);
+              localStorage.setItem('avatar_url', data.avatar_url);
+            }
+          } catch (e) {
+            console.error('Failed to load profile image:', e);
+          }
+        })();
+      }
     }
   }, []);
+
+  // 아바타 이미지 업로드 처리
+  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    try {
+      if (!e.target.files || e.target.files.length === 0) return;
+      setUploading(true);
+      const file = e.target.files[0];
+      const fileExt = file.name.split('.').pop();
+      const filePath = `avatars/${username}_${Date.now()}.${fileExt}`;
+
+      const { supabase: supabaseClient } = await import('@/lib/supabaseClient');
+
+      // 1. Storage 업로드
+      const { error: uploadError } = await supabaseClient.storage
+        .from('gallery')
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      // 2. Public URL 획득
+      const { data: publicUrlData } = supabaseClient.storage
+        .from('gallery')
+        .getPublicUrl(filePath);
+
+      const publicUrl = publicUrlData.publicUrl;
+
+      // 3. user_profiles 테이블에 upsert 기록
+      const { error: dbError } = await supabaseClient
+        .from('user_profiles')
+        .upsert({ username, avatar_url: publicUrl }, { onConflict: 'username' });
+
+      if (dbError) throw dbError;
+
+      setAvatarUrl(publicUrl);
+      localStorage.setItem('avatar_url', publicUrl);
+      alert('프로필 사진이 정상 등록되었습니다! 📸');
+    } catch (err: any) {
+      console.error(err);
+      alert('사진 업로드 실패: ' + err.message);
+    } finally {
+      setUploading(false);
+    }
+  };
 
   // 로그아웃 처리
   const handleLogout = () => {
@@ -141,9 +208,40 @@ export default function SettingsPage() {
       <div className="settings-content">
         {/* 프로필 카드 */}
         <div className="profile-card">
-          <div className="profile-avatar">
-            <User size={32} color="#1b64da" />
+          <div 
+            className="profile-avatar clickable" 
+            onClick={() => !uploading && document.getElementById('avatar-upload')?.click()}
+            title="프로필 사진 등록/변경"
+            style={{ position: 'relative', cursor: 'pointer' }}
+          >
+            {avatarUrl ? (
+              <img src={avatarUrl} alt="Avatar" className="profile-avatar-img" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
+            ) : (
+              <User size={32} color="#1b64da" />
+            )}
+            <div className="avatar-edit-overlay" style={{
+              position: 'absolute',
+              bottom: 0,
+              right: 0,
+              backgroundColor: '#1b64da',
+              borderRadius: '50%',
+              width: '20px',
+              height: '20px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              border: '2px solid white'
+            }}>
+              <Camera size={11} color="white" />
+            </div>
           </div>
+          <input 
+            type="file" 
+            id="avatar-upload" 
+            accept="image/*" 
+            style={{ display: 'none' }} 
+            onChange={handleAvatarUpload} 
+          />
           <div className="profile-info">
             <h3 className="profile-name">{username} 님</h3>
             <span className={`profile-role ${isAdmin ? 'admin' : 'member'}`}>
