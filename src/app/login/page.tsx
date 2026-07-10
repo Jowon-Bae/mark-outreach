@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { X } from 'lucide-react';
 import './login.css';
 
 const ALLOWED_NAMES = [
@@ -21,26 +22,93 @@ const ALLOWED_NAMES = [
 
 export default function LoginPage() {
   const [username, setUsername] = useState('');
+  const [showRequestModal, setShowRequestModal] = useState(false);
+  const [requestPhone, setRequestPhone] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     const trimmed = username.trim();
     if (!trimmed) {
       alert('이름을 입력해주세요!');
       return;
     }
 
-    if (!ALLOWED_NAMES.includes(trimmed)) {
-      alert('아웃리치 등록 명단에 없는 이름입니다. 등록된 이름으로 다시 입력해 주세요! (문의: 총무단)');
+    // 1. 하드코딩된 명단 먼저 체크 (화이트리스트 통과)
+    if (ALLOWED_NAMES.includes(trimmed)) {
+      loginSuccess(trimmed);
       return;
     }
-    
-    // 로컬 스토리지에 이름 저장 (로그인 유지)
-    localStorage.setItem('username', trimmed);
-    sessionStorage.setItem('username', trimmed); // 기존 세션스토리지 코드와 호환
-    
-    // 홈 화면으로 이동
+
+    // 2. 동적으로 관리자가 승인한 명단 체크
+    try {
+      const { supabase } = await import('@/lib/supabaseClient');
+      const { data, error } = await supabase
+        .from('login_requests')
+        .select('*')
+        .eq('name', trimmed)
+        .eq('status', 'approved');
+
+      if (!error && data && data.length > 0) {
+        loginSuccess(trimmed);
+        return;
+      }
+    } catch (e) {
+      console.error('Failed to query login request status:', e);
+    }
+
+    // 3. 둘 다 없으면 승인 신청 모달 표시
+    setShowRequestModal(true);
+  };
+
+  const loginSuccess = (name: string) => {
+    localStorage.setItem('username', name);
+    sessionStorage.setItem('username', name); // 호환성 유지
     router.replace('/');
+  };
+
+  // 관리자에게 로그인 승인 신청
+  const handleRequestSubmit = async () => {
+    const trimmedName = username.trim();
+    const trimmedPhone = requestPhone.trim();
+
+    if (!trimmedPhone) {
+      alert('연락처를 입력해 주세요!');
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+      const { supabase } = await import('@/lib/supabaseClient');
+      
+      // 이미 신청한 내역이 있는지 조회
+      const { data: existing } = await supabase
+        .from('login_requests')
+        .select('*')
+        .eq('name', trimmedName)
+        .eq('status', 'pending')
+        .maybeSingle();
+
+      if (existing) {
+        alert('이미 승인 대기 중인 요청이 있습니다. 관리자 승인을 기다려 주세요!');
+        setShowRequestModal(false);
+        return;
+      }
+
+      const { error } = await supabase
+        .from('login_requests')
+        .insert([{ name: trimmedName, phone: trimmedPhone, status: 'pending' }]);
+
+      if (error) throw error;
+
+      alert('로그인 승인 요청이 성공적으로 접수되었습니다!\n관리자(총무단) 승인 후 즉시 로그인하실 수 있습니다.');
+      setShowRequestModal(false);
+      setRequestPhone('');
+    } catch (err: any) {
+      alert('요청 실패: ' + err.message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -71,6 +139,44 @@ export default function LoginPage() {
           시작하기
         </button>
       </div>
+
+      {/* 로그인 권한 요청 모달 */}
+      {showRequestModal && (
+        <div className="request-modal-overlay">
+          <div className="request-modal">
+            <div className="request-modal-header">
+              <h3>🔑 로그인 승인 요청</h3>
+              <button className="request-close-btn" onClick={() => setShowRequestModal(false)}>
+                <X size={20} />
+              </button>
+            </div>
+
+            <p className="request-desc">
+              <strong>'{username}'</strong>님은 아직 등록 명단에 들어있지 않습니다. 동명이인이거나 명단 누락의 경우 아래에 연락처를 기재해 승인을 요청해 주세요.
+            </p>
+
+            <div className="request-input-group">
+              <label htmlFor="request-phone-input">본인 연락처</label>
+              <input 
+                type="tel" 
+                id="request-phone-input"
+                placeholder="예: 010-1234-5678"
+                value={requestPhone}
+                onChange={(e) => setRequestPhone(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleRequestSubmit()}
+              />
+            </div>
+
+            <button 
+              className="request-submit-btn" 
+              onClick={handleRequestSubmit}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? '요청 제출 중...' : '관리자에게 승인 요청하기'}
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

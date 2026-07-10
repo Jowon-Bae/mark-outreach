@@ -2,13 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabaseClient';
-import { Trash2, Upload, Megaphone } from 'lucide-react';
+import { Trash2, Upload, Megaphone, UserCheck } from 'lucide-react';
 import './admin.css';
 
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
-  const [activeTab, setActiveTab] = useState('stats'); // 'stats', 'community', 'gallery', 'notices'
+  const [activeTab, setActiveTab] = useState('stats'); // 'stats', 'community', 'gallery', 'notices', 'requests'
+  const [loginRequests, setLoginRequests] = useState<any[]>([]);
 
   const [stats, setStats] = useState<any[]>([]);
   const [posts, setPosts] = useState<any[]>([]);
@@ -35,6 +36,16 @@ export default function AdminPage() {
     fetchPosts();
     fetchPhotos();
     fetchNotice();
+    fetchLoginRequests();
+  };
+
+  // 0. 로그인 승인 요청 불러오기
+  const fetchLoginRequests = async () => {
+    const { data, error } = await supabase
+      .from('login_requests')
+      .select('*')
+      .order('created_at', { ascending: false });
+    if (!error && data) setLoginRequests(data);
   };
 
   // 1. 통계 데이터 불러오기
@@ -199,6 +210,37 @@ export default function AdminPage() {
     }
   };
 
+  // 로그인 승인 처리
+  const handleApproveRequest = async (id: string, name: string) => {
+    const { error } = await supabase
+      .from('login_requests')
+      .update({ status: 'approved' })
+      .eq('id', id);
+
+    if (!error) {
+      alert(`'${name}' 지체님의 로그인을 승인했습니다.`);
+      fetchLoginRequests();
+    } else {
+      alert('승인 처리 실패: ' + error.message);
+    }
+  };
+
+  // 로그인 반려 처리
+  const handleRejectRequest = async (id: string, name: string) => {
+    if (!confirm(`'${name}' 지체님의 로그인 요청을 반려하시겠습니까?`)) return;
+    const { error } = await supabase
+      .from('login_requests')
+      .update({ status: 'rejected' })
+      .eq('id', id);
+
+    if (!error) {
+      alert(`'${name}' 지체님의 요청을 반려했습니다.`);
+      fetchLoginRequests();
+    } else {
+      alert('반려 처리 실패: ' + error.message);
+    }
+  };
+
   // 통계 계산 로직
   const getStatsSummary = () => {
     const summary: Record<string, number> = {};
@@ -270,6 +312,15 @@ export default function AdminPage() {
             <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
               <Megaphone size={18} />
               실시간 공지 관리
+            </span>
+          </button>
+          <button 
+            className={`nav-tab ${activeTab === 'requests' ? 'active' : ''}`}
+            onClick={() => setActiveTab('requests')}
+          >
+            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <UserCheck size={18} />
+              로그인 승인 관리
             </span>
           </button>
         </div>
@@ -489,6 +540,80 @@ export default function AdminPage() {
                 >
                   실시간 공지 발행하기 (저장)
                 </button>
+              </div>
+            </div>
+          )}
+
+          {/* 로그인 승인 요청 관리 탭 */}
+          {activeTab === 'requests' && (
+            <div>
+              <div className="section-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                <h3 style={{ margin: 0 }}>로그인 승인 요청 리스트</h3>
+                <button onClick={fetchLoginRequests} className="refresh-btn" style={{ padding: '8px 16px', border: '1px solid #e5e8eb', borderRadius: '8px', cursor: 'pointer', background: 'white' }}>새로고침</button>
+              </div>
+
+              <div style={{ background: 'white', border: '1px solid #e5e8eb', borderRadius: '16px', overflow: 'hidden' }}>
+                {loginRequests.length === 0 ? (
+                  <div style={{ textAlign: 'center', padding: '40px', color: '#8b95a1', fontStyle: 'italic' }}>
+                    접수된 로그인 승인 요청이 없습니다.
+                  </div>
+                ) : (
+                  <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '14px' }}>
+                    <thead>
+                      <tr style={{ background: '#f8f9fa', borderBottom: '1px solid #e5e8eb', color: '#4e5968', fontWeight: 'bold' }}>
+                        <th style={{ padding: '16px' }}>요청 이름</th>
+                        <th style={{ padding: '16px' }}>연락처</th>
+                        <th style={{ padding: '16px' }}>신청 시간</th>
+                        <th style={{ padding: '16px' }}>상태</th>
+                        <th style={{ padding: '16px', textAlign: 'right' }}>관리 동작</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {loginRequests.map((req: any) => (
+                        <tr key={req.id} style={{ borderBottom: '1px solid #e5e8eb', color: '#333d4b' }}>
+                          <td style={{ padding: '16px', fontWeight: '700' }}>{req.name}</td>
+                          <td style={{ padding: '16px' }}>{req.phone || '-'}</td>
+                          <td style={{ padding: '16px', color: '#8b95a1', fontSize: '12px' }}>
+                            {new Date(req.created_at).toLocaleString('ko-KR')}
+                          </td>
+                          <td style={{ padding: '16px' }}>
+                            <span style={{
+                              display: 'inline-block',
+                              padding: '4px 8px',
+                              borderRadius: '6px',
+                              fontSize: '12px',
+                              fontWeight: '600',
+                              backgroundColor: req.status === 'approved' ? '#e2f9e7' : req.status === 'rejected' ? '#ffebeb' : '#fff3dc',
+                              color: req.status === 'approved' ? '#2e7d32' : req.status === 'rejected' ? '#c62828' : '#b78103'
+                            }}>
+                              {req.status === 'approved' ? '승인 완료' : req.status === 'rejected' ? '반려됨' : '대기 중'}
+                            </span>
+                          </td>
+                          <td style={{ padding: '16px', textAlign: 'right' }}>
+                            {req.status === 'pending' ? (
+                              <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
+                                <button 
+                                  onClick={() => handleApproveRequest(req.id, req.name)}
+                                  style={{ padding: '6px 12px', background: '#2e7d32', color: 'white', border: 'none', borderRadius: '6px', fontSize: '12px', fontWeight: '700', cursor: 'pointer' }}
+                                >
+                                  승인
+                                </button>
+                                <button 
+                                  onClick={() => handleRejectRequest(req.id, req.name)}
+                                  style={{ padding: '6px 12px', background: '#c62828', color: 'white', border: 'none', borderRadius: '6px', fontSize: '12px', fontWeight: '700', cursor: 'pointer' }}
+                                >
+                                  반려
+                                </button>
+                              </div>
+                            ) : (
+                              <span style={{ color: '#8b95a1', fontSize: '12px' }}>처리 완료</span>
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                )}
               </div>
             </div>
           )}
