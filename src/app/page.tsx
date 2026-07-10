@@ -38,10 +38,50 @@ export default function Home() {
   const [showAdminLogin, setShowAdminLogin] = useState(false);
   const [adminPassword, setAdminPassword] = useState('');
 
+  // 실시간 공지 팝업 알림 상태
+  const [showNoticeAlert, setShowNoticeAlert] = useState(false);
+  const [alertNoticeContent, setAlertNoticeContent] = useState('');
+
   // 랜덤 기도 뽑기 상태
   const [randomPrayer, setRandomPrayer] = useState<any>(null);
   const [showPrayerPopup, setShowPrayerPopup] = useState(false);
   const [isPrayerFadingOut, setIsPrayerFadingOut] = useState(false);
+
+  // Web Audio API 기반 알림음 합성음 재생
+  const playNotificationSound = () => {
+    try {
+      const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+      if (!AudioContext) return;
+      const ctx = new AudioContext();
+      const now = ctx.currentTime;
+      
+      // 첫 번째 음 (도5 - 523.25Hz)
+      const osc1 = ctx.createOscillator();
+      const gain1 = ctx.createGain();
+      osc1.type = 'sine';
+      osc1.frequency.setValueAtTime(523.25, now);
+      gain1.gain.setValueAtTime(0.12, now);
+      gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+      osc1.connect(gain1);
+      gain1.connect(ctx.destination);
+      osc1.start(now);
+      osc1.stop(now + 0.35);
+      
+      // 두 번째 음 (솔5 - 783.99Hz)
+      const osc2 = ctx.createOscillator();
+      const gain2 = ctx.createGain();
+      osc2.type = 'sine';
+      osc2.frequency.setValueAtTime(783.99, now + 0.12);
+      gain2.gain.setValueAtTime(0.12, now + 0.12);
+      gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.12 + 0.4);
+      osc2.connect(gain2);
+      gain2.connect(ctx.destination);
+      osc2.start(now + 0.12);
+      osc2.stop(now + 0.12 + 0.45);
+    } catch (e) {
+      console.error('Audio play failed:', e);
+    }
+  };
 
   useEffect(() => {
     if (showWelcome) {
@@ -52,6 +92,10 @@ export default function Home() {
       setIsAdmin(sessionStorage.getItem('isAdmin') === 'true');
     }
     fetchLatestNotice();
+
+    // 5초마다 실시간 공지사항 체크
+    const interval = setInterval(fetchLatestNotice, 5000);
+    return () => clearInterval(interval);
   }, [showWelcome]);
 
   // 실시간 공지글 불러오기
@@ -64,9 +108,21 @@ export default function Home() {
     if (!error && data) {
       const latest = data.find((post: any) => post.content.startsWith('[공지]'));
       if (latest) {
-        // 머리말 제거하고 내용만 추출
-        setNotice(latest.content.replace('[공지]', '').trim());
+        const cleanContent = latest.content.replace('[공지]', '').trim();
+        setNotice(cleanContent);
         setNoticePostId(latest.id);
+
+        // 새로운 공지 감지 (이전 ID와 다른 경우에만 알림 실행)
+        const storedId = localStorage.getItem('lastSeenNoticeId');
+        if (storedId && storedId !== latest.id) {
+          playNotificationSound();
+          if (typeof navigator !== 'undefined' && navigator.vibrate) {
+            navigator.vibrate([150, 100, 150]); // 진동 발생
+          }
+          setAlertNoticeContent(cleanContent);
+          setShowNoticeAlert(true);
+        }
+        localStorage.setItem('lastSeenNoticeId', latest.id);
       } else {
         setNotice('');
         setNoticePostId(null);
@@ -251,6 +307,33 @@ export default function Home() {
             </div>
             <div className="notice-modal-footer">
               <button className="notice-submit-btn" onClick={handleAdminLoginSubmit}>인증하기</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 새 공지 알림 팝업 (진동 & 소리 발생 시 중앙 노출) */}
+      {showNoticeAlert && (
+        <div className="notice-modal-overlay" onClick={() => setShowNoticeAlert(false)}>
+          <div className="notice-modal-card alert-notice-card" onClick={(e) => e.stopPropagation()}>
+            <div className="notice-modal-header alert-header">
+              <h3 style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#d32f2f', margin: 0, fontSize: '15px' }}>
+                <Megaphone size={18} />
+                긴급 공지사항 알림
+              </h3>
+              <button className="close-notice-modal" onClick={() => setShowNoticeAlert(false)}>
+                <X size={18} />
+              </button>
+            </div>
+            <div className="notice-modal-body" style={{ textAlign: 'center', padding: '24px 20px' }}>
+              <p className="alert-notice-text" style={{ fontSize: '15px', fontWeight: '700', color: '#333d4b', margin: 0, lineHeight: '1.6', wordBreak: 'break-all', whiteSpace: 'pre-wrap' }}>
+                {alertNoticeContent}
+              </p>
+            </div>
+            <div className="notice-modal-footer">
+              <button className="notice-submit-btn alert-confirm-btn" onClick={() => setShowNoticeAlert(false)} style={{ backgroundColor: '#d32f2f' }}>
+                확인
+              </button>
             </div>
           </div>
         </div>
