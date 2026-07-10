@@ -13,6 +13,10 @@ export default function Prayer() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
+  const [randomPrayer, setRandomPrayer] = useState<any>(null);
+  const [showPrayerPopup, setShowPrayerPopup] = useState(false);
+  const [isPrayerFadingOut, setIsPrayerFadingOut] = useState(false);
+
   const fetchPrayers = async () => {
     setIsLoading(true);
     const { data, error } = await supabase
@@ -54,6 +58,26 @@ export default function Prayer() {
     fetchPrayers();
   };
 
+  // 랜덤 기도 뽑기 로직
+  const drawRandomPrayer = () => {
+    if (prayers.length === 0) {
+      alert('등록된 기도제목이 없습니다. 먼저 첫 기도제목을 나누어보세요!');
+      return;
+    }
+    const randomIndex = Math.floor(Math.random() * prayers.length);
+    setRandomPrayer(prayers[randomIndex]);
+    setIsPrayerFadingOut(false);
+    setShowPrayerPopup(true);
+  };
+
+  const closePrayerPopup = () => {
+    setIsPrayerFadingOut(true);
+    setTimeout(() => {
+      setShowPrayerPopup(false);
+      setRandomPrayer(null);
+    }, 1200);
+  };
+
   // 시간 포맷팅 함수
   const formatTime = (dateString: string) => {
     const date = new Date(dateString);
@@ -75,6 +99,15 @@ export default function Prayer() {
         </button>
         <h2>기도 릴레이 🙏</h2>
         <div style={{ width: 20 }}></div>
+      </div>
+
+      {/* 랜덤 기도 뽑기 배너 */}
+      <div className="draw-prayer-banner" onClick={drawRandomPrayer}>
+        <span className="dice-icon">🎲</span>
+        <div className="banner-text">
+          <h4>기도제목 랜덤 뽑기</h4>
+          <p>지체들의 기도제목을 1개 뽑아 함께 기도해요!</p>
+        </div>
       </div>
 
       {/* 기도 올리기 카드 */}
@@ -126,6 +159,23 @@ export default function Prayer() {
           )}
         </div>
       </div>
+
+      {/* 랜덤 기도 카드 팝업 */}
+      {showPrayerPopup && randomPrayer && (
+        <div 
+          className={`welcome-popup-overlay ${isPrayerFadingOut ? 'fade-out' : 'fade-in'}`}
+          onClick={closePrayerPopup}
+        >
+          <div className="prayer-popup-card" onClick={(e) => e.stopPropagation()}>
+            <div className="prayer-card-decor">🙏 PRAYER RELAY</div>
+            <div className="prayer-card-author">👤 {randomPrayer.author} 지체의 기도제목</div>
+            <p className="prayer-card-content">“ {randomPrayer.content} ”</p>
+            <div className="prayer-card-footer-btns">
+              <button className="prayer-card-btn close" onClick={closePrayerPopup}>아멘 (기도했습니다)</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

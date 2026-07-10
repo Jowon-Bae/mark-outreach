@@ -1,6 +1,6 @@
 'use client';
 
-import { Home, Calendar, MessageSquare, Image as ImageIcon, User } from 'lucide-react';
+import { Home, Calendar, MessageSquare, Image as ImageIcon, Users, BookOpen, Heart, ShieldAlert } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import './layout.css';
@@ -12,10 +12,13 @@ export default function BottomNav() {
 
   const navItems = [
     { name: '홈', path: '/', icon: Home },
+    { name: '조직도', path: '/teams', icon: Users },
     { name: '일정', path: '/schedule', icon: Calendar },
+    { name: 'QT', path: '/qt', icon: BookOpen },
+    { name: '기도', path: '/prayer', icon: Heart },
     { name: '게시판', path: '/community?v=new', icon: MessageSquare },
     { name: '사진첩', path: '/gallery', icon: ImageIcon },
-    { name: '마이페이지', path: '/mypage', icon: User },
+    { name: '안전', path: '/safety', icon: ShieldAlert },
   ];
 
   return (
@@ -26,7 +29,7 @@ export default function BottomNav() {
         const isActive = pathname === basePath || (basePath !== '/' && pathname.startsWith(basePath));
         return (
           <Link href={item.path} key={item.name} className={`nav-item ${isActive ? 'active' : ''}`}>
-            <Icon size={24} />
+            <Icon size={20} />
             <span>{item.name}</span>
           </Link>
         );

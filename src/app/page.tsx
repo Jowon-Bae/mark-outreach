@@ -75,52 +75,9 @@ export default function Home() {
   return (
     <>
       <div className="home-container">
-        {/* 1. SOS 긴급버튼 */}
-        <div className="home-top-bar">
-          <a href="tel:010-1234-5678" className="home-sos-btn">
-            <span className="sos-dot"></span>
-            <span>SOS 긴급 본부</span>
-          </a>
-        </div>
-
-        {/* 2. 메인 로고/타이틀 영역 */}
-        <div className="home-main-section">
-          <div className="home-logo-wrap">
-            <img src="/assets/logo_transparent.png" alt="Logo" className="home-logo-image" />
-          </div>
-          <h1 className="home-title-text">MARK OUTREACH</h1>
-          <p className="home-desc-text">2026 국내 아웃리치</p>
-        </div>
-
-        {/* 3. 4대 기능 대시보드 그리드 */}
-        <div className="home-dashboard-grid">
-          <button className="dashboard-card" onClick={() => router.push('/teams')}>
-            <span className="card-icon">👥</span>
-            <span className="card-title">조직원 연락망</span>
-            <span className="card-desc">팀원 연락처 검색</span>
-          </button>
-          
-          <button className="dashboard-card draw-prayer" onClick={drawRandomPrayer}>
-            <span className="card-icon">🎲</span>
-            <span className="card-title">기도제목 뽑기</span>
-            <span className="card-desc">릴레이 중보기도</span>
-          </button>
-          
-          <button className="dashboard-card" onClick={() => router.push('/qt')}>
-            <span className="card-icon">📖</span>
-            <span className="card-title">오늘의 QT</span>
-            <span className="card-desc">말씀 묵상 완료</span>
-          </button>
-          
-          <button className="dashboard-card" onClick={() => router.push('/safety')}>
-            <span className="card-icon">🚨</span>
-            <span className="card-title">안전 & 지도</span>
-            <span className="card-desc">비상대응 및 사역지</span>
-          </button>
-        </div>
+        {/* 그래피티 배경 이미지만 온전히 보이도록 다른 요소들은 임시로 비워둡니다 */}
       </div>
 
-      {/* 웰컴 팝업 */}
       {showWelcome && (
         <div 
           className={`welcome-popup-overlay ${isFadingOut ? 'fade-out' : 'fade-in'}`}
@@ -131,27 +88,6 @@ export default function Home() {
               <span className="welcome-name">{username} 님</span>
               <br />
               <span className="welcome-greet">환영합니다!</span>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* 랜덤 기도 카드 팝업 (터치하면 닫힘) */}
-      {showPrayerPopup && randomPrayer && (
-        <div 
-          className={`welcome-popup-overlay ${isPrayerFadingOut ? 'fade-out' : 'fade-in'}`}
-          onClick={closePrayerPopup}
-        >
-          <div className="prayer-popup-card">
-            <div className="prayer-card-decor">🙏 PRAYER RELAY</div>
-            <div className="prayer-card-author">👤 {randomPrayer.author} 지체의 기도제목</div>
-            <p className="prayer-card-content">“ {randomPrayer.content} ”</p>
-            <div className="prayer-card-footer-btns" onClick={(e) => e.stopPropagation()}>
-              <button className="prayer-card-btn close" onClick={closePrayerPopup}>아멘 (닫기)</button>
-              <button className="prayer-card-btn write" onClick={() => {
-                closePrayerPopup();
-                router.push('/prayer');
-              }}>나도 기도 올리기</button>
             </div>
           </div>
         </div>

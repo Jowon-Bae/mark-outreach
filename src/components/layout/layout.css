@@ -99,9 +99,11 @@
   justify-content: center;
   height: 65px; /* 내부 아이콘 영역은 기존 크기 유지 */
   color: var(--text-sub);
-  font-size: 0.75rem;
+  font-size: 0.62rem; /* 8개 메뉴 탑재로 폰트 크기 미세 축소 */
   cursor: pointer;
   transition: color 0.3s;
+  flex: 1; /* 가로 공간 균등 분할 */
+  min-width: 0;
 }
 
 .nav-item.active {
@@ -110,5 +112,5 @@
 }
 
 .nav-item svg {
-  margin-bottom: 4px;
+  margin-bottom: 2px; /* 아이콘-텍스트 간격 2px로 밀착 */
 }

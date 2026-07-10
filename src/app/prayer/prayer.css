@@ -183,3 +183,149 @@
   font-size: 13px;
   padding: 24px 0;
 }
+
+/* 랜덤 기도 뽑기 배너 */
+.draw-prayer-banner {
+  background: linear-gradient(to right, var(--primary), var(--primary-light));
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(195, 159, 97, 0.2);
+  margin-top: 16px;
+  transition: transform 0.2s;
+}
+
+.draw-prayer-banner:active {
+  transform: scale(0.98);
+}
+
+.draw-prayer-banner .dice-icon {
+  font-size: 32px;
+}
+
+.banner-text h4 {
+  margin: 0 0 2px 0;
+  color: white;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.banner-text p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 12px;
+}
+
+/* 랜덤 기도 팝업 스타일 */
+.welcome-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  background-color: rgba(0, 0, 0, 0.78);
+  cursor: pointer;
+  opacity: 1;
+}
+
+.welcome-popup-overlay.fade-out {
+  animation: welcomeFadeOut 1.2s forwards ease-in;
+}
+
+.prayer-popup-card {
+  background: white;
+  padding: 24px;
+  border-radius: 20px;
+  width: 85%;
+  max-width: 320px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  transform: scale(0.9);
+  animation: welcomeZoomIn 0.5s forwards cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  cursor: default;
+}
+
+.welcome-popup-overlay.fade-out .prayer-popup-card {
+  animation: welcomeZoomOut 0.4s forwards ease-in;
+}
+
+.prayer-card-decor {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--primary);
+  letter-spacing: 1.5px;
+}
+
+.prayer-card-author {
+  font-size: 14px;
+  font-weight: 800;
+  color: #1e1e1e;
+}
+
+.prayer-card-content {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #333d4b;
+  font-weight: 600;
+  font-style: italic;
+  margin: 0;
+  word-break: break-all;
+  white-space: pre-wrap;
+  background-color: rgba(0, 0, 0, 0.03);
+  padding: 16px;
+  border-radius: 12px;
+  border-left: 3px solid var(--primary);
+}
+
+.prayer-card-footer-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.prayer-card-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.prayer-card-btn:active {
+  opacity: 0.8;
+}
+
+.prayer-card-btn.close {
+  background-color: var(--primary);
+  color: white;
+}
+
+@keyframes welcomeFadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes welcomeZoomIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes welcomeZoomOut {
+  from { transform: scale(1); }
+  to { transform: scale(0.85); }
+}
+
