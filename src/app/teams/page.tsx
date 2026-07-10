@@ -63,7 +63,12 @@ const INITIAL_TEAMS: Team[] = [
     teamName: '미디어팀',
     icon: Video,
     members: [
-      { name: '허 민', role: '팀장', phone: '010-0000-0000' }
+      { name: '허민', role: '팀장', phone: '010-8587-5221' },
+      { name: '윤석민', role: '팀원', phone: '010-7370-9594' },
+      { name: '이용건', role: '팀원', phone: '010-9100-3396' },
+      { name: '서기열', role: '팀원', phone: '010-7155-3116' },
+      { name: '한영원', role: '팀원', phone: '010-8538-0177' },
+      { name: '김나리', role: '팀원', phone: '010-8543-6612' }
     ]
   },
   {
@@ -84,21 +89,62 @@ const INITIAL_TEAMS: Team[] = [
     teamName: '공연팀',
     icon: Sparkles,
     members: [
-      { name: '최지은', role: '팀장', phone: '010-0000-0000' }
+      { name: '최지은', role: '팀장', phone: '010-2210-9212' },
+      { name: '박선민', role: '팀원', phone: '010-2774-3007' },
+      { name: '이희선', role: '팀원', phone: '010-9096-1379' },
+      { name: '서승원', role: '팀원', phone: '010-8821-6900' },
+      { name: '윤인희', role: '팀원', phone: '010-4469-0769' },
+      { name: '김신혜', role: '팀원', phone: '010-4946-1991' },
+      { name: '이미영', role: '팀원', phone: '010-3426-7902' },
+      { name: '김지준', role: '팀원', phone: '010-2034-5155' },
+      { name: '김민', role: '팀원', phone: '010-9154-9053' },
+      { name: '유영삼', role: '팀원', phone: '010-7226-3546' },
+      { name: '추인애', role: '팀원', phone: '010-8617-8105' },
+      { name: '김지선', role: '팀원', phone: '010-5411-8448' },
+      { name: '이승용', role: '팀원', phone: '010-2838-2147' }
     ]
   },
   {
-    teamName: '발마사지',
+    teamName: '발마사지팀',
     icon: User,
     members: [
-      { name: '이문석', role: '팀장', phone: '010-0000-0000' }
+      { name: '이문석', role: '팀장', phone: '010-8465-1664' },
+      { name: '박성수', role: '팀원', phone: '010-7907-4845' },
+      { name: '나경준', role: '팀원', phone: '010-2898-7599' },
+      { name: '오국환', role: '팀원', phone: '010-3521-2664' },
+      { name: '박희정', role: '팀원', phone: '010-8399-1664' },
+      { name: '이상연', role: '팀원', phone: '010-8768-2624' },
+      { name: '이승호', role: '팀원', phone: '010-8641-3554' },
+      { name: '박희주', role: '팀원', phone: '010-8546-3554' },
+      { name: '최윤호', role: '팀원', phone: '010-9881-8119' },
+      { name: '김규연', role: '팀원', phone: '010-8228-4938' },
+      { name: '이재원', role: '팀원', phone: '010-9041-9142' },
+      { name: '김유진', role: '팀원', phone: '010-9450-3632' },
+      { name: '염귀화', role: '팀원', phone: '010-9592-3371' }
     ]
   },
   {
     teamName: '데코팀',
     icon: Paintbrush,
     members: [
-      { name: '장윤경', role: '팀장', phone: '010-0000-0000' }
+      { name: '장윤경', role: '팀장', phone: '010-4477-4144' },
+      { name: '강정호', role: '팀원', phone: '010-8746-9531' },
+      { name: '남아란', role: '팀원', phone: '010-7900-9531' },
+      { name: '김동진', role: '팀원', phone: '010-3476-0888' },
+      { name: '김민혜', role: '팀원', phone: '010-7282-5677' },
+      { name: '김인호', role: '팀원', phone: '010-5781-4427' },
+      { name: '신유리', role: '팀원', phone: '010-4242-2946' },
+      { name: '김지인', role: '팀원', phone: '010-6623-2033' },
+      { name: '김보화', role: '팀원', phone: '010-7353-4648' },
+      { name: '안민균', role: '팀원', phone: '010-9273-5938' },
+      { name: '김사무엘', role: '팀원', phone: '010-6367-8764' },
+      { name: '손성웅', role: '팀원', phone: '010-5967-3299' },
+      { name: '이용준', role: '팀원', phone: '010-8496-5311' },
+      { name: '김혜미', role: '팀원', phone: '010-9171-6517' },
+      { name: '김성희', role: '팀원', phone: '010-5248-7415' },
+      { name: '현지혜', role: '팀원', phone: '010-9001-7028' },
+      { name: '김선정', role: '팀원', phone: '010-3693-1323' },
+      { name: '안지원', role: '팀원', phone: '010-2222-5988' }
     ]
   },
   {
