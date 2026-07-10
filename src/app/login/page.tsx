@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { X } from 'lucide-react';
+import { X, UserCheck } from 'lucide-react';
 import './login.css';
 
 const ALLOWED_NAMES = [
@@ -145,7 +145,10 @@ export default function LoginPage() {
         <div className="request-modal-overlay">
           <div className="request-modal">
             <div className="request-modal-header">
-              <h3>🔑 로그인 승인 요청</h3>
+              <h3 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <UserCheck size={20} color="#1b64da" />
+                로그인 승인 요청
+              </h3>
               <button className="request-close-btn" onClick={() => setShowRequestModal(false)}>
                 <X size={20} />
               </button>
