@@ -2,18 +2,23 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabaseClient';
-import { Trash2, Upload } from 'lucide-react';
+import { Trash2, Upload, Megaphone } from 'lucide-react';
 import './admin.css';
 
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
-  const [activeTab, setActiveTab] = useState('stats'); // 'stats', 'community', 'gallery'
+  const [activeTab, setActiveTab] = useState('stats'); // 'stats', 'community', 'gallery', 'notices'
 
   const [stats, setStats] = useState<any[]>([]);
   const [posts, setPosts] = useState<any[]>([]);
   const [photos, setPhotos] = useState<any[]>([]);
   const [uploading, setUploading] = useState(false);
+
+  // 공지 관련 상태
+  const [currentNotice, setCurrentNotice] = useState('');
+  const [currentNoticeId, setCurrentNoticeId] = useState<string | null>(null);
+  const [adminNewNotice, setAdminNewNotice] = useState('');
 
   // 비밀번호 확인
   const handleLogin = () => {
@@ -29,6 +34,7 @@ export default function AdminPage() {
     fetchStats();
     fetchPosts();
     fetchPhotos();
+    fetchNotice();
   };
 
   // 1. 통계 데이터 불러오기
@@ -128,6 +134,60 @@ export default function AdminPage() {
     }
   };
 
+  // 4. 실시간 공지사항 조회
+  const fetchNotice = async () => {
+    const { data, error } = await supabase
+      .from('community_posts')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (!error && data) {
+      const latest = data.find((post: any) => post.content.startsWith('[공지]'));
+      if (latest) {
+        setCurrentNotice(latest.content.replace('[공지]', '').trim());
+        setCurrentNoticeId(latest.id);
+      } else {
+        setCurrentNotice('');
+        setCurrentNoticeId(null);
+      }
+    }
+  };
+
+  // 공지사항 등록
+  const handlePostNotice = async () => {
+    if (!adminNewNotice.trim()) {
+      alert('공지 내용을 입력해 주세요.');
+      return;
+    }
+    const { error } = await supabase
+      .from('community_posts')
+      .insert([{ author: '관리자', content: `[공지] ${adminNewNotice.trim()}` }]);
+
+    if (!error) {
+      alert('공지가 실시간 등록되었습니다!');
+      setAdminNewNotice('');
+      fetchNotice();
+      fetchPosts();
+    } else {
+      alert('공지 등록 실패: ' + error.message);
+    }
+  };
+
+  // 공지사항 삭제
+  const handleDeleteNotice = async (id: string) => {
+    if (!confirm('현재 실시간 공지사항을 삭제하시겠습니까?')) return;
+    await supabase.from('community_comments').delete().eq('post_id', id);
+    const { error } = await supabase.from('community_posts').delete().eq('id', id);
+
+    if (!error) {
+      alert('공지가 삭제되었습니다.');
+      fetchNotice();
+      fetchPosts();
+    } else {
+      alert('공지 삭제 실패: ' + error.message);
+    }
+  };
+
   // 통계 계산 로직
   const getStatsSummary = () => {
     const summary: Record<string, number> = {};
@@ -190,6 +250,15 @@ export default function AdminPage() {
             <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
               사진첩 관리
+            </span>
+          </button>
+          <button 
+            className={`nav-tab ${activeTab === 'notices' ? 'active' : ''}`}
+            onClick={() => setActiveTab('notices')}
+          >
+            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <Megaphone size={18} />
+              실시간 공지 관리
             </span>
           </button>
         </div>
@@ -313,6 +382,102 @@ export default function AdminPage() {
                     </button>
                   </div>
                 ))}
+              </div>
+            </div>
+          )}
+
+          {/* 실시간 공지사항 탭 */}
+          {activeTab === 'notices' && (
+            <div>
+              <div className="section-header">
+                <h3>실시간 공지사항 관리</h3>
+              </div>
+
+              {/* 현재 활성화된 공지 */}
+              <div className="admin-current-notice-card" style={{
+                background: '#f8f9fa',
+                border: '1px solid #e5e8eb',
+                borderRadius: '16px',
+                padding: '20px',
+                marginBottom: '30px'
+              }}>
+                <h4 style={{ margin: '0 0 10px 0', display: 'flex', alignItems: 'center', gap: '8px', color: '#d32f2f' }}>
+                  <Megaphone size={18} />
+                  현재 활성화된 실시간 공지
+                </h4>
+                {currentNotice ? (
+                  <div>
+                    <p style={{
+                      margin: '0 0 16px 0',
+                      fontSize: '15px',
+                      fontWeight: '700',
+                      color: '#333d4b',
+                      lineHeight: '1.6',
+                      whiteSpace: 'pre-wrap'
+                    }}>
+                      {currentNotice}
+                    </p>
+                    <button 
+                      className="delete-btn" 
+                      onClick={() => currentNoticeId && handleDeleteNotice(currentNoticeId)}
+                      style={{ padding: '8px 14px', fontSize: '13px' }}
+                    >
+                      <Trash2 size={14} /> 현재 공지 내리기 (삭제)
+                    </button>
+                  </div>
+                ) : (
+                  <p style={{ margin: 0, color: '#8b95a1', fontStyle: 'italic' }}>
+                    현재 등록된 실시간 공지가 없습니다. 어플 첫 화면 상단 배너가 비활성화 상태입니다.
+                  </p>
+                )}
+              </div>
+
+              {/* 새 공지 등록 양식 */}
+              <div className="admin-new-notice-form" style={{
+                background: 'white',
+                border: '1px solid #e5e8eb',
+                borderRadius: '16px',
+                padding: '24px'
+              }}>
+                <h4 style={{ margin: '0 0 12px 0', color: '#1e1e1e' }}>새 실시간 공지 등록</h4>
+                <textarea
+                  placeholder="사용자 홈 화면 상단에 띄울 공지 내용을 입력해 주세요. (주의: 새로 등록 시 기존 공지는 자동으로 대체됩니다.)"
+                  value={adminNewNotice}
+                  onChange={(e) => setAdminNewNotice(e.target.value)}
+                  style={{
+                    width: '100%',
+                    height: '120px',
+                    padding: '14px',
+                    border: '1px solid #e5e8eb',
+                    borderRadius: '12px',
+                    fontSize: '14px',
+                    fontFamily: 'inherit',
+                    outline: 'none',
+                    resize: 'none',
+                    marginBottom: '16px',
+                    color: '#1e1e1e'
+                  }}
+                />
+                <button 
+                  onClick={handlePostNotice}
+                  className="nav-tab active"
+                  style={{
+                    width: '100%',
+                    padding: '14px',
+                    border: 'none',
+                    borderRadius: '12px',
+                    fontSize: '14px',
+                    fontWeight: '700',
+                    cursor: 'pointer',
+                    backgroundColor: '#1e1e1e',
+                    color: 'white',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                >
+                  실시간 공지 발행하기 (저장)
+                </button>
               </div>
             </div>
           )}
