@@ -218,7 +218,16 @@ const INITIAL_TEAMS: Team[] = [
     teamName: '안내팀',
     icon: Shield,
     members: [
-      { name: '유상현', role: '팀장', phone: '010-0000-0000' }
+      { name: '유상현', role: '팀장', phone: '010-0000-0000' },
+      { name: '강나로', role: '팀원', phone: '010-0000-0000' },
+      { name: '김도훈', role: '팀원', phone: '010-0000-0000' },
+      { name: '김수아', role: '팀원', phone: '010-0000-0000' },
+      { name: '김아론', role: '팀원', phone: '010-0000-0000' },
+      { name: '박하솜', role: '팀원', phone: '010-0000-0000' },
+      { name: '유상윤', role: '팀원', phone: '010-0000-0000' },
+      { name: '심이안', role: '팀원', phone: '010-0000-0000' },
+      { name: '이하은', role: '팀원', phone: '010-0000-0000' },
+      { name: '태현영', role: '팀원', phone: '010-0000-0000' }
     ]
   },
   {
