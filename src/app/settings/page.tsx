@@ -63,7 +63,8 @@ export default function SettingsPage() {
       setUploading(true);
       const file = e.target.files[0];
       const fileExt = file.name.split('.').pop();
-      const filePath = `avatar_${username}_${Date.now()}.${fileExt}`;
+      // 한글 파일명으로 인한 Supabase Storage Invalid key 에러를 막기 위해 영문 난수/타임스탬프로 파일명 생성
+      const filePath = `avatar_${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
 
       const { supabase: supabaseClient } = await import('@/lib/supabaseClient');
 
