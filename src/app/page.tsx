@@ -41,6 +41,7 @@ export default function Home() {
   // 실시간 공지 팝업 알림 상태
   const [showNoticeAlert, setShowNoticeAlert] = useState(false);
   const [alertNoticeContent, setAlertNoticeContent] = useState('');
+  const [isNoticeDismissed, setIsNoticeDismissed] = useState(false);
 
   // 랜덤 기도 뽑기 상태
   const [randomPrayer, setRandomPrayer] = useState<any>(null);
@@ -112,7 +113,7 @@ export default function Home() {
         setNotice(cleanContent);
         setNoticePostId(latest.id);
 
-        // 새로운 공지 감지 (이전 ID와 다른 경우에만 알림 실행)
+        // 새로운 공지 감지 (이전 ID와 다른 경우에만 알림 실행 및 숨김 상태 해제)
         const storedId = localStorage.getItem('lastSeenNoticeId');
         if (storedId && storedId !== latest.id) {
           playNotificationSound();
@@ -121,6 +122,7 @@ export default function Home() {
           }
           setAlertNoticeContent(cleanContent);
           setShowNoticeAlert(true);
+          setIsNoticeDismissed(false); // 새 공지가 오면 배너 다시 노출
         }
         localStorage.setItem('lastSeenNoticeId', latest.id);
       } else {
@@ -189,6 +191,7 @@ export default function Home() {
       alert('공지가 실시간 등록되었습니다.');
       setNewNoticeText('');
       setShowNoticeInput(false);
+      setIsNoticeDismissed(false); // 직접 등록 시에도 노출 보장
       fetchLatestNotice();
     } else {
       alert('공지 등록에 실패했습니다.');
@@ -224,8 +227,8 @@ export default function Home() {
       </button>
 
       {/* 실시간 공지 배너 영역 */}
-      {(notice || isAdmin) && (
-        <div className="home-notice-bar">
+      {(notice || isAdmin) && !isNoticeDismissed && (
+        <div className="home-notice-bar" onClick={() => setIsNoticeDismissed(true)} style={{ cursor: 'pointer' }} title="터치하여 공지 숨기기">
           <div className="notice-inner-content">
             <Megaphone size={16} className="notice-icon" />
             <div className="notice-text-marquee">
@@ -236,7 +239,7 @@ export default function Home() {
               )}
             </div>
           </div>
-          <div className="notice-actions">
+          <div className="notice-actions" onClick={(e) => e.stopPropagation()}>
             {isAdmin && (
               <>
                 {notice ? (
