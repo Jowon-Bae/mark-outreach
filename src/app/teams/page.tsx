@@ -308,7 +308,7 @@ export default function Teams() {
           className={`tab-item ${activeTab === 'contact' ? 'active' : ''}`}
           onClick={() => setActiveTab('contact')}
         >
-          조직원 연락망
+          팀별 연락망
         </button>
         <button 
           className={`tab-item ${activeTab === 'safety' ? 'active' : ''}`}
