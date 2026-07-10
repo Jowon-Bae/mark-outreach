@@ -61,7 +61,7 @@ export default function AppWrapper({ children }: { children: React.ReactNode }) 
     if (!isHydrated) return;
     
     const username = sessionStorage.getItem('username');
-    if (!username && pathname !== '/login') {
+    if (!username && pathname !== '/login' && pathname !== '/admin') {
       router.replace('/login');
     } else if (username && pathname === '/login') {
       router.replace('/');
@@ -72,7 +72,7 @@ export default function AppWrapper({ children }: { children: React.ReactNode }) 
     return <SplashScreen />;
   }
 
-  const hideLayout = pathname === '/login' || pathname === '/onboarding';
+  const hideLayout = pathname === '/login' || pathname === '/onboarding' || pathname === '/admin';
 
   return (
     <>
