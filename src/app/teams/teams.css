@@ -1,0 +1,144 @@
+.teams-container {
+  padding: 0 16px;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  padding-bottom: 80px;
+}
+
+.teams-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid #e5e8eb;
+  background-color: #f8f9fa;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.teams-header h2 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1e1e1e;
+  margin: 0;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: #4e5968;
+}
+
+.search-bar-container {
+  margin: 16px 0;
+}
+
+.search-input-wrapper {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border: 1px solid #e5e8eb;
+  border-radius: 12px;
+  padding: 8px 12px;
+  gap: 8px;
+}
+
+.search-icon {
+  color: #8b95a1;
+}
+
+.search-input-wrapper input {
+  border: none;
+  outline: none;
+  font-size: 14px;
+  width: 100%;
+  color: #1e1e1e;
+}
+
+.search-input-wrapper input::placeholder {
+  color: #8b95a1;
+}
+
+.teams-list-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.team-group-card {
+  background-color: white;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  border: 1px solid #e5e8eb;
+}
+
+.team-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 0 0 12px 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #f1f3f5;
+}
+
+.team-members-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.member-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.member-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.member-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1e1e1e;
+}
+
+.member-role {
+  font-size: 12px;
+  color: #8b95a1;
+}
+
+.phone-call-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background-color: #f1f3f5;
+  color: #4e5968;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.phone-call-btn:active {
+  background-color: #e5e8eb;
+}
+
+.phone-call-btn svg {
+  color: #1b64da;
+}
+
+.no-result {
+  text-align: center;
+  color: #8b95a1;
+  font-size: 14px;
+  padding: 40px 0;
+}

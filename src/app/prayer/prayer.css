@@ -1,0 +1,185 @@
+.prayer-container {
+  padding: 0 16px;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  padding-bottom: 80px;
+}
+
+.prayer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid #e5e8eb;
+  background-color: #f8f9fa;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.prayer-header h2 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1e1e1e;
+  margin: 0;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: #4e5968;
+}
+
+.write-prayer-card {
+  background-color: white;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  border: 1px solid #e5e8eb;
+  margin: 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.write-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.write-header h3 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 800;
+  color: #1e1e1e;
+}
+
+.write-prayer-card textarea {
+  border: 1px solid #e5e8eb;
+  border-radius: 12px;
+  padding: 12px;
+  min-height: 100px;
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+  resize: none;
+  color: #1e1e1e;
+}
+
+.write-prayer-card textarea::placeholder {
+  color: #8b95a1;
+}
+
+.submit-prayer-btn {
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.submit-prayer-btn:active {
+  background-color: var(--primary-dark);
+}
+
+.prayer-feed-section h3 {
+  font-size: 16px;
+  font-weight: 800;
+  color: #1e1e1e;
+  margin: 24px 0 14px 0;
+}
+
+.prayer-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.prayer-feed-card {
+  background-color: white;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  border: 1px solid #e5e8eb;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.prayer-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.prayer-card-header .avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #cbd5e1;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.prayer-card-header .meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.prayer-card-header .author {
+  font-size: 13px;
+  font-weight: 700;
+  color: #333d4b;
+}
+
+.prayer-card-header .time {
+  font-size: 11px;
+  color: #8b95a1;
+}
+
+.prayer-feed-card .content {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #1e1e1e;
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.prayer-card-footer {
+  display: flex;
+  border-top: 1px solid #f1f3f5;
+  padding-top: 10px;
+}
+
+.amen-badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: #8b95a1;
+  font-weight: 600;
+}
+
+.empty-feed, .loading-text {
+  text-align: center;
+  color: #8b95a1;
+  font-size: 13px;
+  padding: 24px 0;
+}
