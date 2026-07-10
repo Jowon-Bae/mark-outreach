@@ -14,8 +14,9 @@ export default function LoginPage() {
       return;
     }
     
-    // 세션 스토리지에 이름 저장 (앱 종료 시 초기화)
-    sessionStorage.setItem('username', username.trim());
+    // 로컬 스토리지에 이름 저장 (로그인 유지)
+    localStorage.setItem('username', username.trim());
+    sessionStorage.setItem('username', username.trim()); // 기존 세션스토리지 코드와 호환
     
     // 홈 화면으로 이동
     router.replace('/');

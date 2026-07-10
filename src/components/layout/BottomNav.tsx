@@ -1,6 +1,6 @@
 'use client';
 
-import { Home, Calendar, MessageSquare, BookOpen, Users } from 'lucide-react';
+import { Home, Calendar, MessageSquare, BookOpen, Users, Settings } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import './layout.css';
@@ -16,6 +16,7 @@ export default function BottomNav() {
     { name: '일정', path: '/schedule', icon: Calendar },
     { name: '묵상/기도', path: '/qt', icon: BookOpen },
     { name: '게시판', path: '/community', icon: MessageSquare },
+    { name: '설정', path: '/settings', icon: Settings },
   ];
 
   return (
