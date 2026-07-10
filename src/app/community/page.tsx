@@ -163,7 +163,7 @@ export default function Community() {
     <div className="community-container">
       {/* 상단 헤더 */}
       <div className="board-header">
-        <h2>소통 & 사진첩 💬</h2>
+        <h2>소통 & 사진첩</h2>
         {activeTab === 'board' && (
           <button 
             className="write-btn" 

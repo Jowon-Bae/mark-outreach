@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Phone, Search, ArrowLeft, MapPin, ExternalLink, ShieldAlert } from 'lucide-react';
+import { Phone, Search, ArrowLeft, MapPin, ExternalLink, ShieldAlert, Crown, Music, Video, Shield, User } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import './teams.css';
 
@@ -15,6 +15,7 @@ interface Member {
 interface Team {
   teamName: string;
   members: Member[];
+  icon: any;
 }
 
 interface MapLocation {
@@ -27,7 +28,8 @@ interface MapLocation {
 // 예시 마가 공동체 조직도 데이터 (아웃리치 사역에 최적화)
 const INITIAL_TEAMS: Team[] = [
   {
-    teamName: '총괄 및 사역자본부 👑',
+    teamName: '총괄 및 사역자본부',
+    icon: Crown,
     members: [
       { name: '김동혁', role: '담당 목사 (총괄 총무)', phone: '010-1234-5678' },
       { name: '이은혜', role: '담당 전도사 (양육)', phone: '010-8765-4321' },
@@ -35,7 +37,8 @@ const INITIAL_TEAMS: Team[] = [
     ]
   },
   {
-    teamName: '예배 및 찬양팀 🎸',
+    teamName: '예배 및 찬양팀',
+    icon: Music,
     members: [
       { name: '김민준', role: '예배팀장 (싱어)', phone: '010-1111-2222' },
       { name: '이서연', role: '반주자 (신디)', phone: '010-3333-4444' },
@@ -44,7 +47,8 @@ const INITIAL_TEAMS: Team[] = [
     ]
   },
   {
-    teamName: '미디어 & 방송팀 🎥',
+    teamName: '미디어 & 방송팀',
+    icon: Video,
     members: [
       { name: '정우진', role: '미디어팀장 (영상 촬영)', phone: '010-9999-0000' },
       { name: '한소희', role: 'PPT/자막 총괄', phone: '010-2222-3333' },
@@ -52,7 +56,8 @@ const INITIAL_TEAMS: Team[] = [
     ]
   },
   {
-    teamName: '안전 & 안내팀 🚨',
+    teamName: '안전 & 안내팀',
+    icon: Shield,
     members: [
       { name: '송지훈', role: '안전팀장 (차량 통제)', phone: '010-6666-7777' },
       { name: '윤아름', role: '의료/비상 구호', phone: '010-8888-9999' },
@@ -63,19 +68,19 @@ const INITIAL_TEAMS: Team[] = [
 
 const MAP_LOCATIONS: MapLocation[] = [
   {
-    name: '아웃리치 사역 본부 (충주 방주교회) ⛪',
+    name: '아웃리치 사역 본부 (충주 방주교회)',
     description: '사역 총괄 본부 및 예배 처소',
     naverUrl: 'https://map.naver.com/v5/entry/place/13490713',
     kakaoUrl: 'https://map.kakao.com/?itemId=8110992'
   },
   {
-    name: '메인 숙소 (방주 샬롬관) 🏡',
+    name: '메인 숙소 (방주 샬롬관)',
     description: '전체 지체 공동 숙소',
     naverUrl: 'https://map.naver.com/',
     kakaoUrl: 'https://map.kakao.com/'
   },
   {
-    name: '노방 전도 사역지 (충주 중앙시장) 📍',
+    name: '노방 전도 사역지 (충주 중앙시장)',
     description: '오후 문화 사역 및 관계 전도 장소',
     naverUrl: 'https://map.naver.com/',
     kakaoUrl: 'https://map.kakao.com/'
@@ -104,7 +109,7 @@ export default function Teams() {
         <button className="back-btn" onClick={() => router.push('/')}>
           <ArrowLeft size={20} />
         </button>
-        <h2>조직 & 안전 🚨</h2>
+        <h2>조직 & 안전</h2>
         <div style={{ width: 20 }}></div> {/* 중앙 정렬 밸런스용 */}
       </div>
 
@@ -144,26 +149,32 @@ export default function Teams() {
             {filteredTeams.length === 0 ? (
               <div className="no-result">검색 결과가 없습니다.</div>
             ) : (
-              filteredTeams.map((team, idx) => (
-                <div key={idx} className="team-group-card">
-                  <h3 className="team-title">{team.teamName}</h3>
-                  <div className="team-members-list">
-                    {team.members.map((member, mIdx) => (
-                      <div key={mIdx} className="member-row">
-                        <div className="member-info">
-                          <span className="member-name">{member.name}</span>
-                          <span className="member-role">{member.role}</span>
+              filteredTeams.map((team, idx) => {
+                const TeamIcon = team.icon;
+                return (
+                  <div key={idx} className="team-group-card">
+                    <h3 className="team-title">
+                      <TeamIcon size={16} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
+                      <span style={{ verticalAlign: 'middle' }}>{team.teamName}</span>
+                    </h3>
+                    <div className="team-members-list">
+                      {team.members.map((member, mIdx) => (
+                        <div key={mIdx} className="member-row">
+                          <div className="member-info">
+                            <span className="member-name">{member.name}</span>
+                            <span className="member-role">{member.role}</span>
+                          </div>
+                          {/* 전화 걸기 버튼 */}
+                          <a href={`tel:${member.phone}`} className="phone-call-btn">
+                            <Phone size={16} />
+                            <span>통화</span>
+                          </a>
                         </div>
-                        {/* 전화 걸기 버튼 */}
-                        <a href={`tel:${member.phone}`} className="phone-call-btn">
-                          <Phone size={16} />
-                          <span>통화</span>
-                        </a>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
-                </div>
-              ))
+                );
+              })
             )}
           </div>
         </>

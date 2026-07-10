@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabaseClient';
-import { BookOpen, CheckCircle, ArrowLeft, Users, Heart, Send, MessageSquareHeart } from 'lucide-react';
+import { BookOpen, CheckCircle, ArrowLeft, Users, Heart, Send, MessageSquareHeart, Lightbulb, Sparkles, Dices, User } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import './qt.css';
 
@@ -198,7 +198,7 @@ export default function QuietTime() {
         <button className="back-btn" onClick={() => router.push('/')}>
           <ArrowLeft size={20} />
         </button>
-        <h2>묵상 & 기도 🙏</h2>
+        <h2>묵상 & 기도</h2>
         <div style={{ width: 20 }}></div>
       </div>
 
@@ -237,7 +237,10 @@ export default function QuietTime() {
 
           {/* 묵상 가이드 */}
           <div className="meditation-card">
-            <h4>오늘의 묵상 나눔 💡</h4>
+            <h4 style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <Lightbulb size={16} />
+              <span>오늘의 묵상 나눔</span>
+            </h4>
             <p className="meditation-text">{qt.meditation}</p>
           </div>
 
@@ -270,8 +273,9 @@ export default function QuietTime() {
               ) : (
                 <div className="completions-tags">
                   {completedUsers.map((name, index) => (
-                    <span key={index} className="completion-tag">
-                      👤 {name}
+                    <span key={index} className="completion-tag" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <User size={12} />
+                      <span>{name}</span>
                     </span>
                   ))}
                 </div>
@@ -283,7 +287,7 @@ export default function QuietTime() {
         <div className="prayer-tab-content">
           {/* 랜덤 기도 뽑기 배너 */}
           <div className="draw-prayer-banner" onClick={drawRandomPrayer}>
-            <span className="dice-icon">🎲</span>
+            <Dices size={32} className="dice-icon" style={{ color: 'white' }} />
             <div className="banner-text">
               <h4>기도제목 랜덤 뽑기</h4>
               <p>지체들의 기도제목을 1개 뽑아 함께 기도해요!</p>
@@ -347,8 +351,14 @@ export default function QuietTime() {
               onClick={closePrayerPopup}
             >
               <div className="prayer-popup-card" onClick={(e) => e.stopPropagation()}>
-                <div className="prayer-card-decor">🙏 PRAYER RELAY</div>
-                <div className="prayer-card-author">👤 {randomPrayer.author} 지체의 기도제목</div>
+                <div className="prayer-card-decor" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}>
+                  <Sparkles size={12} />
+                  <span>PRAYER RELAY</span>
+                </div>
+                <div className="prayer-card-author" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+                  <User size={14} />
+                  <span>{randomPrayer.author} 지체의 기도제목</span>
+                </div>
                 <p className="prayer-card-content">“ {randomPrayer.content} ”</p>
                 <div className="prayer-card-footer-btns">
                   <button className="prayer-card-btn close" onClick={closePrayerPopup}>아멘 (기도했습니다)</button>
