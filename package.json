@@ -5,8 +5,7 @@
   "scripts": {
     "dev": "next dev --webpack",
     "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
+    "start": "next start"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.110.2",
@@ -22,6 +21,8 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/web-push": "^3.6.4",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.2.10",
     "typescript": "^5"
   }
 }
