@@ -1,3 +1,4 @@
+'use client';
 import { useState } from 'react';
 import { Calendar, MapPin, Coffee, Info, BookOpen } from 'lucide-react';
 import './schedule.css';
