@@ -5,7 +5,7 @@ import { supabase } from '@/lib/supabaseClient';
 import { BookOpen, CheckCircle, ArrowLeft, Users, Heart, Send, MessageSquareHeart, Lightbulb, Sparkles, Dices, User } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import './qt.css';
-
+import { RELAY_PRAYER_SCHEDULE } from '@/data/relayPrayer';
 // 묵상 콘텐츠 데이터 (날짜별 매핑)
 interface QTContent {
   passage: string;
@@ -313,6 +313,9 @@ export default function QuietTime() {
     fetchQTCompletions(dateStr);
   };
 
+  const todayRelayTargets = RELAY_PRAYER_SCHEDULE[dateStr] || [];
+  const isSunday = new Date(dateStr).getUTCDay() === 0;
+
   const handlePrayerSubmit = async () => {
     if (!content.trim()) {
       alert('기도제목을 입력해 주세요.');
@@ -500,30 +503,38 @@ export default function QuietTime() {
         </div>
       ) : (
         <div className="prayer-tab-content">
-          {/* 랜덤 기도 뽑기 배너 */}
-          <div className="draw-prayer-banner" onClick={drawRandomPrayer}>
-            <Dices size={32} className="dice-icon" style={{ color: 'white' }} />
-            <div className="banner-text">
-              <h4>기도제목 랜덤 뽑기</h4>
-              <p>지체들의 기도제목을 1개 뽑아 함께 기도해요!</p>
+          {/* 릴레이 기도 배너 */}
+          <div className="relay-prayer-card">
+            <div className="relay-header">
+              <MessageSquareHeart size={20} color="var(--primary)" />
+              <h3>오늘의 릴레이 기도</h3>
             </div>
-          </div>
-
-          {/* 기도 올리기 카드 */}
-          <div className="write-prayer-card">
-            <div className="write-header">
-              <MessageSquareHeart size={18} color="var(--primary)" />
-              <h3>나의 기도제목 나누기</h3>
-            </div>
-            <textarea
-              placeholder="이곳에 사역 기간 동안 나눌 기도제목을 입력해 주세요. (올리신 기도제목은 지체들이 랜덤으로 뽑아 함께 기도합니다!)"
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-            />
-            <button onClick={handlePrayerSubmit} disabled={isSubmitting} className="submit-prayer-btn">
-              <Send size={16} />
-              <span>기도제목 올리기</span>
-            </button>
+            {isSunday ? (
+              <div className="relay-empty">
+                <p>오늘은 주일입니다. 온전한 예배에 집중하며 릴레이 기도는 쉬어갑니다.</p>
+              </div>
+            ) : todayRelayTargets.length > 0 ? (
+              <>
+                <div className="relay-common-topic">
+                  <strong>공동의 기도제목</strong>
+                  <p>아웃리치를 통해 영혼들이 주님께 돌아오게 하소서. 사역의 모든 여정 가운데 안전을 지켜주시고, 팀원들이 하나 되어 기쁨으로 섬기게 하소서.</p>
+                </div>
+                <div className="relay-targets">
+                  <p className="relay-subtitle">오늘의 집중 기도 대상자</p>
+                  <div className="relay-tags">
+                    {todayRelayTargets.map((target: any, idx: number) => (
+                      <span key={idx} className={`relay-tag ${target.type}`}>
+                        {target.name}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div className="relay-empty">
+                <p>오늘은 예정된 릴레이 기도 명단이 없습니다.</p>
+              </div>
+            )}
           </div>
 
           {/* 기도제목 목록 피드 */}
