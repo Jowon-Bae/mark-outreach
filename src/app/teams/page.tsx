@@ -126,7 +126,9 @@ const INITIAL_TEAMS: Team[] = [
       { name: '김영민', role: '팀원', phone: '010-2718-4682' },
       { name: '문정은', role: '팀원', phone: '010-4702-8587' },
       { name: '노소영', role: '팀원', phone: '010-4818-4015' },
-      { name: '박순호', role: '팀원', phone: '010-9996-4877' }
+      { name: '박순호', role: '팀원', phone: '010-9996-4877' },
+      { name: '손성웅', role: '팀원', phone: '010-5967-3299' },
+      { name: '김문선', role: '팀원', phone: '010-0000-0000' }
     ]
   },
   {
@@ -182,7 +184,6 @@ const INITIAL_TEAMS: Team[] = [
       { name: '김보화', role: '팀원', phone: '010-7353-4648' },
       { name: '안민균', role: '팀원', phone: '010-9273-5938' },
       { name: '김사무엘', role: '팀원', phone: '010-6367-8764' },
-      { name: '손성웅', role: '팀원', phone: '010-5967-3299' },
       { name: '이용준', role: '팀원', phone: '010-8496-5311' },
       { name: '김혜미', role: '팀원', phone: '010-9171-6517' },
       { name: '김성희', role: '팀원', phone: '010-5248-7415' },
