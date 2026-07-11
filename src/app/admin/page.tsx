@@ -345,6 +345,15 @@ export default function AdminPage() {
               로그인 승인 관리
             </span>
           </button>
+          <button 
+            className={`nav-tab ${activeTab === 'qt' ? 'active' : ''}`}
+            onClick={() => setActiveTab('qt')}
+          >
+            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <Megaphone size={18} />
+              묵상 나눔 관리
+            </span>
+          </button>
         </div>
 
         {/* 탭 내용 영역 */}
@@ -635,6 +644,32 @@ export default function AdminPage() {
                       ))}
                     </tbody>
                   </table>
+                )}
+              </div>
+            </div>
+          )}
+          {activeTab === 'qt' && (
+            <div className="admin-section">
+              <h2>묵상 나눔 관리</h2>
+              <div className="admin-list">
+                {qtShares.length === 0 ? (
+                  <p>등록된 묵상이 없습니다.</p>
+                ) : (
+                  qtShares.map(qt => (
+                    <div key={qt.id} className="admin-list-item">
+                      <div className="admin-item-content">
+                        <strong>[{qt.date_str}] {qt.user_name}</strong>
+                        <p style={{ marginTop: '8px', color: '#555', whiteSpace: 'pre-wrap' }}>
+                          {qt.content ? qt.content : '(완료만 하고 나눔은 작성하지 않음)'}
+                        </p>
+                        <span className="admin-item-date">{new Date(qt.created_at).toLocaleString()}</span>
+                      </div>
+                      <button className="admin-delete-btn" onClick={() => handleDeleteQTShare(qt.id)}>
+                        <Trash2 size={16} />
+                        삭제
+                      </button>
+                    </div>
+                  ))
                 )}
               </div>
             </div>
