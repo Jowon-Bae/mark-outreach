@@ -10,6 +10,7 @@ export default function AdminPage() {
   const [password, setPassword] = useState('');
   const [activeTab, setActiveTab] = useState('stats'); // 'stats', 'community', 'gallery', 'notices', 'requests'
   const [loginRequests, setLoginRequests] = useState<any[]>([]);
+  const [qtShares, setQtShares] = useState<any[]>([]);
 
   const [stats, setStats] = useState<any[]>([]);
   const [posts, setPosts] = useState<any[]>([]);
@@ -37,6 +38,7 @@ export default function AdminPage() {
     fetchPhotos();
     fetchNotice();
     fetchLoginRequests();
+    fetchQTShares();
   };
 
   // 0. 로그인 승인 요청 불러오기
@@ -46,6 +48,26 @@ export default function AdminPage() {
       .select('*')
       .order('created_at', { ascending: false });
     if (!error && data) setLoginRequests(data);
+  };
+
+  // 0.5 묵상 데이터 불러오기
+  const fetchQTShares = async () => {
+    const { data, error } = await supabase
+      .from('qt_completions')
+      .select('*')
+      .order('created_at', { ascending: false });
+    if (!error && data) setQtShares(data);
+  };
+
+  const handleDeleteQTShare = async (id: string) => {
+    if (!confirm('정말 삭제하시겠습니까?')) return;
+    const { error } = await supabase.from('qt_completions').delete().eq('id', id);
+    if (!error) {
+      alert('삭제되었습니다.');
+      fetchQTShares();
+    } else {
+      alert('삭제 실패: ' + error.message);
+    }
   };
 
   // 1. 통계 데이터 불러오기
