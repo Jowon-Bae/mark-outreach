@@ -227,9 +227,14 @@ export default function QuietTime() {
     if (!error && data) {
       setCompletedUsers(data);
       
-      const userNames = data.map((item: any) => item.user_name);
-      if (currentUsername && userNames.includes(currentUsername)) {
-        setIsCompleted(true);
+      if (currentUsername) {
+        const myCompletion = data.find((item: any) => item.user_name === currentUsername);
+        if (myCompletion) {
+          setIsCompleted(true);
+          if (myCompletion.content) {
+            setShareText(myCompletion.content);
+          }
+        }
       }
     }
     setIsLoading(false);
