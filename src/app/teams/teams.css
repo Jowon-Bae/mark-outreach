@@ -415,6 +415,10 @@
   transition: opacity 0.2s;
 }
 
+.map-link svg {
+  flex-shrink: 0;
+}
+
 .map-link:active {
   opacity: 0.8;
 }
@@ -427,11 +431,19 @@
 .map-link.kakao {
   background-color: #fee500;
   color: #191919;
+  font-weight: 400;
+}
+
+.map-link.kakao b {
+  font-weight: 800;
 }
 
 .map-link.tmap {
-  background-color: #e8002d;
-  color: white;
+  background-color: #ffffff;
+  color: #1a1a1a;
+  border: 1px solid #e0e0e0;
+  font-weight: 800;
+  letter-spacing: 0.5px;
 }
 
 /* 안전수칙 모달 스타일 */

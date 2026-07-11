@@ -496,17 +496,38 @@ export default function Teams() {
                   </div>
                   
                   <div className="map-links">
+                    {/* 네이버 지도 */}
                     <a href={loc.naverUrl} target="_blank" rel="noopener noreferrer" className="map-link naver">
-                      <span>네이버 지도</span>
-                      <ExternalLink size={12} />
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+                        <path d="M16.273 12.845L7.376 0H0v24h7.727V11.155L16.624 24H24V0h-7.727z" fill="white"/>
+                      </svg>
+                      <span>지도</span>
                     </a>
+                    {/* 카카오맵 */}
                     <a href={loc.kakaoUrl} target="_blank" rel="noopener noreferrer" className="map-link kakao">
-                      <span>카카오 맵</span>
-                      <ExternalLink size={12} />
+                      <svg width="13" height="16" viewBox="0 0 28 36" fill="none">
+                        <path d="M14 0C6.268 0 0 5.82 0 13c0 4.1 1.9 7.75 4.9 10.23L3.5 36l9.2-5.9c.43.04.87.06 1.3.06 7.73 0 14-5.82 14-13S21.73 0 14 0z" fill="#3C89F9"/>
+                        <ellipse cx="14" cy="13" rx="5" ry="5" fill="white"/>
+                      </svg>
+                      <span>kakao<b>map</b></span>
                     </a>
+                    {/* 티맵 */}
                     <a href={loc.tmapUrl} className="map-link tmap">
-                      <span>티맵</span>
-                      <ExternalLink size={12} />
+                      <svg width="18" height="14" viewBox="0 0 60 46" fill="none">
+                        <defs>
+                          <linearGradient id={`tg1-${index}`} x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stopColor="#E91E8C"/>
+                            <stop offset="100%" stopColor="#00C896"/>
+                          </linearGradient>
+                          <linearGradient id={`tg2-${index}`} x1="0" y1="0" x2="0.2" y2="1">
+                            <stop offset="0%" stopColor="#00C896"/>
+                            <stop offset="100%" stopColor="#2B59C3"/>
+                          </linearGradient>
+                        </defs>
+                        <rect x="0" y="0" width="60" height="16" rx="4" fill={`url(#tg1-${index})`}/>
+                        <rect x="5" y="0" width="20" height="46" rx="4" fill={`url(#tg2-${index})`}/>
+                      </svg>
+                      <span>TMAP</span>
                     </a>
                   </div>
                 </div>
