@@ -447,7 +447,7 @@ export default function QuietTime() {
               />
               <button className="complete-btn" onClick={handleComplete} disabled={isLoading} style={{ backgroundColor: isCompleted ? '#4CAF50' : 'var(--primary)' }}>
                 <CheckCircle size={20} />
-                <span>{isCompleted ? '나눔 글 수정하기' : '오늘 말씀 묵상 완료하기'}</span>
+                <span>{isCompleted ? '묵상 올리기' : '오늘 말씀 묵상 완료하기'}</span>
               </button>
             </div>
           </div>
