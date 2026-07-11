@@ -7,9 +7,6 @@ const nextConfig: any = {
     'polite-toes-prove.loca.lt',
     'curvy-bottles-stay.loca.lt'
   ],
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   typescript: {
     ignoreBuildErrors: true,
   },
