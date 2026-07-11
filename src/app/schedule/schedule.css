@@ -207,7 +207,7 @@
   margin: 0;
   font-size: 1rem;
   font-weight: 800;
-  color: #1b64da;
+  color: #1e1e1e;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -239,8 +239,8 @@
 
 .guide-badge-notice {
   font-size: 0.75rem;
-  background-color: #ffebeb;
-  color: #c62828;
+  background-color: #f1f3f5;
+  color: #4e5968;
   padding: 2px 6px;
   border-radius: 4px;
   font-weight: 700;
@@ -250,8 +250,8 @@
 
 .guide-badge-info {
   font-size: 0.75rem;
-  background-color: #e2f9e7;
-  color: #2e7d32;
+  background-color: #f1f3f5;
+  color: #4e5968;
   padding: 2px 6px;
   border-radius: 4px;
   font-weight: 700;
@@ -274,5 +274,5 @@
 }
 
 .grid-item-team strong {
-  color: #1b64da;
+  color: #1e1e1e;
 }

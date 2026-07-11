@@ -127,7 +127,7 @@ export default function Schedule() {
                     <li><strong>짐 정리:</strong> 배정된 개인/팀별 숙소에 짐 정리 및 자녀 키즈케어 등록</li>
                     <li><strong>교회 이동:</strong> 준비 완료 후 버스로 교회 이동 (오후 13:30 수련원 출발)</li>
                   </ul>
-                  <p style={{ margin: '8px 0 0 0', fontWeight: '700', color: '#1b64da' }}>
+                  <p style={{ margin: '8px 0 0 0', fontWeight: '700', color: 'var(--primary)' }}>
                     키즈케어팀 & 안전요원팀은 수련원(숙소)에서 먼저 사역이 시작됩니다!
                   </p>
                 </div>
