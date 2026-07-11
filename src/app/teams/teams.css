@@ -232,6 +232,7 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
+  margin-top: 56px; /* sticky 헤더 높이만큼 여백 확보하여 첫 콘텐츠가 가려지지 않도록 처리 */
 }
 
 .emergency-alert-card {
