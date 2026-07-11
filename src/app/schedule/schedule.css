@@ -137,3 +137,142 @@
     background-color: rgba(79, 70, 229, 0.1);
   }
 }
+
+/* 일정 상세 가이드 스타일 */
+.detail-guide-section {
+  margin-top: 32px;
+  border-top: 1px solid var(--border);
+  padding-top: 24px;
+}
+
+.detail-guide-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--foreground);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.detail-tabs {
+  display: flex;
+  background-color: #f1f3f5;
+  padding: 4px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.detail-tab-btn {
+  flex: 1;
+  border: none;
+  background: none;
+  padding: 12px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #8b95a1;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.detail-tab-btn.active {
+  background-color: white;
+  color: #1e1e1e;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.guide-cards-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.guide-card {
+  background-color: white;
+  border: 1px solid #e5e8eb;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+  transition: transform 0.2s ease;
+}
+
+.guide-card-header {
+  border-bottom: 1.5px dashed #f1f3f5;
+  padding-bottom: 10px;
+  margin-bottom: 14px;
+}
+
+.guide-card-header h4 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 800;
+  color: #1b64da;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.guide-card-content {
+  font-size: 0.9rem;
+  color: #333d4b;
+  line-height: 1.6;
+}
+
+.guide-sub-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #1e1e1e;
+  margin-top: 12px;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.guide-ul {
+  padding-left: 16px;
+  margin: 4px 0 12px 0;
+}
+
+.guide-ul li {
+  margin-bottom: 4px;
+}
+
+.guide-badge-notice {
+  font-size: 0.75rem;
+  background-color: #ffebeb;
+  color: #c62828;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 700;
+  display: inline-block;
+  margin-bottom: 8px;
+}
+
+.guide-badge-info {
+  font-size: 0.75rem;
+  background-color: #e2f9e7;
+  color: #2e7d32;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 700;
+  display: inline-block;
+  margin-bottom: 8px;
+}
+
+.grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.grid-item-team {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.85rem;
+}
+
+.grid-item-team strong {
+  color: #1b64da;
+}
