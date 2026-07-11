@@ -69,7 +69,7 @@
 
 .main-content {
   padding-top: 90px;
-  padding-bottom: 80px;
+  padding-bottom: 95px; /* 하단 네비게이션 두께 증가에 대응하여 하단 패딩 확장 */
   min-height: 100vh;
 }
 
@@ -78,8 +78,8 @@
   bottom: 0;
   width: 100%;
   max-width: 480px;
-  min-height: 85px; /* 기본 65px에서 85px로 증가 */
-  padding-bottom: max(20px, env(safe-area-inset-bottom)); /* 아이콘들을 위로 0.5cm 밀어올림 */
+  min-height: 96px; /* 기존 85px에서 96px로 약 0.3cm(11px) 확장 */
+  padding-bottom: max(31px, env(safe-area-inset-bottom) + 11px); /* 아이콘 위치도 함께 11px 위로 이동시킴 */
   background: var(--surface);
   display: flex;
   justify-content: space-around;
