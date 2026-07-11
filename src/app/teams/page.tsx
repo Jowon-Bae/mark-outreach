@@ -315,35 +315,35 @@ export default function Teams() {
 
   return (
     <div className="teams-container">
-      {/* 상단 네비게이션 바 */}
-      <div className="teams-header">
-        <button className="back-btn" onClick={() => router.push('/')}>
-          <ArrowLeft size={20} />
-        </button>
-        <h2>조직 & 안전</h2>
-        <div style={{ width: 20 }}></div> {/* 중앙 정렬 밸런스용 */}
-      </div>
+      <div className="sticky-header-wrapper">
+        {/* 상단 네비게이션 바 */}
+        <div className="teams-header">
+          <button className="back-btn" onClick={() => router.push('/')}>
+            <ArrowLeft size={20} />
+          </button>
+          <h2>조직 & 안전</h2>
+          <div style={{ width: 20 }}></div> {/* 중앙 정렬 밸런스용 */}
+        </div>
 
-      {/* 상단 서브 탭 */}
-      <div className="top-tab-bar">
-        <button 
-          className={`tab-item ${activeTab === 'contact' ? 'active' : ''}`}
-          onClick={() => setActiveTab('contact')}
-        >
-          팀별 연락망
-        </button>
-        <button 
-          className={`tab-item ${activeTab === 'safety' ? 'active' : ''}`}
-          onClick={() => setActiveTab('safety')}
-        >
-          안전 가이드 (SOS)
-        </button>
-      </div>
+        {/* 상단 서브 탭 */}
+        <div className="top-tab-bar">
+          <button 
+            className={`tab-item ${activeTab === 'contact' ? 'active' : ''}`}
+            onClick={() => setActiveTab('contact')}
+          >
+            팀별 연락망
+          </button>
+          <button 
+            className={`tab-item ${activeTab === 'safety' ? 'active' : ''}`}
+            onClick={() => setActiveTab('safety')}
+          >
+            안전 가이드 (SOS)
+          </button>
+        </div>
 
-      {activeTab === 'contact' ? (
-        <>
-          {/* 검색 바 */}
-          <div className="search-bar-container">
+        {activeTab === 'contact' && (
+          /* 검색 바 */
+          <div className="search-bar-container" style={{ margin: '0 0 12px 0' }}>
             <div className="search-input-wrapper">
               <Search size={18} className="search-icon" />
               <input
@@ -354,6 +354,11 @@ export default function Teams() {
               />
             </div>
           </div>
+        )}
+      </div>
+
+      {activeTab === 'contact' ? (
+        <>
 
           {/* 팀 리스트 */}
           <div className="teams-list-section">

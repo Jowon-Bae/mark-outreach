@@ -176,12 +176,21 @@
 }
 
 /* 상단 탭 스타일 */
+.sticky-header-wrapper {
+  position: sticky;
+  top: 40px;
+  z-index: 100;
+  background-color: #f8f9fa; /* 뒤로 올라가는 지체 카드를 완벽하게 가리기 위한 배경색 설정 */
+  margin: 0 -16px; /* 컨테이너 패딩에 맞춰 가림막을 꽉 채우기 위해 음수 마진 설정 */
+  padding: 0 16px; /* 내부 요소 정렬 정밀성 유지 */
+}
+
 .top-tab-bar {
   display: flex;
   background-color: #f1f3f5;
   border-radius: 12px;
   padding: 4px;
-  margin: 12px 0 20px 0;
+  margin: 0 0 16px 0; /* 마진 하단만 할당 */
 }
 
 .tab-item {
