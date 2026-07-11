@@ -265,6 +265,7 @@
 .prayer-tab-content {
   display: flex;
   flex-direction: column;
+  margin-top: 56px; /* 상단 sticky 헤더 높이만큼 여백 확보 */
 }
 
 .write-prayer-card {
