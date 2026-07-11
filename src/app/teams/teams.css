@@ -185,6 +185,18 @@
   padding: 0 16px; /* 내부 요소 정렬 정밀성 유지 */
 }
 
+/* 스크롤 시 골드바 헤더와 sticky 헤더 사이의 빈틈으로 카드가 튀어나오는 현상 방지용 상단 실드 */
+.sticky-header-wrapper::before {
+  content: "";
+  position: absolute;
+  top: -100px; /* 위쪽으로 100px 영역을 차폐 */
+  left: 0;
+  right: 0;
+  height: 100px;
+  background-color: #f8f9fa;
+  z-index: -1;
+}
+
 .top-tab-bar {
   display: flex;
   background-color: #f1f3f5;
