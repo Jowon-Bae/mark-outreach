@@ -5,6 +5,7 @@ import { supabase } from '@/lib/supabaseClient';
 import { BookOpen, CheckCircle, ArrowLeft, Users, Heart, Send, MessageSquareHeart, Lightbulb, Sparkles, Dices, User } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import './qt.css';
+import { RELAY_PRAYER_SCHEDULE } from '@/data/relayPrayer';
 // 묵상 콘텐츠 데이터 (날짜별 매핑)
 interface QTContent {
   passage: string;
@@ -311,6 +312,9 @@ export default function QuietTime() {
     setIsCompleted(true);
     fetchQTCompletions(dateStr);
   };
+
+  const todayRelayTargets = RELAY_PRAYER_SCHEDULE[dateStr] || [];
+  const isSunday = new Date(dateStr).getUTCDay() === 0;
 
   const handlePrayerSubmit = async () => {
     if (!content.trim()) {

@@ -770,3 +770,89 @@
   color: #8b95a1;
   font-size: 14px;
 }
+
+/* 릴레이 기도 UI */
+.relay-prayer-card {
+  background-color: white;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  border: 1px solid #e5e8eb;
+  margin-bottom: 20px;
+}
+
+.relay-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f1f3f5;
+}
+
+.relay-header h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #1e1e1e;
+  font-weight: 800;
+}
+
+.relay-common-topic {
+  background-color: #f8f9fa;
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  border-left: 3px solid var(--primary);
+}
+
+.relay-common-topic strong {
+  display: block;
+  font-size: 13px;
+  color: var(--primary);
+  margin-bottom: 6px;
+}
+
+.relay-common-topic p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #333d4b;
+  font-weight: 600;
+}
+
+.relay-subtitle {
+  font-size: 14px;
+  font-weight: 700;
+  color: #4e5968;
+  margin: 0 0 12px 0;
+}
+
+.relay-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.relay-tag {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.relay-tag.adult {
+  background-color: #e8f3ff;
+  color: #1b64da;
+}
+
+.relay-tag.child {
+  background-color: #fff0f6;
+  color: #c2255c;
+}
+
+.relay-empty {
+  padding: 24px 0;
+  text-align: center;
+  color: #8b95a1;
+  font-size: 14px;
+}
