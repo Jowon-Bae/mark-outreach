@@ -284,7 +284,7 @@ export default function QuietTime() {
         .eq('date_str', dateStr);
         
       if (error) {
-        alert('나눔 글 수정에 실패했습니다.');
+        alert('나눔 글 수정에 실패했습니다: ' + error.message);
         return;
       }
     } else {
