@@ -63,7 +63,7 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-  margin-top: 16px; /* sticky 헤더 아래 팀 카드가 자연스럽게 위치하도록 소폭 여백 추가 */
+  margin-top: 24px; /* sticky 헤더 아래 팀 카드가 자연스럽게 위치하도록 여백 추가 */
 }
 
 .team-group-card {
