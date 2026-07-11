@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { Calendar, MapPin, Coffee, Info, BookOpen } from 'lucide-react';
+import { Calendar, MapPin, Coffee, Info, BookOpen, Car, Key, ClipboardList, Utensils, Smile, Sun, Sparkles, Flame } from 'lucide-react';
 import './schedule.css';
 
 export default function Schedule() {
@@ -102,7 +102,13 @@ export default function Schedule() {
               {/* 출발 & 체크인 */}
               <div className="guide-card">
                 <div className="guide-card-header">
-                  <h4>🚗 출발 & 🔑 체크인</h4>
+                  <h4 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <Car size={18} />
+                    <span>출발</span>
+                    <span style={{ color: '#ccc', fontWeight: '400', fontSize: '0.9rem' }}>&</span>
+                    <Key size={16} />
+                    <span>체크인</span>
+                  </h4>
                 </div>
                 <div className="guide-card-content">
                   <span className="guide-badge-notice">※ 도착 전, 개별 점심식사 필수!</span>
@@ -130,7 +136,10 @@ export default function Schedule() {
               {/* 사역 준비 모임 */}
               <div className="guide-card">
                 <div className="guide-card-header">
-                  <h4>🏫 사역 준비 (팀별 모임 장소)</h4>
+                  <h4 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <ClipboardList size={18} />
+                    <span>사역 준비 (팀별 모임 장소)</span>
+                  </h4>
                 </div>
                 <div className="guide-card-content">
                   <span className="guide-badge-info">팀별 장소 확인 및 모임 진행</span>
@@ -151,7 +160,13 @@ export default function Schedule() {
               {/* 저녁 식사 및 레크레이션 */}
               <div className="guide-card">
                 <div className="guide-card-header">
-                  <h4>🍗 저녁 식사 & 🎪 레크레이션</h4>
+                  <h4 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <Utensils size={18} />
+                    <span>저녁 식사</span>
+                    <span style={{ color: '#ccc', fontWeight: '400', fontSize: '0.9rem' }}>&</span>
+                    <Smile size={18} />
+                    <span>레크레이션</span>
+                  </h4>
                 </div>
                 <div className="guide-card-content">
                   <span className="guide-badge-notice">※ 키즈케어 1일차 종료</span>
@@ -178,7 +193,10 @@ export default function Schedule() {
               {/* 기상 및 아침식사 */}
               <div className="guide-card">
                 <div className="guide-card-header">
-                  <h4>🌅 기상 및 아침 사역 시작</h4>
+                  <h4 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <Sun size={18} />
+                    <span>기상 및 아침 사역 시작</span>
+                  </h4>
                 </div>
                 <div className="guide-card-content">
                   <span className="guide-badge-info">아침 로테이션 지침</span>
@@ -193,7 +211,10 @@ export default function Schedule() {
               {/* 마을잔치 */}
               <div className="guide-card">
                 <div className="guide-card-header">
-                  <h4>🎪 마을잔치 (메인 합동 사역)</h4>
+                  <h4 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <Sparkles size={18} />
+                    <span>마을잔치 (메인 합동 사역)</span>
+                  </h4>
                 </div>
                 <div className="guide-card-content">
                   <span className="guide-badge-notice">※ 점심 식사시간: 11:30 ~ 14:00 (지정 식당 이용)</span>
@@ -216,7 +237,13 @@ export default function Schedule() {
               {/* 저녁 식사 및 집회 */}
               <div className="guide-card">
                 <div className="guide-card-header">
-                  <h4>🍱 저녁 식사 & 🔥 저녁 집회</h4>
+                  <h4 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <Utensils size={18} />
+                    <span>저녁 식사</span>
+                    <span style={{ color: '#ccc', fontWeight: '400', fontSize: '0.9rem' }}>&</span>
+                    <Flame size={18} />
+                    <span>저녁 집회</span>
+                  </h4>
                 </div>
                 <div className="guide-card-content">
                   <span className="guide-badge-notice">※ 키즈케어 2일차 종료</span>
