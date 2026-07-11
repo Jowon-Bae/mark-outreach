@@ -200,15 +200,15 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="settings-container">
-      <div className="sticky-header-wrapper">
+    <div className="settings-container" style={{ paddingTop: '60px', paddingBottom: '95px', minHeight: '100vh', backgroundColor: '#f8f9fa' }}>
+      <div className="sticky-header-wrapper" style={{ paddingBottom: '20px' }}>
         {/* 헤더 바 */}
-        <div className="settings-header">
-          <h2 style={{ margin: 0 }}>설정</h2>
+        <div className="settings-header" style={{ display: 'flex', justifyContent: 'center', padding: '10px 20px 20px 20px', borderBottom: '1px solid #e5e8eb', backgroundColor: '#f8f9fa' }}>
+          <h2 style={{ margin: 0, fontSize: '18px', fontWeight: 800, color: '#1e1e1e' }}>설정</h2>
         </div>
       </div>
 
-      <div className="settings-content" style={{ paddingTop: '56px' }}>
+      <div className="settings-content" style={{ padding: '24px 16px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
         {/* 프로필 카드 */}
         <div className="profile-card">
           <div 
