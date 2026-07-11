@@ -459,9 +459,9 @@ export default function Teams() {
                 </div>
               </a>
 
-              <a href="tel:010-8888-9999" className="sos-card medical">
-                <span className="sos-label">의료 / 구호 본부</span>
-                <span className="sos-number">010-8888-9999</span>
+              <a href="tel:010-7363-2610" className="sos-card medical">
+                <span className="sos-label">신재식 의료팀장 연락처</span>
+                <span className="sos-number">010-7363-2610</span>
                 <div className="sos-icon-btn">
                   <Phone size={18} />
                   <span>전화 연결</span>
