@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { Calendar, MapPin, Coffee, Info, BookOpen, Car, Key, ClipboardList, Utensils, Smile, Sun, Sparkles, Flame } from 'lucide-react';
 import './schedule.css';
 
+export const dynamic = 'force-dynamic';
+
 export default function Schedule() {
   // 이미지 줌 상태
   const [zoomState, setZoomState] = useState({ isZoomed: false, x: 50, y: 50 });
