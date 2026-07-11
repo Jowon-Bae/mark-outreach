@@ -201,9 +201,11 @@ export default function SettingsPage() {
 
   return (
     <div className="settings-container">
-      {/* 헤더 바 */}
-      <div className="settings-header">
-        <h2 style={{ margin: 0 }}>설정</h2>
+      <div className="sticky-header-wrapper">
+        {/* 헤더 바 */}
+        <div className="settings-header">
+          <h2 style={{ margin: 0 }}>설정</h2>
+        </div>
       </div>
 
       <div className="settings-content">

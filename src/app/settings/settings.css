@@ -3,16 +3,13 @@
   flex-direction: column;
   min-height: 100vh;
   background-color: #f8f9fa;
-  padding-bottom: 90px; /* 하단 바 여유 */
+  padding-bottom: 95px; /* 늘어난 하단 탭바 여유 공간 설정 */
 }
 
 .settings-header {
-  position: sticky;
-  top: 0;
-  background-color: white;
-  padding: 16px 20px;
+  background-color: #f8f9fa; /* 투명도 매끄럽게 처리하기 위해 바탕색 사용 */
+  padding: 6px 20px 10px 20px; /* 패딩 축소하여 골드바 간격 축소 */
   border-bottom: 1px solid #e5e8eb;
-  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -22,6 +19,26 @@
   font-size: 18px;
   font-weight: 800;
   color: #1e1e1e;
+}
+
+/* 상단 고정(Sticky) 영역 및 가림막 실드 */
+.sticky-header-wrapper {
+  position: sticky;
+  top: 40px;
+  z-index: 100;
+  background-color: #f8f9fa;
+  padding: 0 0 12px 0; /* 하단 프로필 카드가 가려지지 않도록 마진 확보 */
+}
+
+.sticky-header-wrapper::before {
+  content: "";
+  position: absolute;
+  top: -100px;
+  left: 0;
+  right: 0;
+  height: 100px;
+  background-color: #f8f9fa;
+  z-index: -1;
 }
 
 .settings-content {

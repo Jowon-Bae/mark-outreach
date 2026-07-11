@@ -193,29 +193,31 @@ export default function QuietTime() {
 
   return (
     <div className="qt-container">
-      {/* 상단 헤더 */}
-      <div className="qt-header">
-        <button className="back-btn" onClick={() => router.push('/')}>
-          <ArrowLeft size={20} />
-        </button>
-        <h2>묵상 & 기도</h2>
-        <div style={{ width: 20 }}></div>
-      </div>
+      <div className="sticky-header-wrapper">
+        {/* 상단 헤더 */}
+        <div className="qt-header">
+          <button className="back-btn" onClick={() => router.push('/')}>
+            <ArrowLeft size={20} />
+          </button>
+          <h2>묵상 & 기도</h2>
+          <div style={{ width: 20 }}></div>
+        </div>
 
-      {/* 상단 서브 탭 */}
-      <div className="top-tab-bar">
-        <button 
-          className={`tab-item ${activeTab === 'qt' ? 'active' : ''}`}
-          onClick={() => setActiveTab('qt')}
-        >
-          오늘의 QT
-        </button>
-        <button 
-          className={`tab-item ${activeTab === 'prayer' ? 'active' : ''}`}
-          onClick={() => setActiveTab('prayer')}
-        >
-          기도 릴레이
-        </button>
+        {/* 상단 서브 탭 */}
+        <div className="top-tab-bar">
+          <button 
+            className={`tab-item ${activeTab === 'qt' ? 'active' : ''}`}
+            onClick={() => setActiveTab('qt')}
+          >
+            오늘의 QT
+          </button>
+          <button 
+            className={`tab-item ${activeTab === 'prayer' ? 'active' : ''}`}
+            onClick={() => setActiveTab('prayer')}
+          >
+            기도 릴레이
+          </button>
+        </div>
       </div>
 
       {activeTab === 'qt' ? (

@@ -179,36 +179,38 @@ export default function Community() {
 
   return (
     <div className="community-container">
-      {/* 상단 헤더 */}
-      <div className="board-header">
-        <h2>소통 & 사진첩</h2>
-        {activeTab === 'board' && (
-          <button 
-            className="write-btn" 
-            onClick={(e) => {
-              e.preventDefault();
-              setShowWriteModal(true);
-            }}
-          >
-            글쓰기
-          </button>
-        )}
-      </div>
+      <div className="sticky-header-wrapper">
+        {/* 상단 헤더 */}
+        <div className="board-header">
+          <h2>소통 & 사진첩</h2>
+          {activeTab === 'board' && (
+            <button 
+              className="write-btn" 
+              onClick={(e) => {
+                e.preventDefault();
+                setShowWriteModal(true);
+              }}
+            >
+              글쓰기
+            </button>
+          )}
+        </div>
 
-      {/* 상단 서브 탭 */}
-      <div className="top-tab-bar">
-        <button 
-          className={`tab-item ${activeTab === 'board' ? 'active' : ''}`}
-          onClick={() => setActiveTab('board')}
-        >
-          소통 게시판
-        </button>
-        <button 
-          className={`tab-item ${activeTab === 'gallery' ? 'active' : ''}`}
-          onClick={() => setActiveTab('gallery')}
-        >
-          사진첩
-        </button>
+        {/* 상단 서브 탭 */}
+        <div className="top-tab-bar">
+          <button 
+            className={`tab-item ${activeTab === 'board' ? 'active' : ''}`}
+            onClick={() => setActiveTab('board')}
+          >
+            소통 게시판
+          </button>
+          <button 
+            className={`tab-item ${activeTab === 'gallery' ? 'active' : ''}`}
+            onClick={() => setActiveTab('gallery')}
+          >
+            사진첩
+          </button>
+        </div>
       </div>
 
       {activeTab === 'board' ? (
