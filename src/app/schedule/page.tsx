@@ -102,11 +102,9 @@ export default function Schedule() {
               {/* 출발 & 체크인 */}
               <div className="guide-card">
                 <div className="guide-card-header">
-                  <h4 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <Car size={18} />
+                  <h4 style={{ display: 'flex', alignItems: 'center' }}>
                     <span>출발</span>
                     <span style={{ color: '#ccc', fontWeight: '400', fontSize: '0.9rem' }}>&</span>
-                    <Key size={16} />
                     <span>체크인</span>
                   </h4>
                 </div>
@@ -116,7 +114,7 @@ export default function Schedule() {
                   <ul className="guide-ul">
                     <li><strong>자차 이동 지체:</strong> 13:00까지 복된교회 영주수련원 도착</li>
                     <li style={{ listStyleType: 'none', fontSize: '0.85rem', color: '#4e5968', marginLeft: '-10px' }}>
-                      📍 주소: 경상북도 영주시 문수면 조제로 50
+                      주소: 경상북도 영주시 문수면 조제로 50
                     </li>
                     <li><strong>버스 이동 지체:</strong> 상문고등학교에서 오전 8:00 정각 출발 (소요 약 3시간 30분, 휴게소 1시간 정차 예정)</li>
                   </ul>
@@ -128,7 +126,7 @@ export default function Schedule() {
                     <li><strong>교회 이동:</strong> 준비 완료 후 버스로 교회 이동 (오후 13:30 수련원 출발)</li>
                   </ul>
                   <p style={{ margin: '8px 0 0 0', fontWeight: '700', color: '#1b64da' }}>
-                    💡 키즈케어팀 & 안전요원팀은 수련원(숙소)에서 먼저 사역이 시작됩니다!
+                    키즈케어팀 & 안전요원팀은 수련원(숙소)에서 먼저 사역이 시작됩니다!
                   </p>
                 </div>
               </div>
@@ -136,8 +134,7 @@ export default function Schedule() {
               {/* 사역 준비 모임 */}
               <div className="guide-card">
                 <div className="guide-card-header">
-                  <h4 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <ClipboardList size={18} />
+                  <h4 style={{ display: 'flex', alignItems: 'center' }}>
                     <span>사역 준비 (팀별 모임 장소)</span>
                   </h4>
                 </div>
@@ -160,11 +157,9 @@ export default function Schedule() {
               {/* 저녁 식사 및 레크레이션 */}
               <div className="guide-card">
                 <div className="guide-card-header">
-                  <h4 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <Utensils size={18} />
+                  <h4 style={{ display: 'flex', alignItems: 'center' }}>
                     <span>저녁 식사</span>
                     <span style={{ color: '#ccc', fontWeight: '400', fontSize: '0.9rem' }}>&</span>
-                    <Smile size={18} />
                     <span>레크레이션</span>
                   </h4>
                 </div>
@@ -183,7 +178,7 @@ export default function Schedule() {
                     <li>모두 적극적이고 즐거운 마음으로 동참하기!</li>
                   </ul>
                   <p style={{ margin: '8px 0 0 0', fontWeight: '700', color: '#8b95a1', fontStyle: 'italic' }}>
-                    💤 취침: 1일차 일정 종료 및 휴식
+                    취침: 1일차 일정 종료 및 휴식
                   </p>
                 </div>
               </div>
@@ -193,8 +188,7 @@ export default function Schedule() {
               {/* 기상 및 아침식사 */}
               <div className="guide-card">
                 <div className="guide-card-header">
-                  <h4 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <Sun size={18} />
+                  <h4 style={{ display: 'flex', alignItems: 'center' }}>
                     <span>기상 및 아침 사역 시작</span>
                   </h4>
                 </div>
@@ -211,8 +205,7 @@ export default function Schedule() {
               {/* 마을잔치 */}
               <div className="guide-card">
                 <div className="guide-card-header">
-                  <h4 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <Sparkles size={18} />
+                  <h4 style={{ display: 'flex', alignItems: 'center' }}>
                     <span>마을잔치 (메인 합동 사역)</span>
                   </h4>
                 </div>
@@ -226,7 +219,7 @@ export default function Schedule() {
                     <li><strong>철수 정리:</strong> 16:00 전 사역 종료 후 17:00까지 깔끔하게 정리 완료</li>
                   </ul>
 
-                  <span className="guide-sub-title">🍔 팀원 점심 식사 메뉴</span>
+                  <span className="guide-sub-title">팀원 점심 식사 메뉴</span>
                   <ul className="guide-ul">
                     <li><strong>성인 지체:</strong> 든든한 한우국밥 + 김치</li>
                     <li><strong>자녀 지체:</strong> 맛있는 공기밥, 맑은 국, 반찬류</li>
@@ -237,11 +230,9 @@ export default function Schedule() {
               {/* 저녁 식사 및 집회 */}
               <div className="guide-card">
                 <div className="guide-card-header">
-                  <h4 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <Utensils size={18} />
+                  <h4 style={{ display: 'flex', alignItems: 'center' }}>
                     <span>저녁 식사</span>
                     <span style={{ color: '#ccc', fontWeight: '400', fontSize: '0.9rem' }}>&</span>
-                    <Flame size={18} />
                     <span>저녁 집회</span>
                   </h4>
                 </div>
@@ -259,7 +250,7 @@ export default function Schedule() {
                     <li>집회 종료 후 숙소로 복귀하기 전, 사용한 교회 시설과 쓰레기를 완벽하게 청소·정리합니다.</li>
                   </ul>
                   <p style={{ margin: '8px 0 0 0', fontWeight: '700', color: '#8b95a1', fontStyle: 'italic' }}>
-                    💤 취침: 2일차 전체 사역 종료 및 평안한 밤
+                    취침: 2일차 전체 사역 종료 및 평안한 밤
                   </p>
                 </div>
               </div>
