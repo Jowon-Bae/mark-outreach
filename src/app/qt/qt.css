@@ -52,7 +52,7 @@
 }
 
 .qt-date-card {
-  margin: 16px 0;
+  margin: 56px 0 16px 0; /* 상단은 sticky 헤더 높이만큼 여백 확보 */
   display: flex;
   flex-direction: column;
   gap: 2px;
