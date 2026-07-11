@@ -57,6 +57,7 @@
 .post-list {
   display: flex;
   flex-direction: column;
+  margin-top: 56px; /* sticky 헤더 높이만큼 여백 확보하여 첫 게시글이 가려지지 않도록 처리 */
 }
 
 .post-item-flat {
