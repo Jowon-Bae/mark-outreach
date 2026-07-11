@@ -417,41 +417,59 @@ export default function QuietTime() {
             <p className="meditation-text">{qt.meditation}</p>
           </div>
 
-          {/* 완료 상태 버튼 */}
-          <div className="action-section">
-            {isCompleted ? (
+          {/* 묵상 완료 및 나눔 입력 */}
+          {!isCompleted ? (
+            <div className="qt-share-section">
+              <div className="qt-share-input-wrapper">
+                <textarea
+                  className="qt-share-input"
+                  placeholder="오늘 말씀에서 받은 은혜를 자유롭게 나누어 주세요. (선택 사항)"
+                  value={shareText}
+                  onChange={(e) => setShareText(e.target.value)}
+                />
+                <button className="complete-btn" onClick={handleComplete} disabled={isLoading}>
+                  <CheckCircle size={20} />
+                  <span>오늘 말씀 묵상 완료하기</span>
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="action-section">
               <div className="completed-badge">
                 <CheckCircle size={20} color="#1b64da" />
                 <span>오늘의 말씀 묵상을 완료했습니다! 은혜로운 하루 보내세요.</span>
               </div>
-            ) : (
-              <button className="complete-btn" onClick={handleComplete} disabled={isLoading}>
-                <CheckCircle size={20} />
-                <span>오늘 말씀 묵상 완료하기</span>
-              </button>
-            )}
-          </div>
+            </div>
+          )}
 
-          {/* 실시간 묵상 완료자 목록 */}
-          <div className="completions-card">
-            <div className="completions-header">
+          {/* 지체들의 묵상 나눔 피드 */}
+          <div className="completions-card" style={{ marginTop: '20px' }}>
+            <div className="completions-header" style={{ borderBottom: '1px solid #f0f0f0', paddingBottom: '12px' }}>
               <Users size={16} />
               <h4>오늘 묵상을 완료한 지체들 ({completedUsers.length}명)</h4>
             </div>
-            <div className="completions-list">
+            
+            <div className="qt-share-list">
               {isLoading ? (
                 <div className="loading-text">로딩 중...</div>
               ) : completedUsers.length === 0 ? (
                 <div className="no-completions">가장 먼저 오늘의 말씀을 묵상해 보세요!</div>
               ) : (
-                <div className="completions-tags">
-                  {completedUsers.map((name, index) => (
-                    <span key={index} className="completion-tag" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      <User size={12} />
-                      <span>{name}</span>
-                    </span>
-                  ))}
-                </div>
+                completedUsers.map((completion, idx) => (
+                  <div key={idx} className="qt-share-card">
+                    <div className="qt-share-header">
+                      <div className="qt-share-avatar">
+                        {completion.user_name.substring(0, 1)}
+                      </div>
+                      <span className="qt-share-name">{completion.user_name}</span>
+                    </div>
+                    {completion.content && (
+                      <div className="qt-share-text">
+                        {completion.content}
+                      </div>
+                    )}
+                  </div>
+                ))
               )}
             </div>
           </div>
