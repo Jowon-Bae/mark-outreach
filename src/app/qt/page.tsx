@@ -5,7 +5,6 @@ import { supabase } from '@/lib/supabaseClient';
 import { BookOpen, CheckCircle, ArrowLeft, Users, Heart, Send, MessageSquareHeart, Lightbulb, Sparkles, Dices, User } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import './qt.css';
-import { RELAY_PRAYER_SCHEDULE } from '@/data/relayPrayer';
 // 묵상 콘텐츠 데이터 (날짜별 매핑)
 interface QTContent {
   passage: string;
@@ -313,9 +312,6 @@ export default function QuietTime() {
     fetchQTCompletions(dateStr);
   };
 
-  const todayRelayTargets = RELAY_PRAYER_SCHEDULE[dateStr] || [];
-  const isSunday = new Date(dateStr).getUTCDay() === 0;
-
   const handlePrayerSubmit = async () => {
     if (!content.trim()) {
       alert('기도제목을 입력해 주세요.');
@@ -383,25 +379,10 @@ export default function QuietTime() {
           <div style={{ width: 20 }}></div>
         </div>
 
-        {/* 상단 서브 탭 */}
-        <div className="top-tab-bar">
-          <button 
-            className={`tab-item ${activeTab === 'qt' ? 'active' : ''}`}
-            onClick={() => setActiveTab('qt')}
-          >
-            오늘의 QT
-          </button>
-          <button 
-            className={`tab-item ${activeTab === 'prayer' ? 'active' : ''}`}
-            onClick={() => setActiveTab('prayer')}
-          >
-            기도 릴레이
-          </button>
-        </div>
+        {/* 상단 서브 탭 (제거됨) */}
       </div>
 
-      {activeTab === 'qt' ? (
-        <div className="qt-tab-content">
+      <div className="qt-tab-content">
           {/* 날짜 표시 */}
           <div className="qt-date-card">
             <span className="qt-label">TODAY'S BREAD</span>
@@ -501,99 +482,6 @@ export default function QuietTime() {
             </div>
           </div>
         </div>
-      ) : (
-        <div className="prayer-tab-content">
-          {/* 릴레이 기도 배너 */}
-          <div className="relay-prayer-card">
-            <div className="relay-header">
-              <MessageSquareHeart size={20} color="var(--primary)" />
-              <h3>오늘의 릴레이 기도</h3>
-            </div>
-            {isSunday ? (
-              <div className="relay-empty">
-                <p>오늘은 주일입니다. 온전한 예배에 집중하며 릴레이 기도는 쉬어갑니다.</p>
-              </div>
-            ) : todayRelayTargets.length > 0 ? (
-              <>
-                <div className="relay-common-topic">
-                  <strong>공동의 기도제목</strong>
-                  <p>아웃리치를 통해 영혼들이 주님께 돌아오게 하소서. 사역의 모든 여정 가운데 안전을 지켜주시고, 팀원들이 하나 되어 기쁨으로 섬기게 하소서.</p>
-                </div>
-                <div className="relay-targets">
-                  <p className="relay-subtitle">오늘의 집중 기도 대상자</p>
-                  <div className="relay-tags">
-                    {todayRelayTargets.map((target: any, idx: number) => (
-                      <span key={idx} className={`relay-tag ${target.type}`}>
-                        {target.name}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </>
-            ) : (
-              <div className="relay-empty">
-                <p>오늘은 예정된 릴레이 기도 명단이 없습니다.</p>
-              </div>
-            )}
-          </div>
-
-          {/* 기도제목 목록 피드 */}
-          <div className="prayer-feed-section">
-            <h3>지체들의 기도제목</h3>
-            <div className="prayer-list">
-              {isPrayersLoading ? (
-                <div className="loading-text">로딩 중...</div>
-              ) : prayers.length === 0 ? (
-                <div className="empty-feed">등록된 기도제목이 없습니다. 첫 기도제목을 나누어보세요!</div>
-              ) : (
-                prayers.map((prayer) => (
-                  <div key={prayer.id} className="prayer-feed-card">
-                    <div className="prayer-card-header">
-                      <div className="avatar">
-                        {prayer.author.substring(0, 1)}
-                      </div>
-                      <div className="meta">
-                        <span className="author">{prayer.author}</span>
-                        <span className="time">{formatTime(prayer.created_at)}</span>
-                      </div>
-                    </div>
-                    <p className="content">{prayer.content}</p>
-                    <div className="prayer-card-footer">
-                      <span className="amen-badge">
-                        <Heart size={12} fill="#ff4b4b" color="#ff4b4b" />
-                        아멘으로 함께합니다
-                      </span>
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
-
-          {/* 랜덤 기도 카드 팝업 */}
-          {showPrayerPopup && randomPrayer && (
-            <div 
-              className={`welcome-popup-overlay ${isPrayerFadingOut ? 'fade-out' : 'fade-in'}`}
-              onClick={closePrayerPopup}
-            >
-              <div className="prayer-popup-card" onClick={(e) => e.stopPropagation()}>
-                <div className="prayer-card-decor" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}>
-                  <Sparkles size={12} />
-                  <span>PRAYER RELAY</span>
-                </div>
-                <div className="prayer-card-author" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
-                  <User size={14} />
-                  <span>{randomPrayer.author} 지체의 기도제목</span>
-                </div>
-                <p className="prayer-card-content">“ {randomPrayer.content} ”</p>
-                <div className="prayer-card-footer-btns">
-                  <button className="prayer-card-btn close" onClick={closePrayerPopup}>아멘 (기도했습니다)</button>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-    </div>
+      </div>
   );
 }

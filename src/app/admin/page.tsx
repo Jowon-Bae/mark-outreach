@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 import { Trash2, Upload, Megaphone, UserCheck, Calendar } from 'lucide-react';
-import { RELAY_PRAYER_SCHEDULE } from '@/data/relayPrayer';
 import './admin.css';
 
 export default function AdminPage() {
@@ -355,15 +354,7 @@ export default function AdminPage() {
               묵상 나눔 관리
             </span>
           </button>
-          <button 
-            className={`nav-tab ${activeTab === 'relay' ? 'active' : ''}`}
-            onClick={() => setActiveTab('relay')}
-          >
-            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <Calendar size={18} />
-              릴레이 명단
-            </span>
-          </button>
+          
         </div>
 
         {/* 탭 내용 영역 */}
