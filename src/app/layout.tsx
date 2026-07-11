@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   description: "서울드림교회 마가공동체 국내 아웃리치 앱",
   manifest: "/manifest.json",
   icons: {
-    apple: "/apple-touch-icon.png?v=2",
+    apple: "/apple-icon-v2.png",
   },
   appleWebApp: {
     capable: true,
