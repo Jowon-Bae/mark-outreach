@@ -177,6 +177,10 @@
   padding: 40px 0;
 }
 
+.sticky-header-container {
+  width: 100%;
+}
+
 /* 상단 탭 스타일 */
 .sticky-header-wrapper {
   position: sticky;

@@ -315,7 +315,8 @@ export default function Teams() {
 
   return (
     <div className="teams-container">
-      <div className="sticky-header-wrapper">
+      <div className="sticky-header-container">
+        <div className="sticky-header-wrapper">
         {/* 상단 네비게이션 바 */}
         <div className="teams-header">
           <button className="back-btn" onClick={() => router.push('/')}>
@@ -356,6 +357,7 @@ export default function Teams() {
           </div>
         )}
       </div>
+    </div>
 
       {activeTab === 'contact' ? (
         <>

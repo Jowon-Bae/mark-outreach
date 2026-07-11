@@ -179,7 +179,8 @@ export default function Community() {
 
   return (
     <div className="community-container">
-      <div className="sticky-header-wrapper">
+      <div className="sticky-header-container">
+        <div className="sticky-header-wrapper">
         {/* 상단 헤더 */}
         <div className="board-header">
           <h2>소통 & 사진첩</h2>
@@ -212,6 +213,7 @@ export default function Community() {
           </button>
         </div>
       </div>
+    </div>
 
       {activeTab === 'board' ? (
         <div className="post-list">
