@@ -356,7 +356,7 @@ export default function QuietTime() {
 
           {/* 말씀 카드 */}
           <div className="qt-card">
-            <span className="qt-passage-badge">{qt.passage}</span>
+            <span className="qt-passage-badge">[생명의 삶] {qt.passage}</span>
             <h3 className="qt-title">{qt.title}</h3>
             <div className="qt-verses">
               <p>{qt.verses}</p>
