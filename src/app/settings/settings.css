@@ -3,6 +3,7 @@
   flex-direction: column;
   min-height: 100vh;
   background-color: #f8f9fa;
+  padding-top: 50px; /* 글로벌 고정 헤더 영역(40px) + 여유(10px) 확보 */
   padding-bottom: 95px; /* 늘어난 하단 탭바 여유 공간 설정 */
 }
 
@@ -42,7 +43,7 @@
 }
 
 .settings-content {
-  padding: 56px 16px 20px 16px; /* 상단 헤더 가려짐 방지를 위해 패딩 증가 */
+  padding: 20px 16px;
   display: flex;
   flex-direction: column;
   gap: 20px;
