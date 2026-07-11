@@ -401,7 +401,7 @@ export default function Teams() {
                                   <User size={15} color="#8b95a1" />
                                 </div>
                               )}
-                              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
                                 <span className="member-name">{member.name}</span>
                                 <span className="member-role">{member.role}</span>
                               </div>
