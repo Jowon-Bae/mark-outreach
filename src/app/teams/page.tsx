@@ -450,9 +450,9 @@ export default function Teams() {
           <div className="safety-sub-section">
             <h3 className="section-title">긴급 연락처 (SOS)</h3>
             <div className="sos-buttons-grid">
-              <a href="tel:010-1234-5678" className="sos-card hq">
-                <span className="sos-label">총괄 사역 본부</span>
-                <span className="sos-number">010-1234-5678</span>
+              <a href="tel:010-7557-1090" className="sos-card hq">
+                <span className="sos-label">김민우 총무 연락처</span>
+                <span className="sos-number">010-7557-1090</span>
                 <div className="sos-icon-btn">
                   <Phone size={18} />
                   <span>전화 연결</span>
