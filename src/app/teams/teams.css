@@ -9,7 +9,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 0;
+  padding: 6px 0 10px 0; /* 기존 16px에서 축소하여 골드바 간격 반으로 줄임 */
   border-bottom: 1px solid #e5e8eb;
   background-color: #f8f9fa;
 }
@@ -182,7 +182,7 @@
   z-index: 100;
   background-color: #f8f9fa; /* 뒤로 올라가는 지체 카드를 완벽하게 가리기 위한 배경색 설정 */
   margin: 0 -16px; /* 컨테이너 패딩에 맞춰 가림막을 꽉 채우기 위해 음수 마진 설정 */
-  padding: 0 16px; /* 내부 요소 정렬 정밀성 유지 */
+  padding: 0 16px 16px 16px; /* 하단 패딩을 16px 확보하여 밑의 지체 카드가 겹쳐 가려지지 않도록 공간 예약 */
 }
 
 /* 스크롤 시 골드바 헤더와 sticky 헤더 사이의 빈틈으로 카드가 튀어나오는 현상 방지용 상단 실드 */

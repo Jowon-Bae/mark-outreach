@@ -68,7 +68,7 @@
 }
 
 .main-content {
-  padding-top: 90px;
+  padding-top: 68px; /* 기존 90px에서 68px로 상단 패딩 축소 (골드바 간격 축소) */
   padding-bottom: 95px; /* 하단 네비게이션 두께 증가에 대응하여 하단 패딩 확장 */
   min-height: 100vh;
 }
