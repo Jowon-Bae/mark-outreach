@@ -5,13 +5,13 @@ import SplashScreen from "@/components/layout/SplashScreen";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "마가공동체 아웃리치",
+  title: "마가 공동체 국내 아웃리치",
   description: "서울드림교회 마가공동체 국내 아웃리치 앱",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "마가공동체",
+    title: "마가 공동체 국내 아웃리치",
   },
   formatDetection: {
     telephone: false,

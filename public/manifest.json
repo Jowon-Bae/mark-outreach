@@ -1,7 +1,7 @@
 {
-  "name": "마가공동체 아웃리치",
-  "short_name": "마가공동체",
-  "description": "마가공동체 아웃리치 어플리케이션",
+  "name": "마가 공동체 국내 아웃리치",
+  "short_name": "마가 공동체 국내 아웃리치",
+  "description": "마가 공동체 국내 아웃리치 어플리케이션",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
