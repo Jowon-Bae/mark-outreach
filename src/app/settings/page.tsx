@@ -208,7 +208,7 @@ export default function SettingsPage() {
         </div>
       </div>
 
-      <div className="settings-content">
+      <div className="settings-content" style={{ paddingTop: '56px' }}>
         {/* 프로필 카드 */}
         <div className="profile-card">
           <div 
