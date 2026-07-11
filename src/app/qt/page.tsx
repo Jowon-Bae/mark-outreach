@@ -270,18 +270,37 @@ export default function QuietTime() {
       return;
     }
 
-    if (isCompleted) return;
-
-    const { error } = await supabase
-      .from('qt_completions')
-      .insert([{ user_name: currentUsername, date_str: dateStr, content: shareText }]);
-
-    if (error) {
-      if (error.code === '23505') { // Unique constraint error
-        setIsCompleted(true);
-      } else {
-        alert('묵상 완료 기록에 실패했습니다.');
+    if (isCompleted) {
+      // Update existing record
+      const { error } = await supabase
+        .from('qt_completions')
+        .update({ content: shareText })
+        .eq('user_name', currentUsername)
+        .eq('date_str', dateStr);
+        
+      if (error) {
+        alert('나눔 글 수정에 실패했습니다.');
         return;
+      }
+    } else {
+      // Insert new record
+      const { error } = await supabase
+        .from('qt_completions')
+        .insert([{ user_name: currentUsername, date_str: dateStr, content: shareText }]);
+
+      if (error) {
+        if (error.code === '23505') { // Unique constraint error
+          setIsCompleted(true);
+          // try updating instead since it exists
+          await supabase
+            .from('qt_completions')
+            .update({ content: shareText })
+            .eq('user_name', currentUsername)
+            .eq('date_str', dateStr);
+        } else {
+          alert('묵상 완료 기록에 실패했습니다.');
+          return;
+        }
       }
     }
 
@@ -418,23 +437,23 @@ export default function QuietTime() {
           </div>
 
           {/* 묵상 완료 및 나눔 입력 */}
-          {!isCompleted ? (
-            <div className="qt-share-section">
-              <div className="qt-share-input-wrapper">
-                <textarea
-                  className="qt-share-input"
-                  placeholder="오늘 말씀에서 받은 은혜를 자유롭게 나누어 주세요. (선택 사항)"
-                  value={shareText}
-                  onChange={(e) => setShareText(e.target.value)}
-                />
-                <button className="complete-btn" onClick={handleComplete} disabled={isLoading}>
-                  <CheckCircle size={20} />
-                  <span>오늘 말씀 묵상 완료하기</span>
-                </button>
-              </div>
+          <div className="qt-share-section">
+            <div className="qt-share-input-wrapper">
+              <textarea
+                className="qt-share-input"
+                placeholder="오늘 말씀에서 받은 은혜를 자유롭게 나누어 주세요. (선택 사항)"
+                value={shareText}
+                onChange={(e) => setShareText(e.target.value)}
+              />
+              <button className="complete-btn" onClick={handleComplete} disabled={isLoading} style={{ backgroundColor: isCompleted ? '#4CAF50' : 'var(--primary)' }}>
+                <CheckCircle size={20} />
+                <span>{isCompleted ? '나눔 글 수정하기' : '오늘 말씀 묵상 완료하기'}</span>
+              </button>
             </div>
-          ) : (
-            <div className="action-section">
+          </div>
+          
+          {isCompleted && (
+            <div className="action-section" style={{ marginTop: '12px' }}>
               <div className="completed-badge">
                 <CheckCircle size={20} color="#1b64da" />
                 <span>오늘의 말씀 묵상을 완료했습니다! 은혜로운 하루 보내세요.</span>
