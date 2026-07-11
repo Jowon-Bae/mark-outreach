@@ -505,27 +505,22 @@ export default function Teams() {
                     </a>
                     {/* 카카오맵 */}
                     <a href={loc.kakaoUrl} target="_blank" rel="noopener noreferrer" className="map-link kakao">
-                      <svg width="13" height="16" viewBox="0 0 28 36" fill="none">
-                        <path d="M14 0C6.268 0 0 5.82 0 13c0 4.1 1.9 7.75 4.9 10.23L3.5 36l9.2-5.9c.43.04.87.06 1.3.06 7.73 0 14-5.82 14-13S21.73 0 14 0z" fill="#3C89F9"/>
-                        <ellipse cx="14" cy="13" rx="5" ry="5" fill="white"/>
+                      <svg width="15" height="20" viewBox="0 0 120 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fillRule="evenodd" clipRule="evenodd" d="M60 0C26.863 0 0 26.863 0 60c0 14.542 5.176 27.876 13.754 38.258L60 160l46.246-61.742C114.824 87.876 120 74.542 120 60c0-33.137-26.863-60-60-60zm0 85c-13.807 0-25-11.193-25-25s11.193-25 25-25 25 11.193 25 25-11.193 25-25 25z" fill="#0068FF"/>
                       </svg>
                       <span>kakao<b>map</b></span>
                     </a>
                     {/* 티맵 */}
                     <a href={loc.tmapUrl} className="map-link tmap">
-                      <svg width="18" height="14" viewBox="0 0 60 46" fill="none">
+                      <svg width="22" height="16" viewBox="0 0 110 80" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <defs>
-                          <linearGradient id={`tg1-${index}`} x1="0" y1="0" x2="1" y2="1">
-                            <stop offset="0%" stopColor="#E91E8C"/>
-                            <stop offset="100%" stopColor="#00C896"/>
-                          </linearGradient>
-                          <linearGradient id={`tg2-${index}`} x1="0" y1="0" x2="0.2" y2="1">
-                            <stop offset="0%" stopColor="#00C896"/>
-                            <stop offset="100%" stopColor="#2B59C3"/>
+                          <linearGradient id={`tmapGrad-${index}`} x1="10" y1="10" x2="75" y2="80" gradientUnits="userSpaceOnUse">
+                            <stop offset="0%" stopColor="#E00073"/>
+                            <stop offset="100%" stopColor="#0054FF"/>
                           </linearGradient>
                         </defs>
-                        <rect x="0" y="0" width="60" height="16" rx="4" fill={`url(#tg1-${index})`}/>
-                        <rect x="5" y="0" width="20" height="46" rx="4" fill={`url(#tg2-${index})`}/>
+                        <path d="M10 10 H 50 A 25 25 0 0 1 75 35 V 80 H 50 V 35 H 10 Z" fill={`url(#tmapGrad-${index})`}/>
+                        <path d="M82 10 H 107 V 35 H 82 Z" fill="#00C896"/>
                       </svg>
                       <span>TMAP</span>
                     </a>
