@@ -428,6 +428,11 @@
   color: #191919;
 }
 
+.map-link.tmap {
+  background-color: #e8002d;
+  color: white;
+}
+
 /* 안전수칙 모달 스타일 */
 .safety-modal-overlay {
   position: fixed;

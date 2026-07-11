@@ -23,6 +23,7 @@ interface MapLocation {
   description: string;
   naverUrl: string;
   kakaoUrl: string;
+  tmapUrl: string;
 }
 
 // 예시 마가 공동체 조직도 데이터 (아웃리치 사역에 최적화)
@@ -245,13 +246,15 @@ const MAP_LOCATIONS: MapLocation[] = [
     name: '아웃리치 사역 교회 (신광교회)',
     description: '사역 총괄 본부 및 예배 처소',
     naverUrl: 'https://naver.me/xF4hudjw',
-    kakaoUrl: 'https://map.kakao.com/?q=%EC%98%81%EC%A3%BC%20%EC%8B%A0%EA%B4%91%EA%B5%90%ED%9A%8C'
+    kakaoUrl: 'https://map.kakao.com/?q=%EC%98%81%EC%A3%BC%20%EC%8B%A0%EA%B4%91%EA%B5%90%ED%9A%8C',
+    tmapUrl: 'tmap://search?name=%EC%98%81%EC%A3%BC%20%EC%8B%A0%EA%B4%91%EA%B5%90%ED%9A%8C'
   },
   {
     name: '숙소 (복된교회 영주수련원)',
     description: '전체 지체 공동 숙소 및 수련처',
     naverUrl: 'https://naver.me/5kxZAFyk',
-    kakaoUrl: 'https://map.kakao.com/?q=%EB%B3%B5%EB%90%9C%EA%B5%90%ED%9A%8C%20%EC%98%81%EC%A3%BC%EC%88%98%EB%A0%A8%EC%9B%90'
+    kakaoUrl: 'https://map.kakao.com/?q=%EB%B3%B5%EB%90%9C%EA%B5%90%ED%9A%8C%20%EC%98%81%EC%A3%BC%EC%88%98%EB%A0%A8%EC%9B%90',
+    tmapUrl: 'tmap://search?name=%EB%B3%B5%EB%90%9C%EA%B5%90%ED%9A%8C%20%EC%98%81%EC%A3%BC%EC%88%98%EB%A0%A8%EC%9B%90'
   }
 ];
 
@@ -499,6 +502,10 @@ export default function Teams() {
                     </a>
                     <a href={loc.kakaoUrl} target="_blank" rel="noopener noreferrer" className="map-link kakao">
                       <span>카카오 맵</span>
+                      <ExternalLink size={12} />
+                    </a>
+                    <a href={loc.tmapUrl} className="map-link tmap">
+                      <span>티맵</span>
                       <ExternalLink size={12} />
                     </a>
                   </div>
