@@ -266,6 +266,9 @@ export default function Teams() {
   const [isClosing, setIsClosing] = useState(false);
 
   useEffect(() => {
+    // 페이지 진입 시 강제로 최상단 스크롤 이동
+    window.scrollTo(0, 0);
+    
     (async () => {
       try {
         const { supabase: supabaseClient } = await import('@/lib/supabaseClient');
@@ -315,8 +318,7 @@ export default function Teams() {
 
   return (
     <div className="teams-container">
-      <div className="sticky-header-container">
-        <div className="sticky-header-wrapper">
+      <div className="sticky-header-wrapper">
         {/* 상단 네비게이션 바 */}
         <div className="teams-header">
           <button className="back-btn" onClick={() => router.push('/')}>
@@ -357,7 +359,6 @@ export default function Teams() {
           </div>
         )}
       </div>
-    </div>
 
       {activeTab === 'contact' ? (
         <>

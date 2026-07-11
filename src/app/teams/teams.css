@@ -1,6 +1,4 @@
 .teams-container {
-  display: flex;
-  flex-direction: column;
   padding: 0 16px;
   background-color: #f8f9fa;
   min-height: 100vh;
@@ -177,9 +175,6 @@
   padding: 40px 0;
 }
 
-.sticky-header-container {
-  width: 100%;
-}
 
 /* 상단 탭 스타일 */
 .sticky-header-wrapper {

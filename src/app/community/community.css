@@ -1,6 +1,4 @@
 .community-container {
-  display: flex;
-  flex-direction: column;
   padding: 0 16px;
   background-color: white;
   min-height: 100vh;
@@ -23,9 +21,6 @@
 }
 
 /* 상단 고정(Sticky) 영역 및 가림막 실드 */
-.sticky-header-container {
-  width: 100%;
-}
 
 .sticky-header-wrapper {
   position: sticky;

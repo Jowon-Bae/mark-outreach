@@ -193,8 +193,7 @@ export default function QuietTime() {
 
   return (
     <div className="qt-container">
-      <div className="sticky-header-container">
-        <div className="sticky-header-wrapper">
+      <div className="sticky-header-wrapper">
         {/* 상단 헤더 */}
         <div className="qt-header">
           <button className="back-btn" onClick={() => router.push('/')}>
@@ -220,7 +219,6 @@ export default function QuietTime() {
           </button>
         </div>
       </div>
-    </div>
 
       {activeTab === 'qt' ? (
         <div className="qt-tab-content">
