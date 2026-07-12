@@ -60,7 +60,9 @@ const INITIAL_TEAMS: Team[] = [
       { name: '임은주', role: '팀원', phone: '010-5048-7580' },
       { name: '이광숙', role: '팀원', phone: '010-4425-3270' },
       { name: '이용섭', role: '팀원', phone: '010-5298-3127' },
-      { name: '김경록', role: '팀원', phone: '010-9521-0066' }
+      { name: '김경록', role: '팀원', phone: '010-9521-0066' },
+      { name: '정수현', role: '팀원', phone: '010-3758-1452' },
+      { name: '이병주', role: '팀원', phone: '010-0000-0000' }
     ]
   },
   {
