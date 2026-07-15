@@ -313,8 +313,17 @@ export default function QuietTime() {
     fetchQTCompletions(dateStr);
   };
 
-  const todayRelayTargets = RELAY_PRAYER_SCHEDULE[dateStr] || [];
+  const todayRelaySlots = RELAY_PRAYER_SCHEDULE[dateStr] || null;
   const isSunday = new Date(dateStr).getUTCDay() === 0;
+
+  // 현재 시간에 따라 기도 슬롯 결정 (아침 ~12시, 점심 12~17시, 저녁 17시~)
+  const getCurrentTimeSlot = (): '아침' | '점심' | '저녁' => {
+    const hour = new Date().getHours();
+    if (hour < 12) return '아침';
+    if (hour < 17) return '점심';
+    return '저녁';
+  };
+  const [activeTimeSlot, setActiveTimeSlot] = useState<'아침' | '점심' | '저녁'>(getCurrentTimeSlot());
 
   const handlePrayerSubmit = async () => {
     if (!content.trim()) {
@@ -428,6 +437,35 @@ export default function QuietTime() {
             </h4>
             <p className="meditation-text">{qt.meditation}</p>
           </div>
+
+          {/* 릴레이 기도 배너 */}
+          {!isSunday && todayRelaySlots && (
+            <div className="relay-prayer-banner">
+              <div className="relay-banner-header">
+                <Heart size={16} color="#e05c5c" />
+                <span>오늘의 릴레이 기도</span>
+              </div>
+              {/* 아침/점심/저녁 탭 */}
+              <div className="relay-time-tabs">
+                {(['아침', '점심', '저녁'] as const).map((slot) => (
+                  <button
+                    key={slot}
+                    className={`relay-time-tab ${activeTimeSlot === slot ? 'active' : ''}`}
+                    onClick={() => setActiveTimeSlot(slot)}
+                  >
+                    {slot === '아침' ? '🌅' : slot === '점심' ? '☀️' : '🌙'} {slot}
+                  </button>
+                ))}
+              </div>
+              {/* 해당 슬롯 멤버 목록 */}
+              <div className="relay-names-grid">
+                {(todayRelaySlots[activeTimeSlot] || []).map((name, idx) => (
+                  <span key={idx} className="relay-name-chip">{name}</span>
+                ))}
+              </div>
+              <p className="relay-banner-desc">위 지체들을 위해 함께 기도해 주세요 🙏</p>
+            </div>
+          )}
 
           {/* 묵상 완료 및 나눔 입력 */}
           <div className="qt-share-section">
