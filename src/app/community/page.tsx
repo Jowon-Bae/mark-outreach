@@ -325,10 +325,10 @@ export default function Community() {
                                 </div>
                                 <p className="comment-text-body">{comment.text}</p>
                                 <div className="comment-sub-actions">
-                                  <button className="comment-like-btn">
+                                  <button className="comment-like-btn" onClick={() => alert("준비 중인 기능입니다.")}>
                                     <ThumbsUp size={12} /> 좋아요
                                   </button>
-                                  <button className="comment-reply-btn">답글</button>
+                                  <button className="comment-reply-btn" onClick={() => alert("준비 중인 기능입니다.")}>답글</button>
                                 </div>
                               </div>
                             </div>
