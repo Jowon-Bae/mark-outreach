@@ -10,6 +10,7 @@ export default function Community() {
   const [showWriteModal, setShowWriteModal] = useState(false);
   const [newContent, setNewContent] = useState('');
   const [commentInputs, setCommentInputs] = useState<Record<string, string>>({});
+  const [replyingTo, setReplyingTo] = useState<Record<string, { id: string, author: string } | null>>({});
   const [isLoading, setIsLoading] = useState(true);
   const [avatarMap, setAvatarMap] = useState<Record<string, string>>({});
 
@@ -151,10 +152,16 @@ export default function Community() {
     if (!text || !text.trim()) return;
     
     const currentUsername = localStorage.getItem('username') || '익명';
+    const parent = replyingTo[postId];
 
     const { error } = await supabase
       .from('community_comments')
-      .insert([{ post_id: postId, author: currentUsername, text: text.trim() }]);
+      .insert([{ 
+        post_id: postId, 
+        author: currentUsername, 
+        text: text.trim(),
+        parent_id: parent ? parent.id : null 
+      }]);
 
     if (error) {
       alert('댓글 작성에 실패했습니다.');
@@ -162,7 +169,29 @@ export default function Community() {
     }
 
     setCommentInputs({ ...commentInputs, [postId]: '' });
+    setReplyingTo({ ...replyingTo, [postId]: null });
     fetchPosts();
+  };
+
+  // 댓글 좋아요
+  const handleCommentLike = async (postId: string, commentId: string, currentLikes: number) => {
+    // Optimistic update
+    setPosts(posts.map(post => {
+      if (post.id === postId) {
+        return {
+          ...post,
+          comments: post.comments.map((c: any) => 
+            c.id === commentId ? { ...c, likes: (c.likes || 0) + 1 } : c
+          )
+        };
+      }
+      return post;
+    }));
+
+    await supabase
+      .from('community_comments')
+      .update({ likes: (currentLikes || 0) + 1 })
+      .eq('id', commentId);
   };
 
   // 시간 포맷팅 함수
@@ -301,39 +330,55 @@ export default function Community() {
                       </div>
 
                       <div className="comments-list">
-                        {post.comments?.map((comment: any, idx: number) => {
-                          const isPostAuthor = comment.author === post.author;
-                          return (
-                            <div key={comment.id} className="comment-item">
-                              <div className="comment-avatar" style={{ overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                {avatarMap[comment.author] ? (
-                                  <img 
-                                    src={avatarMap[comment.author]} 
-                                    alt={comment.author} 
-                                    style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
-                                  />
-                                ) : (
-                                  comment.author.substring(0, 1)
-                                )}
-                              </div>
-                              <div className="comment-content-box">
-                                <div className="comment-user-info">
-                                  <span className="comment-user-name">{comment.author}</span>
-                                  {isPostAuthor && <span className="badge-author">작성자</span>}
-                                  {idx === 0 && !isPostAuthor && <span className="badge-first">첫 댓글</span>}
-                                  <span className="comment-time-text">· {formatTime(comment.created_at)}</span>
+                        {(() => {
+                          const topLevel = post.comments?.filter((c: any) => !c.parent_id) || [];
+                          const replies = post.comments?.filter((c: any) => c.parent_id) || [];
+                          
+                          const renderComment = (comment: any, isReply: boolean = false, idx: number = -1) => {
+                            const isPostAuthor = comment.author === post.author;
+                            return (
+                              <div key={comment.id} className={`comment-item ${isReply ? 'is-reply' : ''}`} style={isReply ? { paddingLeft: '44px', backgroundColor: '#fafafa', borderLeft: '3px solid #eee' } : {}}>
+                                <div className="comment-avatar" style={{ overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                  {avatarMap[comment.author] ? (
+                                    <img 
+                                      src={avatarMap[comment.author]} 
+                                      alt={comment.author} 
+                                      style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                                    />
+                                  ) : (
+                                    comment.author.substring(0, 1)
+                                  )}
                                 </div>
-                                <p className="comment-text-body">{comment.text}</p>
-                                <div className="comment-sub-actions">
-                                  <button className="comment-like-btn" onClick={() => alert("준비 중인 기능입니다.")}>
-                                    <ThumbsUp size={12} /> 좋아요
-                                  </button>
-                                  <button className="comment-reply-btn" onClick={() => alert("준비 중인 기능입니다.")}>답글</button>
+                                <div className="comment-content-box">
+                                  <div className="comment-user-info">
+                                    <span className="comment-user-name">{comment.author}</span>
+                                    {isPostAuthor && <span className="badge-author">작성자</span>}
+                                    {idx === 0 && !isPostAuthor && !isReply && <span className="badge-first">첫 댓글</span>}
+                                    <span className="comment-time-text">· {formatTime(comment.created_at)}</span>
+                                  </div>
+                                  <p className="comment-text-body">{comment.text}</p>
+                                  <div className="comment-sub-actions">
+                                    <button className="comment-like-btn" onClick={() => handleCommentLike(post.id, comment.id, comment.likes)}>
+                                      <ThumbsUp size={12} /> 좋아요 {comment.likes > 0 && comment.likes}
+                                    </button>
+                                    {!isReply && (
+                                      <button className="comment-reply-btn" onClick={() => setReplyingTo({ ...replyingTo, [post.id]: { id: comment.id, author: comment.author } })}>
+                                        답글
+                                      </button>
+                                    )}
+                                  </div>
                                 </div>
                               </div>
+                            );
+                          };
+
+                          return topLevel.map((comment: any, idx: number) => (
+                            <div key={comment.id} style={{ display: 'flex', flexDirection: 'column' }}>
+                              {renderComment(comment, false, idx)}
+                              {replies.filter((r: any) => r.parent_id === comment.id).map((reply: any) => renderComment(reply, true))}
                             </div>
-                          );
-                        })}
+                          ));
+                        })()}
                         {(!post.comments || post.comments.length === 0) && (
                           <div className="empty-comments">아직 댓글이 없습니다. 첫 댓글을 남겨보세요!</div>
                         )}
@@ -352,25 +397,35 @@ export default function Community() {
                             );
                           })()}
                         </div>
-                        <div className="comment-pill-input">
-                          <input 
-                            type="text" 
-                            placeholder="댓글을 입력해주세요." 
-                            value={commentInputs[post.id] || ''}
-                            onChange={(e) => setCommentInputs({
-                              ...commentInputs,
-                              [post.id]: e.target.value
-                            })}
-                            onKeyDown={(e) => {
-                              if (e.key === 'Enter') handleCommentSubmit(post.id);
-                            }}
-                          />
-                          <button 
-                            className="comment-send-btn"
-                            onClick={() => handleCommentSubmit(post.id)}
-                          >
-                            <Send size={16} />
-                          </button>
+                        <div className="comment-pill-input-wrapper" style={{ flex: 1, display: 'flex', flexDirection: 'column', backgroundColor: '#f1f3f5', borderRadius: '20px', padding: '10px 14px' }}>
+                          {replyingTo[post.id] && (
+                            <div style={{ fontSize: '11px', color: '#888', marginBottom: '6px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #ddd', paddingBottom: '4px' }}>
+                              <span>@{replyingTo[post.id]?.author}님에게 답글 남기는 중...</span>
+                              <button style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, color: '#999' }} onClick={() => setReplyingTo({ ...replyingTo, [post.id]: null })}>✕</button>
+                            </div>
+                          )}
+                          <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                            <input 
+                              type="text" 
+                              placeholder={replyingTo[post.id] ? "답글을 입력해주세요." : "댓글을 입력해주세요."}
+                              value={commentInputs[post.id] || ''}
+                              onChange={(e) => setCommentInputs({
+                                ...commentInputs,
+                                [post.id]: e.target.value
+                              })}
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter') handleCommentSubmit(post.id);
+                              }}
+                              style={{ flex: 1, border: 'none', outline: 'none', background: 'transparent', fontSize: '14px' }}
+                            />
+                            <button 
+                              className="comment-send-btn"
+                              onClick={() => handleCommentSubmit(post.id)}
+                              style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', color: '#007aff' }}
+                            >
+                              <Send size={16} />
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
