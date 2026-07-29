@@ -114,7 +114,8 @@ const INITIAL_TEAMS: Team[] = [
       { name: '이용건', role: '팀원', phone: '010-9100-3396' },
       { name: '서기열', role: '팀원', phone: '010-7155-3116' },
       { name: '한영원', role: '팀원', phone: '010-8538-0177' },
-      { name: '김나리', role: '팀원', phone: '010-8543-6612' }
+      { name: '김나리', role: '팀원', phone: '010-8543-6612' },
+      { name: '한라온', role: '팀원', phone: '010-0000-0000' }
     ]
   },
 
@@ -142,7 +143,8 @@ const INITIAL_TEAMS: Team[] = [
       { name: '조민영', role: '팀원', phone: '010-0000-0000' },
       { name: '박순관', role: '팀원', phone: '010-2794-2017' },
       { name: '서지혜', role: '팀원', phone: '010-0000-0000' },
-      { name: '하진수', role: '팀원', phone: '010-8919-4875' }
+      { name: '하진수', role: '팀원', phone: '010-8919-4875' },
+      { name: '황상수', role: '팀장', phone: '010-0000-0000' }
     ]
   },
 
@@ -164,7 +166,8 @@ const INITIAL_TEAMS: Team[] = [
       { name: '김영민', role: '팀원', phone: '010-2718-4682' },
       { name: '문정은', role: '팀원', phone: '010-4702-8587' },
       { name: '노소영', role: '팀원', phone: '010-4818-4015' },
-      { name: '박순호', role: '팀원', phone: '010-9996-4877' }
+      { name: '박순호', role: '팀원', phone: '010-9996-4877' },
+      { name: '조을원', role: '팀원', phone: '010-0000-0000' }
     ]
   },
 
@@ -185,7 +188,8 @@ const INITIAL_TEAMS: Team[] = [
       { name: '유영삼', role: '팀원', phone: '010-7226-3546' },
       { name: '추인애', role: '팀원', phone: '010-8617-8105' },
       { name: '김지선', role: '팀원', phone: '010-5411-8448' },
-      { name: '이승용', role: '팀원', phone: '010-2838-2147' }
+      { name: '이승용', role: '팀원', phone: '010-2838-2147' },
+      { name: '강원균', role: '팀원', phone: '010-0000-0000' }
     ]
   },
 
