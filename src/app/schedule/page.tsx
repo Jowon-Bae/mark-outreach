@@ -198,7 +198,7 @@ export default function Schedule() {
                 <div className="guide-card-content">
                   <span className="guide-badge-info">아침 로테이션 지침</span>
                   <ul className="guide-ul">
-                    <li><strong>아침 식사:</strong> 오전 08:00부터 수련원 식당에서 제공 (조식팀 담당)</li>
+                    <li><strong>아침 식사:</strong> 오전 07:00 ~ 08:00 수련원 식당에서 제공 (조식팀 담당)</li>
                     <li><strong>키즈케어팀:</strong> 자녀 돌봄 준비를 위해 가장 이른 시간대에 교회로 사전 이동</li>
                     <li><strong>팀별 사역자:</strong> 오전 사역 개시 시간에 맞춰 버스로 순차 이동 (첫 버스 09:00 출발 예정)</li>
                   </ul>
