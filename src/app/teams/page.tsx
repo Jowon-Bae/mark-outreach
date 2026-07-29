@@ -28,6 +28,7 @@ interface MapLocation {
 
 // 예시 마가 공동체 조직도 데이터 (아웃리치 사역에 최적화)
 const INITIAL_TEAMS: Team[] = [
+
   {
     teamName: '총무단',
     icon: Crown,
@@ -39,6 +40,27 @@ const INITIAL_TEAMS: Team[] = [
       { name: '선우진', role: '회계', phone: '010-8781-8806' },
     ]
   },
+
+  {
+    teamName: '로뎀팀',
+    icon: Shield,
+    members: [
+      { name: '김석영', role: '팀장', phone: '010-0000-0000' },
+      { name: '강정호', role: '팀원', phone: '010-8746-9531' },
+      { name: '김동진', role: '팀원', phone: '010-3476-0888' },
+      { name: '김소영', role: '팀원', phone: '010-0000-0000' },
+      { name: '김원영', role: '팀원', phone: '010-3858-7160' },
+      { name: '노경민', role: '팀원', phone: '010-0000-0000' },
+      { name: '심경보', role: '팀원', phone: '010-0000-0000' },
+      { name: '오지연', role: '팀원', phone: '010-0000-0000' },
+      { name: '전민기', role: '팀원', phone: '010-3761-0004' },
+      { name: '최문정', role: '팀원', phone: '010-0000-0000' },
+      { name: '김인호', role: '팀원', phone: '010-5781-4427' },
+      { name: '박소희', role: '팀원', phone: '010-3936-3656' },
+      { name: '성민선', role: '팀원', phone: '010-7122-1090' }
+    ]
+  },
+
   {
     teamName: '전도팀',
     icon: HeartHandshake,
@@ -63,6 +85,7 @@ const INITIAL_TEAMS: Team[] = [
       { name: '이병주', role: '팀원', phone: '010-0000-0000' }
     ]
   },
+
   {
     teamName: '의료팀',
     icon: Activity,
@@ -75,6 +98,7 @@ const INITIAL_TEAMS: Team[] = [
       { name: '한은정', role: '팀원', phone: '010-9870-3147' }
     ]
   },
+
   {
     teamName: '미디어팀',
     icon: Video,
@@ -87,6 +111,7 @@ const INITIAL_TEAMS: Team[] = [
       { name: '김나리', role: '팀원', phone: '010-8543-6612' }
     ]
   },
+
   {
     teamName: '식사팀',
     icon: Utensils,
@@ -112,6 +137,7 @@ const INITIAL_TEAMS: Team[] = [
       { name: '하진수', role: '팀원', phone: '010-8919-4875' }
     ]
   },
+
   {
     teamName: '키즈케어팀',
     icon: Baby,
@@ -130,6 +156,7 @@ const INITIAL_TEAMS: Team[] = [
       { name: '김문선', role: '팀원', phone: '010-0000-0000' }
     ]
   },
+
   {
     teamName: '공연팀',
     icon: Sparkles,
@@ -149,6 +176,7 @@ const INITIAL_TEAMS: Team[] = [
       { name: '이승용', role: '팀원', phone: '010-2838-2147' }
     ]
   },
+
   {
     teamName: '발마사지팀',
     icon: User,
@@ -168,6 +196,7 @@ const INITIAL_TEAMS: Team[] = [
       { name: '염귀화', role: '팀원', phone: '010-9592-3371' }
     ]
   },
+
   {
     teamName: '데코팀',
     icon: Paintbrush,
@@ -188,6 +217,7 @@ const INITIAL_TEAMS: Team[] = [
       { name: '안지원', role: '팀원', phone: '010-2222-5988' }
     ]
   },
+
   {
     teamName: '이미용팀',
     icon: Scissors,
@@ -203,6 +233,7 @@ const INITIAL_TEAMS: Team[] = [
       { name: '송영선', role: '팀원', phone: '010-3765-8487' }
     ]
   },
+
   {
     teamName: '안내팀',
     icon: Shield,
@@ -219,6 +250,7 @@ const INITIAL_TEAMS: Team[] = [
       { name: '태현영', role: '팀원', phone: '010-0000-0000' }
     ]
   },
+
   {
     teamName: '예배팀',
     icon: Music,
@@ -226,31 +258,12 @@ const INITIAL_TEAMS: Team[] = [
       { name: '전승우', role: '팀장', phone: '010-0000-0000' }
     ]
   },
+
   {
     teamName: '레크레이션',
     icon: Laugh,
     members: [
       { name: '유영삼', role: '팀장', phone: '010-0000-0000' }
-    ]
-  }
-  ,
-  {
-    teamName: '로뎀팀',
-    icon: Shield,
-    members: [
-      { name: '김석영', role: '팀장', phone: '010-0000-0000' },
-      { name: '강정호', role: '팀원', phone: '010-8746-9531' },
-      { name: '김동진', role: '팀원', phone: '010-3476-0888' },
-      { name: '김소영', role: '팀원', phone: '010-0000-0000' },
-      { name: '김원영', role: '팀원', phone: '010-3858-7160' },
-      { name: '노경민', role: '팀원', phone: '010-0000-0000' },
-      { name: '심경보', role: '팀원', phone: '010-0000-0000' },
-      { name: '오지연', role: '팀원', phone: '010-0000-0000' },
-      { name: '전민기', role: '팀원', phone: '010-3761-0004' },
-      { name: '최문정', role: '팀원', phone: '010-0000-0000' },
-      { name: '김인호', role: '팀원', phone: '010-5781-4427' },
-      { name: '박소희', role: '팀원', phone: '010-3936-3656' },
-      { name: '성민선', role: '팀원', phone: '010-7122-1090' }
     ]
   }
 ];
