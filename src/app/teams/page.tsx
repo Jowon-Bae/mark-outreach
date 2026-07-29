@@ -194,10 +194,11 @@ const INITIAL_TEAMS: Team[] = [
     description: '지역 어르신들과 주민들의 지친 발을 정성껏 마사지해 드리며 예수님의 따뜻한 사랑과 섬김을 실천하는 팀입니다.',
     icon: User,
     members: [
-      { name: '이문석', role: '팀장', phone: '010-8465-1664' },
       { name: '박성수', role: '팀원', phone: '010-7907-4845' },
       { name: '나경준', role: '팀원', phone: '010-2898-7599' },
+      { name: '노지훈', role: '팀원', phone: '010-0000-0000' },
       { name: '오국환', role: '팀원', phone: '010-3521-2664' },
+      { name: '이문석', role: '팀장', phone: '010-8465-1664' },
       { name: '박희정', role: '팀원', phone: '010-8399-1664' },
       { name: '이상연', role: '팀원', phone: '010-8768-2624' },
       { name: '이승호', role: '팀원', phone: '010-8641-3554' },
