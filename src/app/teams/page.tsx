@@ -289,7 +289,11 @@ const INITIAL_TEAMS: Team[] = [
     teamName: '예배팀',
     icon: Music,
     members: [
-      { name: '전승우', role: '팀장', phone: '010-0000-0000' }
+      { name: '전승우', role: '팀장', phone: '010-5413-7799' },
+      { name: '이지은', role: '예배팀', phone: '010-7320-2081' },
+      { name: '김산수', role: '예배팀', phone: '010-3298-9089' },
+      { name: '이현정', role: '예배팀', phone: '010-6234-9512' },
+      { name: '신민재', role: '예배팀', phone: '010-5292-5620' }
     ]
   },
 
