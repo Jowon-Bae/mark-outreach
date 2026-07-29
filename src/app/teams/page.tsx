@@ -295,6 +295,13 @@ const MAP_LOCATIONS: MapLocation[] = [
     naverUrl: 'https://naver.me/5kxZAFyk',
     kakaoUrl: 'https://map.kakao.com/?q=%EB%B3%B5%EB%90%9C%EA%B5%90%ED%9A%8C%20%EC%98%81%EC%A3%BC%EC%88%98%EB%A0%A8%EC%9B%90',
     tmapUrl: 'tmap://search?name=%EB%B3%B5%EB%90%9C%EA%B5%90%ED%9A%8C%20%EC%98%81%EC%A3%BC%EC%88%98%EB%A0%A8%EC%9B%90'
+  },
+  {
+    name: '다담뜰한식뷔페',
+    description: '토요일 저녁 식사 장소 (경북 영주시 대학로284번길 10)',
+    naverUrl: 'https://map.naver.com/p/search/%EA%B2%BD%EB%B6%81%20%EC%98%81%EC%A3%BC%EC%8B%9C%20%EB%8C%80%ED%95%99%EB%A1%9C284%EB%B2%88%EA%B8%B8%2010',
+    kakaoUrl: 'https://map.kakao.com/?q=%EA%B2%BD%EB%B6%81%20%EC%98%81%EC%A3%BC%EC%8B%9C%20%EB%8C%80%ED%95%99%EB%A1%9C284%EB%B2%88%EA%B8%B8%2010',
+    tmapUrl: 'tmap://search?name=%EB%8B%A4%EB%8B%B4%EB%9C%B0%ED%95%9C%EC%8B%9D%EB%B7%94%ED%8E%98%20%EC%98%81%EC%A3%BC'
   }
 ];
 
