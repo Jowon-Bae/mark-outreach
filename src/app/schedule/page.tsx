@@ -142,7 +142,7 @@ export default function Schedule() {
                 </div>
                 <div className="guide-card-content">
                   <span className="guide-badge-info">팀별 장소 확인 및 모임 진행</span>
-                  <div className="grid-2col">
+                  <div className="grid-1col">
                     <div className="grid-item-team"><strong>전도팀:</strong> 2층 본당 (준비 모임 후 노방전도)</div>
                     <div className="grid-item-team"><strong>공연팀:</strong> 1층 소예배실</div>
                     <div className="grid-item-team"><strong>발마사지팀:</strong> 1층 아동부실</div>
