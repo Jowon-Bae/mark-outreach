@@ -859,8 +859,8 @@
 
 /* 릴레이 기도 배너 - 아침/점심/저녁 슬롯 */
 .relay-prayer-banner {
-  background: linear-gradient(135deg, #fff5f5 0%, #fff0f0 100%);
-  border: 1.5px solid #f5c6c6;
+  background: linear-gradient(135deg, #fdfaf6 0%, #f9f4ec 100%);
+  border: 1.5px solid #ebdcb7;
   border-radius: 16px;
   padding: 16px;
   margin: 16px 0;
@@ -872,7 +872,7 @@
   gap: 8px;
   font-size: 15px;
   font-weight: 700;
-  color: #c0392b;
+  color: var(--primary-dark);
   margin-bottom: 12px;
 }
 
@@ -885,7 +885,7 @@
 .relay-time-tab {
   flex: 1;
   padding: 8px 4px;
-  border: 1.5px solid #f5c6c6;
+  border: 1.5px solid #ebdcb7;
   border-radius: 10px;
   background: white;
   color: #888;
@@ -896,10 +896,10 @@
 }
 
 .relay-time-tab.active {
-  background: linear-gradient(135deg, #e05c5c, #c0392b);
-  border-color: #c0392b;
+  background: linear-gradient(135deg, var(--primary-light), var(--primary));
+  border-color: var(--primary);
   color: white;
-  box-shadow: 0 2px 8px rgba(192, 57, 43, 0.3);
+  box-shadow: 0 2px 8px rgba(195, 159, 97, 0.3);
 }
 
 .relay-names-grid {
@@ -911,8 +911,8 @@
 
 .relay-name-chip {
   background: white;
-  border: 1px solid #f5c6c6;
-  color: #c0392b;
+  border: 1px solid #ebdcb7;
+  color: var(--primary-dark);
   border-radius: 20px;
   padding: 4px 12px;
   font-size: 13px;

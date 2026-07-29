@@ -427,7 +427,7 @@ export default function QuietTime() {
           {!isSunday && todayRelaySlots && (
             <div className="relay-prayer-banner">
               <div className="relay-banner-header">
-                <Heart size={16} color="#e05c5c" />
+                <Heart size={16} color="#C39F61" />
                 <span>오늘의 릴레이 기도</span>
               </div>
               {/* 아침/점심/저녁 탭 */}
@@ -448,7 +448,7 @@ export default function QuietTime() {
                   <span key={idx} className="relay-name-chip">{name}</span>
                 ))}
               </div>
-              <p className="relay-banner-desc">위 지체들을 위해 함께 기도해 주세요 🙏</p>
+              <p className="relay-banner-desc">위 명단은 현재 기도 순서인 지체들입니다 🙏</p>
             </div>
           )}
 
