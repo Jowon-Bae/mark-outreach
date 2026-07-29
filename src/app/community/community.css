@@ -459,7 +459,7 @@
 
 /* 사진첩 탭 통합 스타일 */
 .gallery-tab-content {
-  margin-top: 16px;
+  margin-top: 56px; /* sticky 헤더 여백 확보 */
 }
 
 .gallery-grid {
