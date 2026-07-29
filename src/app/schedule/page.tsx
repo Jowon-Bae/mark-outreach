@@ -152,6 +152,7 @@ export default function Schedule() {
                     <div className="grid-item-team"><strong>의료팀:</strong> 2층 청년부실</div>
                     <div className="grid-item-team"><strong>안내팀:</strong> 2층 휴게실</div>
                     <div className="grid-item-team"><strong>식사팀:</strong> 3층 식당</div>
+                    <div className="grid-item-team"><strong>로뎀팀:</strong> 숙소 식당</div>
                   </div>
                 </div>
               </div>
