@@ -92,7 +92,7 @@ const INITIAL_TEAMS: Team[] = [
 
   {
     teamName: '의료팀',
-    description: '의료적 도움이 필요한 지역 주민들에게 건강 상담과 기초 진료, 약품 등을 제공하며 치유의 은혜를 나누는 팀입니다.',
+    description: '초대된 어르신들에게 비타민 주사와 보톡스를 제공하여 건강 회복을 돕는 팀입니다.',
     icon: Activity,
     members: [
       { name: '신재식', role: '팀장', phone: '010-7363-2610' },
@@ -120,7 +120,7 @@ const INITIAL_TEAMS: Team[] = [
 
   {
     teamName: '식사팀',
-    description: '아웃리치 기간 동안 참여하는 성도님들과 지역 주민들을 위해 맛있는 식사와 영양을 책임지고 섬기는 팀입니다.',
+    description: '마을 잔치에 초대된 어르신들에게 맛있는 식사와 영양을 책임지고 섬기는 팀입니다.',
     icon: Utensils,
     members: [
       { name: '황상수', role: '팀장', phone: '010-3765-8467' },
@@ -147,7 +147,7 @@ const INITIAL_TEAMS: Team[] = [
 
   {
     teamName: '키즈케어팀',
-    description: '아웃리치에 동행한 다음 세대 아이들과 지역 어린이들을 사랑으로 돌보며, 재미있는 프로그램과 말씀으로 양육하는 팀입니다.',
+    description: '아웃리치에 동행한 차세대 아이들을 사랑으로 돌보며, 재미있는 프로그램과 간식으로 아이들을 케어하는 팀입니다.',
     icon: Baby,
     members: [
       { name: '박제윤', role: '팀장', phone: '010-5392-7838' },
@@ -167,7 +167,7 @@ const INITIAL_TEAMS: Team[] = [
 
   {
     teamName: '공연팀',
-    description: '찬양, 워십, 연극 등 다양한 문화 공연을 준비하여 지역 주민들에게 기쁨을 주고 복음의 메시지를 전달하는 팀입니다.',
+    description: '노래, 춤, 연주 등 다양한 문화 공연을 준비하여 어르신들에게 기쁨을 주고 사랑으로 섬기는 팀입니다.',
     icon: Sparkles,
     members: [
       { name: '최지은', role: '팀장', phone: '010-2210-9212' },
