@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Phone, Search, ArrowLeft, MapPin, ExternalLink, ShieldAlert, Crown, Music, Video, Shield, User, Utensils, Baby, Paintbrush, Scissors, Laugh, HeartHandshake, Activity, Sparkles, X, ChevronDown, ChevronUp } from 'lucide-react';
+import { Phone, Search, ArrowLeft, MapPin, ExternalLink, ShieldAlert, Crown, Music, Video, Shield, User, Utensils, Baby, Paintbrush, Scissors, Laugh, HeartHandshake, Activity, Sparkles, X, ChevronDown, ChevronUp, TreeDeciduous } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import './teams.css';
 
@@ -46,7 +46,7 @@ const INITIAL_TEAMS: Team[] = [
   {
     teamName: '로뎀팀',
     description: '지친 엘리야가 로뎀나무 아래에서 떡과 물을 통해 힘을 얻었듯이, 아웃리치 기간 동안 수고하는 우리 성도들이 힘을 얻을 수 있도록 음식을 제공하는 팀입니다.',
-    icon: Shield,
+    icon: TreeDeciduous,
     members: [
       { name: '김석영', role: '팀장', phone: '010-0000-0000' },
       { name: '강정호', role: '팀원', phone: '010-8746-9531' },
