@@ -12,8 +12,8 @@ export default function Header() {
   if (pathname === '/onboarding' || pathname === '/login') return null;
 
   const handleSosClick = () => {
-    // 임시 전화번호 (총괄 본부)
-    window.location.href = 'tel:010-0000-0000';
+    // 김민우 총무 연락처
+    window.location.href = 'tel:010-7557-1090';
   };
 
   return (
