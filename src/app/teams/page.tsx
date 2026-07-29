@@ -14,6 +14,7 @@ interface Member {
 
 interface Team {
   teamName: string;
+  description?: string;
   members: Member[];
   icon: any;
 }
@@ -31,6 +32,7 @@ const INITIAL_TEAMS: Team[] = [
 
   {
     teamName: '총무단',
+    description: '아웃리치의 전반적인 일정과 재정, 행정을 기획하고 총괄하며 전체 사역이 원활하게 진행되도록 돕는 팀입니다.',
     icon: Crown,
     members: [
       { name: '배주원', role: '담당 목사', phone: '010-9017-1848' },
@@ -43,6 +45,7 @@ const INITIAL_TEAMS: Team[] = [
 
   {
     teamName: '로뎀팀',
+    description: '지친 엘리야가 로뎀나무 아래에서 떡과 물을 통해 힘을 얻었듯이, 아웃리치 기간 동안 수고하는 우리 성도들이 힘을 얻을 수 있도록 음식을 제공하는 팀입니다.',
     icon: Shield,
     members: [
       { name: '김석영', role: '팀장', phone: '010-0000-0000' },
@@ -63,6 +66,7 @@ const INITIAL_TEAMS: Team[] = [
 
   {
     teamName: '전도팀',
+    description: '지역 주민들에게 복음을 전하고 예수님의 사랑을 나누며 영혼 구원의 사명을 감당하는 팀입니다.',
     icon: HeartHandshake,
     members: [
       { name: '류남현', role: '팀장', phone: '010-9011-3270' },
@@ -88,6 +92,7 @@ const INITIAL_TEAMS: Team[] = [
 
   {
     teamName: '의료팀',
+    description: '의료적 도움이 필요한 지역 주민들에게 건강 상담과 기초 진료, 약품 등을 제공하며 치유의 은혜를 나누는 팀입니다.',
     icon: Activity,
     members: [
       { name: '신재식', role: '팀장', phone: '010-7363-2610' },
@@ -101,6 +106,7 @@ const INITIAL_TEAMS: Team[] = [
 
   {
     teamName: '미디어팀',
+    description: '아웃리치의 모든 은혜로운 순간을 사진과 영상으로 기록하며, 지역 어르신들을 위한 장수사진 촬영 사역도 함께 감당하는 팀입니다.',
     icon: Video,
     members: [
       { name: '허민', role: '팀장', phone: '010-8587-5221' },
@@ -114,6 +120,7 @@ const INITIAL_TEAMS: Team[] = [
 
   {
     teamName: '식사팀',
+    description: '아웃리치 기간 동안 참여하는 성도님들과 지역 주민들을 위해 맛있는 식사와 영양을 책임지고 섬기는 팀입니다.',
     icon: Utensils,
     members: [
       { name: '황상수', role: '팀장', phone: '010-3765-8467' },
@@ -140,6 +147,7 @@ const INITIAL_TEAMS: Team[] = [
 
   {
     teamName: '키즈케어팀',
+    description: '아웃리치에 동행한 다음 세대 아이들과 지역 어린이들을 사랑으로 돌보며, 재미있는 프로그램과 말씀으로 양육하는 팀입니다.',
     icon: Baby,
     members: [
       { name: '박제윤', role: '팀장', phone: '010-5392-7838' },
@@ -159,6 +167,7 @@ const INITIAL_TEAMS: Team[] = [
 
   {
     teamName: '공연팀',
+    description: '찬양, 워십, 연극 등 다양한 문화 공연을 준비하여 지역 주민들에게 기쁨을 주고 복음의 메시지를 전달하는 팀입니다.',
     icon: Sparkles,
     members: [
       { name: '최지은', role: '팀장', phone: '010-2210-9212' },
@@ -179,6 +188,7 @@ const INITIAL_TEAMS: Team[] = [
 
   {
     teamName: '발마사지팀',
+    description: '지역 어르신들과 주민들의 지친 발을 정성껏 마사지해 드리며 예수님의 따뜻한 사랑과 섬김을 실천하는 팀입니다.',
     icon: User,
     members: [
       { name: '이문석', role: '팀장', phone: '010-8465-1664' },
@@ -199,6 +209,7 @@ const INITIAL_TEAMS: Team[] = [
 
   {
     teamName: '데코팀',
+    description: '행사 장소와 예배당을 아름답게 꾸미고 데코레이션하여 성도들과 주민들이 은혜롭게 참여할 수 있도록 돕는 팀입니다.',
     icon: Paintbrush,
     members: [
       { name: '장윤경', role: '팀장', phone: '010-4477-4144' },
@@ -220,6 +231,7 @@ const INITIAL_TEAMS: Team[] = [
 
   {
     teamName: '이미용팀',
+    description: '지역 어르신들과 주민들의 머리를 단정하고 아름답게 손질해 드리며 기쁨을 선물하는 팀입니다.',
     icon: Scissors,
     members: [
       { name: '이현신', role: '팀장', phone: '010-9265-5747' },
@@ -236,6 +248,7 @@ const INITIAL_TEAMS: Team[] = [
 
   {
     teamName: '안내팀',
+    description: '행사장 곳곳에서 밝은 미소로 성도와 주민들을 맞이하고 동선을 안내하며 친절하게 섬기는 팀입니다.',
     icon: Shield,
     members: [
       { name: '유상현', role: '팀장', phone: '010-0000-0000' },
@@ -416,6 +429,11 @@ export default function Teams() {
                     </div>
                     {isExpanded && (
                       <div className="team-members-list">
+                        {team.description && (
+                          <div className="team-description" style={{ fontSize: '13px', color: '#4e5968', marginBottom: '12px', padding: '10px', backgroundColor: '#f8f9fa', borderRadius: '8px', lineHeight: '1.5' }}>
+                            {team.description}
+                          </div>
+                        )}
                         {team.members.map((member, mIdx) => (
                           <div key={mIdx} className="member-row">
                             <div className="member-info" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
