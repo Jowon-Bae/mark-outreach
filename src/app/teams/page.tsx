@@ -301,7 +301,7 @@ const INITIAL_TEAMS: Team[] = [
     teamName: '레크레이션',
     icon: Laugh,
     members: [
-      { name: '유영삼', role: '팀장', phone: '010-0000-0000' }
+      { name: '유영삼', role: 'MC유', phone: '010-7226-3546' }
     ]
   }
 ];
