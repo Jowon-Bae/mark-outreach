@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabaseClient';
-import { Trash2, Upload, Megaphone, UserCheck, Calendar } from 'lucide-react';
+import { Trash2, Upload, Megaphone, UserCheck, Calendar, Bell } from 'lucide-react';
+import { INITIAL_TEAMS } from '@/lib/teamsData';
 import './admin.css';
 
 export default function AdminPage() {
@@ -11,6 +12,7 @@ export default function AdminPage() {
   const [activeTab, setActiveTab] = useState('stats'); // 'stats', 'community', 'gallery', 'notices', 'requests'
   const [loginRequests, setLoginRequests] = useState<any[]>([]);
   const [qtShares, setQtShares] = useState<any[]>([]);
+  const [unsubscribedByTeam, setUnsubscribedByTeam] = useState<{ teamName: string, members: any[] }[]>([]);
 
   const [stats, setStats] = useState<any[]>([]);
   const [posts, setPosts] = useState<any[]>([]);
@@ -39,6 +41,7 @@ export default function AdminPage() {
     fetchNotice();
     fetchLoginRequests();
     fetchQTShares();
+    fetchPushSubscriptions();
   };
 
   // 0. 로그인 승인 요청 불러오기
@@ -264,6 +267,27 @@ export default function AdminPage() {
   };
 
   // 통계 계산 로직
+  
+  const fetchPushSubscriptions = async () => {
+    const { data, error } = await supabase.from('push_subscriptions').select('*');
+    if (!error && data) {
+      const subscribedNames = new Set(
+        data.map(row => row.subscription?.username).filter(Boolean)
+      );
+      
+      const unsubscribedList: { teamName: string, members: any[] }[] = [];
+      
+      INITIAL_TEAMS.forEach(team => {
+        const missing = team.members.filter(m => !subscribedNames.has(m.name));
+        if (missing.length > 0) {
+          unsubscribedList.push({ teamName: team.teamName, members: missing });
+        }
+      });
+      
+      setUnsubscribedByTeam(unsubscribedList);
+    }
+  };
+
   const getStatsSummary = () => {
     const summary: Record<string, number> = {};
     stats.forEach(visit => {
@@ -352,6 +376,15 @@ export default function AdminPage() {
             <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
               <Megaphone size={18} />
               묵상 나눔 관리
+            </span>
+          </button>
+          <button 
+            className={`nav-tab ${activeTab === 'push' ? 'active' : ''}`}
+            onClick={() => setActiveTab('push')}
+          >
+            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <Bell size={18} />
+              알림 설정 현황
             </span>
           </button>
           
@@ -669,6 +702,38 @@ export default function AdminPage() {
                         <Trash2 size={16} />
                         삭제
                       </button>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'push' && (
+            <div className="admin-section">
+              <div className="section-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                <h2 style={{ margin: 0 }}>알림 설정 미완료자 현황</h2>
+                <button onClick={fetchPushSubscriptions} className="refresh-btn" style={{ padding: '8px 16px', border: '1px solid #e5e8eb', borderRadius: '8px', cursor: 'pointer', background: 'white' }}>새로고침</button>
+              </div>
+              <p style={{ color: '#888', marginBottom: '20px', fontSize: '14px' }}>
+                ※ 아래 명단은 앱 내에서 '긴급 공지 알림 설정'을 켜지 않은 팀원들입니다. 기능 업데이트 이후 재설정한 분들만 정상적으로 집계됩니다.
+              </p>
+              <div className="admin-list" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                {unsubscribedByTeam.length === 0 ? (
+                  <p>모든 인원이 알림 설정을 완료했습니다!</p>
+                ) : (
+                  unsubscribedByTeam.map(team => (
+                    <div key={team.teamName} style={{ background: 'white', padding: '16px', borderRadius: '12px', border: '1px solid #e5e8eb' }}>
+                      <h4 style={{ margin: '0 0 12px 0', color: '#1e1e1e', fontSize: '16px', fontWeight: 'bold' }}>
+                        {team.teamName} <span style={{ color: '#d32f2f', fontSize: '14px' }}>({team.members.length}명 미설정)</span>
+                      </h4>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                        {team.members.map(m => (
+                          <span key={m.name} style={{ background: '#f1f3f5', padding: '4px 10px', borderRadius: '20px', fontSize: '13px', color: '#495057' }}>
+                            {m.name} ({m.role})
+                          </span>
+                        ))}
+                      </div>
                     </div>
                   ))
                 )}

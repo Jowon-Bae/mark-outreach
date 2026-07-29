@@ -182,9 +182,10 @@ export default function SettingsPage() {
             .eq('subscription->>endpoint', subscription.endpoint);
 
           if (!error && (!data || data.length === 0)) {
+            const subData = subscription.toJSON();
             await supabaseClient
               .from('push_subscriptions')
-              .insert([{ subscription: subscription }]);
+              .insert([{ subscription: { ...subData, username } }]);
           }
 
           setIsPushEnabled(true);
