@@ -37,8 +37,6 @@ const INITIAL_TEAMS: Team[] = [
       { name: '김민우', role: '총무', phone: '010-7557-1090' },
       { name: '신민재', role: '부총무', phone: '010-5292-5620' },
       { name: '선우진', role: '회계', phone: '010-8781-8806' },
-      { name: '성민선', role: '팀원', phone: '010-7122-1090' },
-      { name: '박소희', role: '팀원', phone: '010-3936-3656' }
     ]
   },
   {
@@ -95,7 +93,6 @@ const INITIAL_TEAMS: Team[] = [
     members: [
       { name: '황상수', role: '팀장', phone: '010-3765-8467' },
       { name: '이지은', role: '팀원', phone: '010-7320-2081' },
-      { name: '김원영', role: '팀원', phone: '010-3858-7160' },
       { name: '김산수', role: '팀원', phone: '010-3298-9089' },
       { name: '박경현', role: '팀원', phone: '010-5394-4221' },
       { name: '강수은', role: '팀원', phone: '010-5187-7948' },
@@ -120,7 +117,6 @@ const INITIAL_TEAMS: Team[] = [
     icon: Baby,
     members: [
       { name: '박제윤', role: '팀장', phone: '010-5392-7838' },
-      { name: '전민기', role: '팀원', phone: '010-3761-0004' },
       { name: '김태희', role: '팀원', phone: '010-4731-8340' },
       { name: '안승국', role: '팀원', phone: '010-8878-4920' },
       { name: '이혜수', role: '팀원', phone: '010-3669-9318' },
@@ -177,11 +173,8 @@ const INITIAL_TEAMS: Team[] = [
     icon: Paintbrush,
     members: [
       { name: '장윤경', role: '팀장', phone: '010-4477-4144' },
-      { name: '강정호', role: '팀원', phone: '010-8746-9531' },
       { name: '남아란', role: '팀원', phone: '010-7900-9531' },
-      { name: '김동진', role: '팀원', phone: '010-3476-0888' },
       { name: '김민혜', role: '팀원', phone: '010-7282-5677' },
-      { name: '김인호', role: '팀원', phone: '010-5781-4427' },
       { name: '신유리', role: '팀원', phone: '010-4242-2946' },
       { name: '김지인', role: '팀원', phone: '010-6623-2033' },
       { name: '김보화', role: '팀원', phone: '010-7353-4648' },
@@ -238,6 +231,26 @@ const INITIAL_TEAMS: Team[] = [
     icon: Laugh,
     members: [
       { name: '유영삼', role: '팀장', phone: '010-0000-0000' }
+    ]
+  }
+  ,
+  {
+    teamName: '로뎀팀',
+    icon: Shield,
+    members: [
+      { name: '김석영', role: '팀장', phone: '010-0000-0000' },
+      { name: '강정호', role: '팀원', phone: '010-8746-9531' },
+      { name: '김동진', role: '팀원', phone: '010-3476-0888' },
+      { name: '김소영', role: '팀원', phone: '010-0000-0000' },
+      { name: '김원영', role: '팀원', phone: '010-3858-7160' },
+      { name: '노경민', role: '팀원', phone: '010-0000-0000' },
+      { name: '심경보', role: '팀원', phone: '010-0000-0000' },
+      { name: '오지연', role: '팀원', phone: '010-0000-0000' },
+      { name: '전민기', role: '팀원', phone: '010-3761-0004' },
+      { name: '최문정', role: '팀원', phone: '010-0000-0000' },
+      { name: '김인호', role: '팀원', phone: '010-5781-4427' },
+      { name: '박소희', role: '팀원', phone: '010-3936-3656' },
+      { name: '성민선', role: '팀원', phone: '010-7122-1090' }
     ]
   }
 ];
