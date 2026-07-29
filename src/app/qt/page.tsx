@@ -438,7 +438,7 @@ export default function QuietTime() {
                     className={`relay-time-tab ${activeTimeSlot === slot ? 'active' : ''}`}
                     onClick={() => setActiveTimeSlot(slot)}
                   >
-                    {slot === '아침' ? '🌅' : slot === '점심' ? '☀️' : '🌙'} {slot}
+                    {slot}
                   </button>
                 ))}
               </div>
@@ -448,7 +448,7 @@ export default function QuietTime() {
                   <span key={idx} className="relay-name-chip">{name}</span>
                 ))}
               </div>
-              <p className="relay-banner-desc">위 명단은 현재 기도 순서인 지체들입니다 🙏</p>
+              <p className="relay-banner-desc">위 명단은 현재 기도 순서인 지체들입니다</p>
             </div>
           )}
 
