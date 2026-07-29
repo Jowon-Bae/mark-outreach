@@ -50,17 +50,29 @@ export default function AppWrapper({ children }: { children: React.ReactNode }) 
       }
       
       const { supabase: supabaseClient } = await import('@/lib/supabaseClient');
+      const username = localStorage.getItem('username');
       
-      // 중복 저장 방지 검사
+      // 중복 저장 방지 및 username 업데이트 검사
       const { data, error } = await supabaseClient
         .from('push_subscriptions')
         .select('*')
         .eq('subscription->>endpoint', subscription.endpoint);
         
-      if (!error && (!data || data.length === 0)) {
-        await supabaseClient
-          .from('push_subscriptions')
-          .insert([{ subscription: subscription }]);
+      const subData = subscription.toJSON();
+      
+      if (!error) {
+        if (!data || data.length === 0) {
+          // 1. DB에 없는 경우: 새로 저장 (username 포함)
+          await supabaseClient
+            .from('push_subscriptions')
+            .insert([{ subscription: { ...subData, username } }]);
+        } else if (username && data[0].subscription?.username !== username) {
+          // 2. DB에 있지만 username이 없거나 다른 경우: 업데이트
+          await supabaseClient
+            .from('push_subscriptions')
+            .update({ subscription: { ...subData, username } })
+            .eq('id', data[0].id);
+        }
       }
     } catch (e) {
       console.error('Push subscription failed:', e);
