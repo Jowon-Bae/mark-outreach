@@ -198,7 +198,7 @@ export default function Schedule() {
                 <div className="guide-card-content">
                   <span className="guide-badge-info">아침 로테이션 지침</span>
                   <ul className="guide-ul">
-                    <li><strong>아침 식사:</strong> 오전 07:00 ~ 08:00 수련원 식당에서 제공 (조식팀 담당)</li>
+                    <li><strong>아침 식사:</strong> 오전 07:00 ~ 08:00 수련원 식당에서 제공 (로뎀팀 담당)</li>
                     <li><strong>키즈케어팀:</strong> 자녀 돌봄 준비를 위해 가장 이른 시간대에 교회로 사전 이동</li>
                     <li><strong>팀별 사역자:</strong> 오전 사역 개시 시간에 맞춰 버스로 순차 이동 (첫 버스 09:00 출발 예정)</li>
                   </ul>
@@ -216,9 +216,9 @@ export default function Schedule() {
                   <span className="guide-badge-notice">※ 점심 식사시간: 11:30 ~ 14:00 (지정 식당 이용)</span>
                   <ul className="guide-ul">
                     <li><strong>장소 준비:</strong> 전일 팀별 준비 장소와 동일하게 세팅 (키즈케어는 1층 유치부실 사용)</li>
-                    <li><strong>식사 시작:</strong> 오전 11:30부터 마을 주민 및 지체 식사 개시</li>
+                    <li><strong>식사 시작:</strong> 오전 11:30부터 식사 개시</li>
                     <li><strong>사역 멈춤 (STOP) 시간:</strong> 마을잔치 하이라이트인 <strong>공연(12:00 / 14:00 총 2회)</strong> 시간 동안은 모든 사역을 일시 중단하고 공연에 집중합니다.</li>
-                    <li><strong>대상자 집중 전도:</strong> 이미용, 발마사지 어르신들을 대상으로 복음 전파에 힘씁니다. (단, 신광교회 기존 교인은 명찰 표시 확인 후 제외)</li>
+                    <li><strong>대상자 집중 전도:</strong> 이미용, 발마사지, 의료 섬김을 받으시는 어르신들을 대상으로 복음 전파에 힘씁니다. (단, 신광교회 기존 교인은 명찰 표시 확인 후 제외)</li>
                     <li><strong>철수 정리:</strong> 16:00 전 사역 종료 후 17:00까지 깔끔하게 정리 완료</li>
                   </ul>
 
