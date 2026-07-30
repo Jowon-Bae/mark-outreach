@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
-import { Megaphone, Plus, Trash2, X, Lock, BedDouble, Building2 } from 'lucide-react';
+import { Megaphone, Plus, Trash2, X, Lock } from 'lucide-react';
 import './home.css';
 
 // 오디오 컨텍스트 전역 선언 및 브라우저 보안 해제(잠금 해제)
@@ -77,9 +77,6 @@ export default function Home() {
   const [showPrayerPopup, setShowPrayerPopup] = useState(false);
   const [isPrayerFadingOut, setIsPrayerFadingOut] = useState(false);
 
-  // 내 숙소 방 배정 상태
-  const [roomAssignment, setRoomAssignment] = useState<any>(null);
-
   // Web Audio API 기반 알림음 합성음 재생
   const playNotificationSound = () => {
     try {
@@ -128,24 +125,11 @@ export default function Home() {
       setIsAdmin(sessionStorage.getItem('isAdmin') === 'true');
     }
     fetchLatestNotice();
-    fetchRoomAssignment();
 
     // 5초마다 실시간 공지사항 체크
     const interval = setInterval(fetchLatestNotice, 5000);
     return () => clearInterval(interval);
   }, [showWelcome]);
-
-  // 내 숙소 방 배정 불러오기
-  const fetchRoomAssignment = async () => {
-    const name = typeof window !== 'undefined' ? localStorage.getItem('username') : null;
-    if (!name) return;
-    const { data, error } = await supabase
-      .from('room_assignments')
-      .select('*')
-      .eq('name', name)
-      .maybeSingle();
-    if (!error && data) setRoomAssignment(data);
-  };
 
   // 실시간 공지글 불러오기
   const fetchLatestNotice = async () => {
@@ -296,45 +280,6 @@ export default function Home() {
       <div className="home-container">
         {/* 그래피티 배경 이미지만 온전히 보이도록 다른 요소들은 임시로 비워둡니다 */}
       </div>
-
-      {/* 내 숙소 방 배정 카드 */}
-      {roomAssignment && (
-        <div style={{
-          position: 'fixed',
-          bottom: '105px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: 'calc(100% - 32px)',
-          maxWidth: '448px',
-          background: 'linear-gradient(135deg, #1e3a5f 0%, #2d5a8e 100%)',
-          borderRadius: '16px',
-          padding: '16px 20px',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '14px',
-          zIndex: 200,
-          boxShadow: '0 4px 20px rgba(30, 58, 95, 0.35)',
-          color: 'white',
-        }}>
-          <div style={{ background: 'rgba(255,255,255,0.15)', borderRadius: '12px', padding: '10px', flexShrink: 0 }}>
-            <BedDouble size={22} color="white" />
-          </div>
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ fontSize: '11px', opacity: 0.75, marginBottom: '3px', fontWeight: '500', letterSpacing: '0.3px' }}>내 숙소 배정</div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-              {roomAssignment.building && (
-                <span style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '13px', opacity: 0.9 }}>
-                  <Building2 size={13} />{roomAssignment.building}
-                </span>
-              )}
-              <span style={{ fontSize: '16px', fontWeight: '800', letterSpacing: '0.5px' }}>{roomAssignment.room}</span>
-            </div>
-            {roomAssignment.notes && (
-              <div style={{ fontSize: '11px', opacity: 0.7, marginTop: '3px' }}>{roomAssignment.notes}</div>
-            )}
-          </div>
-        </div>
-      )}
 
       {/* 우측 상단 어드민 활성화 기어 */}
       <button className="admin-key-btn" onClick={() => setShowAdminLogin(true)}>
