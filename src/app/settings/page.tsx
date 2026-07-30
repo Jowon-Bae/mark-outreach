@@ -273,6 +273,39 @@ export default function SettingsPage() {
           </div>
         </div>
 
+        {/* 내 숙소 배정 */}
+        {roomAssignment && (
+          <div style={{
+            background: 'linear-gradient(135deg, #C39F61 0%, #a1814c 100%)',
+            borderRadius: '16px',
+            padding: '20px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '16px',
+            color: 'white',
+            boxShadow: '0 4px 16px rgba(195, 159, 97, 0.3)',
+            marginTop: '20px'
+          }}>
+            <div style={{ background: 'rgba(255,255,255,0.2)', borderRadius: '12px', padding: '12px', flexShrink: 0 }}>
+              <BedDouble size={24} color="white" />
+            </div>
+            <div>
+              <div style={{ fontSize: '12px', opacity: 0.9, marginBottom: '4px', fontWeight: '500' }}>내 숙소 배정</div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                {roomAssignment.building && (
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '14px', opacity: 1 }}>
+                    <Building2 size={14} /> {roomAssignment.building}
+                  </span>
+                )}
+                <span style={{ fontSize: '20px', fontWeight: '800', letterSpacing: '0.5px' }}>{roomAssignment.room}</span>
+              </div>
+              {roomAssignment.notes && (
+                <div style={{ fontSize: '12px', opacity: 0.85, marginTop: '4px' }}>{roomAssignment.notes}</div>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* 설정 목록 */}
         <div className="settings-group">
           <div className="group-title">수신 및 보안</div>
@@ -315,38 +348,6 @@ export default function SettingsPage() {
             </div>
           </div>
         </div>
-
-        {/* 내 숙소 배정 */}
-        {roomAssignment && (
-          <div style={{
-            background: 'linear-gradient(135deg, #1e3a5f 0%, #2d5a8e 100%)',
-            borderRadius: '16px',
-            padding: '20px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '16px',
-            color: 'white',
-            boxShadow: '0 4px 16px rgba(30, 58, 95, 0.3)',
-          }}>
-            <div style={{ background: 'rgba(255,255,255,0.15)', borderRadius: '12px', padding: '12px', flexShrink: 0 }}>
-              <BedDouble size={24} color="white" />
-            </div>
-            <div>
-              <div style={{ fontSize: '12px', opacity: 0.75, marginBottom: '4px', fontWeight: '500' }}>내 숙소 배정</div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-                {roomAssignment.building && (
-                  <span style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '14px', opacity: 0.9 }}>
-                    <Building2 size={14} /> {roomAssignment.building}
-                  </span>
-                )}
-                <span style={{ fontSize: '20px', fontWeight: '800', letterSpacing: '0.5px' }}>{roomAssignment.room}</span>
-              </div>
-              {roomAssignment.notes && (
-                <div style={{ fontSize: '12px', opacity: 0.7, marginTop: '4px' }}>{roomAssignment.notes}</div>
-              )}
-            </div>
-          </div>
-        )}
 
         {/* 로그아웃 버튼 */}
         <button className="logout-btn" onClick={handleLogout}>
