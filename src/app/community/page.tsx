@@ -94,6 +94,14 @@ export default function Community() {
     fetchAvatars();
   }, []);
 
+  useEffect(() => {
+    // 탭 변경 후 화면 렌더링이 완료된 직후 맨 위로 스크롤 강제 이동 (모바일 브라우저 렌더링 타이밍 이슈 대응)
+    const timeoutId = setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 10);
+    return () => clearTimeout(timeoutId);
+  }, [activeTab]);
+
   // 글쓰기
   const handlePostSubmit = async () => {
     if (!newContent.trim()) {
