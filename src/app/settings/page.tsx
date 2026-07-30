@@ -222,76 +222,79 @@ export default function SettingsPage() {
       </div>
 
       <div className="settings-content" style={{ padding: '24px 16px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-        {/* 프로필 카드 */}
-        <div className="profile-card">
-          <div 
-            className="profile-avatar clickable" 
-            onClick={() => !uploading && document.getElementById('avatar-upload')?.click()}
-            title="프로필 사진 등록/변경"
-            style={{ position: 'relative', cursor: 'pointer' }}
-          >
-            {avatarUrl ? (
-              <img src={avatarUrl} alt="Avatar" className="profile-avatar-img" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
-            ) : (
-              <User size={32} color="#1b64da" />
-            )}
-            <div className="avatar-edit-overlay" style={{
-              position: 'absolute',
-              bottom: 0,
-              right: 0,
-              backgroundColor: '#1b64da',
-              borderRadius: '50%',
-              width: '20px',
-              height: '20px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              border: '2px solid white'
-            }}>
-              <Camera size={11} color="white" />
+        {/* 프로필 카드 (숙소 배정 포함) */}
+        <div className="profile-card" style={{ flexDirection: 'column', alignItems: 'stretch', gap: '20px' }}>
+          {/* 프로필 헤더 (기존 프로필 영역) */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <div 
+              className="profile-avatar clickable" 
+              onClick={() => !uploading && document.getElementById('avatar-upload')?.click()}
+              title="프로필 사진 등록/변경"
+              style={{ position: 'relative', cursor: 'pointer' }}
+            >
+              {avatarUrl ? (
+                <img src={avatarUrl} alt="Avatar" className="profile-avatar-img" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
+              ) : (
+                <User size={32} color="#1b64da" />
+              )}
+              <div className="avatar-edit-overlay" style={{
+                position: 'absolute',
+                bottom: 0,
+                right: 0,
+                backgroundColor: '#1b64da',
+                borderRadius: '50%',
+                width: '20px',
+                height: '20px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                border: '2px solid white'
+              }}>
+                <Camera size={11} color="white" />
+              </div>
+            </div>
+            <input 
+              type="file" 
+              id="avatar-upload" 
+              accept="image/*" 
+              style={{ display: 'none' }} 
+              onChange={handleAvatarUpload} 
+            />
+            <div className="profile-info">
+              <h3 className="profile-name">{username} 님</h3>
+              <span className={`profile-role ${isAdmin ? 'admin' : 'member'}`}>
+                {isAdmin ? (
+                  <>
+                    <Shield size={12} style={{ marginRight: 4 }} />
+                    총괄 관리자
+                  </>
+                ) : (
+                  '마가공동체 아웃리치 지체'
+                )}
+              </span>
             </div>
           </div>
-          <input 
-            type="file" 
-            id="avatar-upload" 
-            accept="image/*" 
-            style={{ display: 'none' }} 
-            onChange={handleAvatarUpload} 
-          />
-          <div className="profile-info">
-            <h3 className="profile-name">{username} 님</h3>
-            <span className={`profile-role ${isAdmin ? 'admin' : 'member'}`}>
-              {isAdmin ? (
-                <>
-                  <Shield size={12} style={{ marginRight: 4 }} />
-                  총괄 관리자
-                </>
-              ) : (
-                '마가공동체 아웃리치 지체'
-              )}
-            </span>
-          </div>
-        </div>
 
-        {/* 내 숙소 배정 */}
-        {roomAssignment && (
-          <div className="settings-group" style={{ marginTop: '20px' }}>
-            <div className="group-title">내 숙소 배정</div>
-            <div className="settings-row" style={{ cursor: 'default' }}>
-              <div className="row-left">
-                <div className="row-icon" style={{ backgroundColor: '#fcf6eb', color: '#a1814c' }}>
-                  <BedDouble size={18} />
+          {/* 내 숙소 배정 */}
+          {roomAssignment && (
+            <div style={{ paddingTop: '16px', borderTop: '1px solid #f1f3f5' }}>
+              <div style={{ fontSize: '13px', fontWeight: '600', color: '#8b95a1', marginBottom: '10px' }}>내 숙소 배정</div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', background: '#f8f9fa', padding: '16px', borderRadius: '16px' }}>
+                <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: '#fcf6eb', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#a1814c', flexShrink: 0 }}>
+                  <BedDouble size={20} />
                 </div>
-                <div className="row-meta">
-                  <span className="row-title">
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                  <span style={{ fontSize: '16px', fontWeight: '800', color: '#1e1e1e' }}>
                     {roomAssignment.building && roomAssignment.building + ' '}{roomAssignment.room}
                   </span>
-                  <span className="row-desc">{roomAssignment.notes || '배정 완료'}</span>
+                  <span style={{ fontSize: '13px', color: '#4e5968' }}>{roomAssignment.notes || '배정 완료'}</span>
                 </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
+
+
 
         {/* 설정 목록 */}
         <div className="settings-group">
