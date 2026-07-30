@@ -214,7 +214,7 @@ export default function SettingsPage() {
 
   return (
     <div className="settings-container" style={{ paddingBottom: '95px', minHeight: '100vh', backgroundColor: '#f8f9fa' }}>
-      <div className="sticky-header-wrapper" style={{ paddingBottom: '20px' }}>
+      <div className="settings-header-wrapper" style={{ paddingBottom: '20px' }}>
         {/* 헤더 바 */}
         <div className="settings-header" style={{ display: 'flex', justifyContent: 'center', padding: '10px 20px 20px 20px', borderBottom: '1px solid #e5e8eb', backgroundColor: '#f8f9fa' }}>
           <h2 style={{ margin: 0, fontSize: '18px', fontWeight: 800, color: '#1e1e1e' }}>설정</h2>

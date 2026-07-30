@@ -21,11 +21,8 @@
   color: #1e1e1e;
 }
 
-/* 상단 고정(Sticky) 영역 및 가림막 실드 */
-.sticky-header-wrapper {
-  /* position: sticky; removed */
-  /* top: 40px; removed */
-  /* z-index: 100; removed */
+/* 상단 헤더 래퍼 */
+.settings-header-wrapper {
   background-color: #f8f9fa;
   padding: 0 0 12px 0; /* 하단 프로필 카드가 가려지지 않도록 마진 확보 */
 }
