@@ -275,33 +275,20 @@ export default function SettingsPage() {
 
         {/* 내 숙소 배정 */}
         {roomAssignment && (
-          <div style={{
-            background: 'linear-gradient(135deg, #C39F61 0%, #a1814c 100%)',
-            borderRadius: '16px',
-            padding: '20px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '16px',
-            color: 'white',
-            boxShadow: '0 4px 16px rgba(195, 159, 97, 0.3)',
-            marginTop: '20px'
-          }}>
-            <div style={{ background: 'rgba(255,255,255,0.2)', borderRadius: '12px', padding: '12px', flexShrink: 0 }}>
-              <BedDouble size={24} color="white" />
-            </div>
-            <div>
-              <div style={{ fontSize: '12px', opacity: 0.9, marginBottom: '4px', fontWeight: '500' }}>내 숙소 배정</div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-                {roomAssignment.building && (
-                  <span style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '14px', opacity: 1 }}>
-                    <Building2 size={14} /> {roomAssignment.building}
+          <div className="settings-group" style={{ marginTop: '20px' }}>
+            <div className="group-title">내 숙소 배정</div>
+            <div className="settings-row" style={{ cursor: 'default' }}>
+              <div className="row-left">
+                <div className="row-icon" style={{ backgroundColor: '#fcf6eb', color: '#a1814c' }}>
+                  <BedDouble size={18} />
+                </div>
+                <div className="row-meta">
+                  <span className="row-title">
+                    {roomAssignment.building && roomAssignment.building + ' '}{roomAssignment.room}
                   </span>
-                )}
-                <span style={{ fontSize: '20px', fontWeight: '800', letterSpacing: '0.5px' }}>{roomAssignment.room}</span>
+                  <span className="row-desc">{roomAssignment.notes || '배정 완료'}</span>
+                </div>
               </div>
-              {roomAssignment.notes && (
-                <div style={{ fontSize: '12px', opacity: 0.85, marginTop: '4px' }}>{roomAssignment.notes}</div>
-              )}
             </div>
           </div>
         )}
