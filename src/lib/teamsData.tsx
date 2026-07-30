@@ -252,7 +252,7 @@ export const INITIAL_TEAMS: Team[] = [
       { name: '이혜인', role: '팀원', phone: '010-4948-3870' },
       { name: '신아민', role: '팀원', phone: '010-0000-0000' },
       { name: '이지영', role: '팀원', phone: '010-5260-2624' },
-      { name: '구량주', role: '팀원', phone: '010-3720-7336' },
+      { name: '구랑주', role: '팀원', phone: '010-3720-7336' },
       { name: '이현신', role: '팀장', phone: '010-9265-5747' },
       { name: '최혜남', role: '팀원', phone: '010-3035-6570' },
       { name: '장영송', role: '팀원', phone: '010-2303-1990' },
