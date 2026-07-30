@@ -274,7 +274,7 @@ export default function SettingsPage() {
               {roomAssignment && (
                 <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', background: '#fcf6eb', color: '#a1814c', padding: '4px 10px', borderRadius: '12px', fontSize: '12px', fontWeight: '700' }}>
                   <BedDouble size={14} />
-                  {roomAssignment.building && roomAssignment.building + ' '}{roomAssignment.room}
+                  내 숙소 배정 : {roomAssignment.building && roomAssignment.building + ' '}{roomAssignment.room}
                 </span>
               )}
             </div>
