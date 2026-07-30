@@ -243,7 +243,7 @@ export default function Schedule() {
                   <span className="guide-badge-notice">※ 키즈케어 2일차 종료</span>
                   <span className="guide-sub-title">1. 저녁 식사 안내</span>
                   <ul className="guide-ul">
-                    <li>밥차 배식 혹은 외부 케이터링 식사로 진행됩니다.</li>
+                    <li>외부 식당을 이용합니다. (다담뜰한식뷔페, 경북 영주시 대학로284번길 10)</li>
                     <li>식사 후 집회 전까지의 잔여 시간은 개별 및 조별로 자유롭게 나눔을 진행합니다.</li>
                   </ul>
 
