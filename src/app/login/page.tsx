@@ -15,10 +15,17 @@ const ALLOWED_NAMES = [
   '최지은', '박선민', '이희선', '서승원', '윤인희', '김신혜', '이미영', '김지준', '김민', '유영삼', '추인애', '김지선', '이승용', // 공연팀
   '이문석', '박성수', '나경준', '오국환', '박희정', '이상연', '이승호', '박희주', '최윤호', '김규연', '이재원', '김유진', '염귀화', // 발마사지팀
   '장윤경', '강정호', '남아란', '김동진', '김민혜', '김인호', '신유리', '김지인', '김보화', '안민균', '김사무엘', '손성웅', '이용준', '김혜미', '김성희', '현지혜', '김선정', '안지원', // 데코팀
-  '이현신', '송은지', '심연옥', '유숙희', '이혜인', '이지영', '구량주', '최혜남', '송영선', // 이미용팀
+  '이현신', '송은지', '심연옥', '유숙희', '이혜인', '이지영', '구랑주', '최혜남', '송영선', // 이미용팀 (구량주→구랑주 오타 수정)
   '유상현', '강나로', '김도훈', '김수아', '김아론', '박하솜', '유상윤', '심이안', '이하은', '태현영', // 안내팀
-  '노경민' // 추가 인원
+  '노경민', // 추가 인원
+  // 별칭 (실제 저장은 대표 이름으로 정규화됨)
+  '김순득', // 김순정의 별칭
 ];
+
+// 별칭 → 대표 이름 매핑 (두 이름 모두 로그인 가능하되 동일 계정으로 취급)
+const NAME_ALIASES: Record<string, string> = {
+  '김순득': '김순정',
+};
 
 export default function LoginPage() {
   const [username, setUsername] = useState('');
@@ -62,8 +69,10 @@ export default function LoginPage() {
   };
 
   const loginSuccess = (name: string) => {
-    localStorage.setItem('username', name);
-    sessionStorage.setItem('username', name); // 호환성 유지
+    // 별칭으로 로그인한 경우 대표 이름으로 정규화하여 저장 (동일 계정 취급)
+    const canonicalName = NAME_ALIASES[name] ?? name;
+    localStorage.setItem('username', canonicalName);
+    sessionStorage.setItem('username', canonicalName); // 호환성 유지
     router.replace('/');
   };
 
