@@ -171,7 +171,8 @@ export default function Schedule() {
                   <span className="guide-sub-title">1. 저녁 식사 안내</span>
                   <ul className="guide-ul">
                     <li>18:00까지 숙소(수련원) 복귀 완료 (교회에서 버스 17:00 출발)</li>
-                    <li><strong>BBQ팀 + 총무팀:</strong> 식사 준비 및 마무리 정리 담당 (밥과 김치는 식사팀에서 제공)</li>
+                    <li><strong>로뎀팀 + 총무팀:</strong> 바베큐 식사 준비</li>
+                    <li><strong>식사팀:</strong> 밥과 김치 준비 및 마무리 정리</li>
                   </ul>
 
                   <span className="guide-sub-title">2. 레크레이션 진행 요령</span>
