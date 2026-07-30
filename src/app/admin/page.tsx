@@ -12,6 +12,7 @@ export default function AdminPage() {
   const [activeTab, setActiveTab] = useState('stats'); // 'stats', 'community', 'gallery', 'notices', 'requests'
   const [loginRequests, setLoginRequests] = useState<any[]>([]);
   const [qtShares, setQtShares] = useState<any[]>([]);
+  const [roomSort, setRoomSort] = useState({ key: 'name', direction: 'asc' });
   const [unsubscribedByTeam, setUnsubscribedByTeam] = useState<{ teamName: string, members: any[] }[]>([]);
   const [roomAssignments, setRoomAssignments] = useState<any[]>([]);
   const [newRoom, setNewRoom] = useState({ name: '', building: '', room: '', notes: '' });
@@ -91,6 +92,22 @@ export default function AdminPage() {
     const { error } = await supabase.from('room_assignments').delete().eq('id', id);
     if (!error) fetchRoomAssignments();
   };
+
+  const handleRoomSort = (key: string) => {
+    if (roomSort.key === key) {
+      setRoomSort({ ...roomSort, direction: roomSort.direction === 'asc' ? 'desc' : 'asc' });
+    } else {
+      setRoomSort({ key, direction: 'asc' });
+    }
+  };
+
+  const sortedRoomAssignments = [...roomAssignments].sort((a, b) => {
+    const valA = a[roomSort.key] || '';
+    const valB = b[roomSort.key] || '';
+    if (valA < valB) return roomSort.direction === 'asc' ? -1 : 1;
+    if (valA > valB) return roomSort.direction === 'asc' ? 1 : -1;
+    return 0;
+  });
 
   // 0.5 묵상 데이터 불러오기
   const fetchQTShares = async () => {
@@ -913,15 +930,21 @@ export default function AdminPage() {
                   <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '14px' }}>
                     <thead>
                       <tr style={{ background: '#f8f9fa', borderBottom: '1px solid #e5e8eb', color: '#4e5968', fontWeight: 'bold' }}>
-                        <th style={{ padding: '14px 16px' }}>이름</th>
-                        <th style={{ padding: '14px 16px' }}>숙소</th>
-                        <th style={{ padding: '14px 16px' }}>방</th>
+                        <th style={{ padding: '14px 16px', cursor: 'pointer', userSelect: 'none' }} onClick={() => handleRoomSort('name')}>
+                          이름 {roomSort.key === 'name' ? (roomSort.direction === 'asc' ? '▲' : '▼') : ''}
+                        </th>
+                        <th style={{ padding: '14px 16px', cursor: 'pointer', userSelect: 'none' }} onClick={() => handleRoomSort('building')}>
+                          숙소 {roomSort.key === 'building' ? (roomSort.direction === 'asc' ? '▲' : '▼') : ''}
+                        </th>
+                        <th style={{ padding: '14px 16px', cursor: 'pointer', userSelect: 'none' }} onClick={() => handleRoomSort('room')}>
+                          방 {roomSort.key === 'room' ? (roomSort.direction === 'asc' ? '▲' : '▼') : ''}
+                        </th>
                         <th style={{ padding: '14px 16px' }}>메모</th>
                         <th style={{ padding: '14px 16px', textAlign: 'right' }}>삭제</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {roomAssignments.map((r: any) => (
+                      {sortedRoomAssignments.map((r: any) => (
                         <tr key={r.id} style={{ borderBottom: '1px solid #f1f3f5' }}>
                           <td style={{ padding: '14px 16px', fontWeight: '700', color: '#1e1e1e' }}>{r.name}</td>
                           <td style={{ padding: '14px 16px', color: '#495057' }}>{r.building || '-'}</td>
