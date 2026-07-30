@@ -229,13 +229,19 @@ export default function Community() {
         <div className="top-tab-bar">
           <button 
             className={`tab-item ${activeTab === 'board' ? 'active' : ''}`}
-            onClick={() => setActiveTab('board')}
+            onClick={() => {
+              setActiveTab('board');
+              window.scrollTo(0, 0);
+            }}
           >
             소통 게시판
           </button>
           <button 
             className={`tab-item ${activeTab === 'gallery' ? 'active' : ''}`}
-            onClick={() => setActiveTab('gallery')}
+            onClick={() => {
+              setActiveTab('gallery');
+              window.scrollTo(0, 0);
+            }}
           >
             사진첩
           </button>
