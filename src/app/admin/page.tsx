@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabaseClient';
-import { Trash2, Upload, Megaphone, UserCheck, Calendar, Bell } from 'lucide-react';
+import { Trash2, Upload, Megaphone, UserCheck, Calendar, Bell, UserX } from 'lucide-react';
 import { INITIAL_TEAMS } from '@/lib/teamsData';
 import './admin.css';
 
@@ -318,6 +318,10 @@ export default function AdminPage() {
     );
   }
 
+  // 미소속 인원 현황 계산
+  const allTeamMembers = new Set(INITIAL_TEAMS.flatMap(t => t.members.map(m => m.name)));
+  const unassignedUsers = loginRequests.filter(req => req.status === 'approved' && !allTeamMembers.has(req.name));
+
   return (
     <div className="admin-container">
       <div className="dashboard-layout">
@@ -385,6 +389,15 @@ export default function AdminPage() {
             <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
               <Bell size={18} />
               알림 설정 현황
+            </span>
+          </button>
+          <button 
+            className={`nav-tab ${activeTab === 'unassigned' ? 'active' : ''}`}
+            onClick={() => setActiveTab('unassigned')}
+          >
+            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <UserX size={18} />
+              미소속 인원 확인
             </span>
           </button>
           
@@ -736,6 +749,47 @@ export default function AdminPage() {
                       </div>
                     </div>
                   ))
+                )}
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'unassigned' && (
+            <div className="admin-section">
+              <div className="section-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                <h2 style={{ margin: 0 }}>팀 미소속 승인 인원</h2>
+                <button onClick={fetchLoginRequests} className="refresh-btn" style={{ padding: '8px 16px', border: '1px solid #e5e8eb', borderRadius: '8px', cursor: 'pointer', background: 'white' }}>새로고침</button>
+              </div>
+              <p style={{ color: '#888', marginBottom: '20px', fontSize: '14px' }}>
+                ※ 아래 명단은 로그인이 승인되었으나 앱 내 '조직도(팀별 명단)'에 속하지 않은 사용자입니다.
+              </p>
+              
+              <div style={{ background: 'white', border: '1px solid #e5e8eb', borderRadius: '16px', overflow: 'hidden' }}>
+                {unassignedUsers.length === 0 ? (
+                  <div style={{ textAlign: 'center', padding: '40px', color: '#8b95a1', fontStyle: 'italic' }}>
+                    미소속 인원이 없습니다.
+                  </div>
+                ) : (
+                  <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '14px' }}>
+                    <thead>
+                      <tr style={{ background: '#f8f9fa', borderBottom: '1px solid #e5e8eb', color: '#4e5968', fontWeight: 'bold' }}>
+                        <th style={{ padding: '16px' }}>이름</th>
+                        <th style={{ padding: '16px' }}>연락처</th>
+                        <th style={{ padding: '16px' }}>신청 시간</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {unassignedUsers.map((user: any) => (
+                        <tr key={user.id} style={{ borderBottom: '1px solid #e5e8eb', color: '#333d4b' }}>
+                          <td style={{ padding: '16px', fontWeight: '700' }}>{user.name}</td>
+                          <td style={{ padding: '16px' }}>{user.phone || '-'}</td>
+                          <td style={{ padding: '16px', color: '#8b95a1', fontSize: '12px' }}>
+                            {new Date(user.created_at).toLocaleString('ko-KR')}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 )}
               </div>
             </div>
