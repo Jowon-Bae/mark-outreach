@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabaseClient';
-import { Trash2, Upload, Megaphone, UserCheck, Calendar, Bell, UserX } from 'lucide-react';
+import { Trash2, Upload, Megaphone, UserCheck, Calendar, Bell, UserX, BedDouble, Plus } from 'lucide-react';
 import { INITIAL_TEAMS } from '@/lib/teamsData';
 import './admin.css';
 
@@ -13,6 +13,8 @@ export default function AdminPage() {
   const [loginRequests, setLoginRequests] = useState<any[]>([]);
   const [qtShares, setQtShares] = useState<any[]>([]);
   const [unsubscribedByTeam, setUnsubscribedByTeam] = useState<{ teamName: string, members: any[] }[]>([]);
+  const [roomAssignments, setRoomAssignments] = useState<any[]>([]);
+  const [newRoom, setNewRoom] = useState({ name: '', building: '', room: '', notes: '' });
 
   const [stats, setStats] = useState<any[]>([]);
   const [posts, setPosts] = useState<any[]>([]);
@@ -42,6 +44,7 @@ export default function AdminPage() {
     fetchLoginRequests();
     fetchQTShares();
     fetchPushSubscriptions();
+    fetchRoomAssignments();
   };
 
   // 0. 로그인 승인 요청 불러오기
@@ -51,6 +54,42 @@ export default function AdminPage() {
       .select('*')
       .order('created_at', { ascending: false });
     if (!error && data) setLoginRequests(data);
+  };
+
+  // 숙소 배정 불러오기
+  const fetchRoomAssignments = async () => {
+    const { data, error } = await supabase
+      .from('room_assignments')
+      .select('*')
+      .order('name', { ascending: true });
+    if (!error && data) setRoomAssignments(data);
+  };
+
+  // 숙소 배정 추가
+  const handleAddRoom = async () => {
+    if (!newRoom.name.trim() || !newRoom.room.trim()) {
+      alert('이름과 방 번호는 필수입니다.');
+      return;
+    }
+    const { error } = await supabase.from('room_assignments').insert([{
+      name: newRoom.name.trim(),
+      building: newRoom.building.trim() || null,
+      room: newRoom.room.trim(),
+      notes: newRoom.notes.trim() || null,
+    }]);
+    if (!error) {
+      setNewRoom({ name: '', building: '', room: '', notes: '' });
+      fetchRoomAssignments();
+    } else {
+      alert('추가 실패: ' + error.message);
+    }
+  };
+
+  // 숙소 배정 삭제
+  const handleDeleteRoom = async (id: number) => {
+    if (!confirm('이 배정을 삭제하시겠습니까?')) return;
+    const { error } = await supabase.from('room_assignments').delete().eq('id', id);
+    if (!error) fetchRoomAssignments();
   };
 
   // 0.5 묵상 데이터 불러오기
@@ -398,6 +437,15 @@ export default function AdminPage() {
             <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
               <UserX size={18} />
               미소속 인원 확인
+            </span>
+          </button>
+          <button 
+            className={`nav-tab ${activeTab === 'rooms' ? 'active' : ''}`}
+            onClick={() => setActiveTab('rooms')}
+          >
+            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <BedDouble size={18} />
+              숙소 배정 관리
             </span>
           </button>
           
@@ -785,6 +833,107 @@ export default function AdminPage() {
                           <td style={{ padding: '16px' }}>{user.phone || '-'}</td>
                           <td style={{ padding: '16px', color: '#8b95a1', fontSize: '12px' }}>
                             {new Date(user.created_at).toLocaleString('ko-KR')}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                )}
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'rooms' && (
+            <div className="admin-section">
+              <div className="section-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                <h2 style={{ margin: 0 }}>숙소 방 배정 관리</h2>
+                <button onClick={fetchRoomAssignments} className="refresh-btn" style={{ padding: '8px 16px', border: '1px solid #e5e8eb', borderRadius: '8px', cursor: 'pointer', background: 'white' }}>새로고침</button>
+              </div>
+
+              {/* 추가 폼 */}
+              <div style={{ background: 'white', border: '1px solid #e5e8eb', borderRadius: '16px', padding: '20px', marginBottom: '20px' }}>
+                <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', color: '#1e1e1e' }}>새 배정 추가</h4>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '10px' }}>
+                  <div>
+                    <label style={{ fontSize: '12px', color: '#888', display: 'block', marginBottom: '4px' }}>이름 *</label>
+                    <input
+                      type="text"
+                      placeholder="예: 김민우"
+                      value={newRoom.name}
+                      onChange={(e) => setNewRoom({ ...newRoom, name: e.target.value })}
+                      style={{ width: '100%', padding: '10px', border: '1px solid #e5e8eb', borderRadius: '8px', fontSize: '14px', boxSizing: 'border-box' }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ fontSize: '12px', color: '#888', display: 'block', marginBottom: '4px' }}>숙소명 (선택)</label>
+                    <input
+                      type="text"
+                      placeholder="예: 수련원"
+                      value={newRoom.building}
+                      onChange={(e) => setNewRoom({ ...newRoom, building: e.target.value })}
+                      style={{ width: '100%', padding: '10px', border: '1px solid #e5e8eb', borderRadius: '8px', fontSize: '14px', boxSizing: 'border-box' }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ fontSize: '12px', color: '#888', display: 'block', marginBottom: '4px' }}>방 번호/이름 *</label>
+                    <input
+                      type="text"
+                      placeholder="예: 301호"
+                      value={newRoom.room}
+                      onChange={(e) => setNewRoom({ ...newRoom, room: e.target.value })}
+                      style={{ width: '100%', padding: '10px', border: '1px solid #e5e8eb', borderRadius: '8px', fontSize: '14px', boxSizing: 'border-box' }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ fontSize: '12px', color: '#888', display: 'block', marginBottom: '4px' }}>메모 (선택)</label>
+                    <input
+                      type="text"
+                      placeholder="예: 남자 형제실"
+                      value={newRoom.notes}
+                      onChange={(e) => setNewRoom({ ...newRoom, notes: e.target.value })}
+                      style={{ width: '100%', padding: '10px', border: '1px solid #e5e8eb', borderRadius: '8px', fontSize: '14px', boxSizing: 'border-box' }}
+                    />
+                  </div>
+                </div>
+                <button
+                  onClick={handleAddRoom}
+                  style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#1b64da', color: 'white', border: 'none', borderRadius: '10px', padding: '10px 20px', fontSize: '14px', fontWeight: '600', cursor: 'pointer', width: '100%', justifyContent: 'center' }}
+                >
+                  <Plus size={16} /> 배정 추가
+                </button>
+              </div>
+
+              {/* 배정 목록 */}
+              <div style={{ background: 'white', border: '1px solid #e5e8eb', borderRadius: '16px', overflow: 'hidden' }}>
+                {roomAssignments.length === 0 ? (
+                  <div style={{ textAlign: 'center', padding: '40px', color: '#8b95a1', fontStyle: 'italic' }}>
+                    배정된 숙소가 없습니다.
+                  </div>
+                ) : (
+                  <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '14px' }}>
+                    <thead>
+                      <tr style={{ background: '#f8f9fa', borderBottom: '1px solid #e5e8eb', color: '#4e5968', fontWeight: 'bold' }}>
+                        <th style={{ padding: '14px 16px' }}>이름</th>
+                        <th style={{ padding: '14px 16px' }}>숙소</th>
+                        <th style={{ padding: '14px 16px' }}>방</th>
+                        <th style={{ padding: '14px 16px' }}>메모</th>
+                        <th style={{ padding: '14px 16px', textAlign: 'right' }}>삭제</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {roomAssignments.map((r: any) => (
+                        <tr key={r.id} style={{ borderBottom: '1px solid #f1f3f5' }}>
+                          <td style={{ padding: '14px 16px', fontWeight: '700', color: '#1e1e1e' }}>{r.name}</td>
+                          <td style={{ padding: '14px 16px', color: '#495057' }}>{r.building || '-'}</td>
+                          <td style={{ padding: '14px 16px', color: '#1b64da', fontWeight: '600' }}>{r.room}</td>
+                          <td style={{ padding: '14px 16px', color: '#8b95a1', fontSize: '13px' }}>{r.notes || '-'}</td>
+                          <td style={{ padding: '14px 16px', textAlign: 'right' }}>
+                            <button
+                              onClick={() => handleDeleteRoom(r.id)}
+                              style={{ background: '#fff0f0', color: '#d32f2f', border: '1px solid #ffcdd2', borderRadius: '8px', padding: '6px 12px', cursor: 'pointer', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '4px', marginLeft: 'auto' }}
+                            >
+                              <Trash2 size={14} /> 삭제
+                            </button>
                           </td>
                         </tr>
                       ))}
