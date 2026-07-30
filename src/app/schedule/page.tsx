@@ -175,7 +175,7 @@ export default function Schedule() {
                     <li><strong>식사팀:</strong> 밥과 김치 준비 및 마무리 정리</li>
                   </ul>
 
-                  <span className="guide-sub-title">2. 레크레이션 진행 요령 (신광교회 본당에서 진행)</span>
+                  <span className="guide-sub-title">2. 레크레이션 진행 요령 <span style={{ fontSize: '13px', fontWeight: '500', color: '#666' }}>(신광교회 본당에서 진행)</span></span>
                   <ul className="guide-ul">
                     <li>19:30 레크레이션 시작</li>
                     <li>모두 적극적이고 즐거운 마음으로 동참하기!</li>
