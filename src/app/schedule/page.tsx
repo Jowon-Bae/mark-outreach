@@ -170,15 +170,14 @@ export default function Schedule() {
                   <span className="guide-badge-notice">※ 키즈케어 1일차 종료</span>
                   <span className="guide-sub-title">1. 저녁 식사 안내</span>
                   <ul className="guide-ul">
-                    <li>18:00까지 숙소(수련원) 복귀 완료 (교회에서 버스 17:00 출발)</li>
+                    <li>17:00까지 숙소(수련원) 복귀 완료 (교회에서 버스 16:30 출발)</li>
                     <li><strong>로뎀팀 + 총무팀:</strong> 바베큐 식사 준비</li>
                     <li><strong>식사팀:</strong> 밥과 김치 준비 및 마무리 정리</li>
                   </ul>
 
-                  <span className="guide-sub-title">2. 레크레이션 진행 요령</span>
+                  <span className="guide-sub-title">2. 레크레이션 진행 요령 (신광교회 본당에서 진행)</span>
                   <ul className="guide-ul">
-                    <li>시작 전 음향 및 영상 장비 사전 점검 필수</li>
-                    <li>남자(형제) 숙소 짐 정리 및 친교를 위한 방석 세팅</li>
+                    <li>19:30 레크레이션 시작</li>
                     <li>모두 적극적이고 즐거운 마음으로 동참하기!</li>
                   </ul>
                   <p style={{ margin: '8px 0 0 0', fontWeight: '700', color: '#8b95a1', fontStyle: 'italic' }}>
