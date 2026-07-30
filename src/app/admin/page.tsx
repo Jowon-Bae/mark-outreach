@@ -15,6 +15,8 @@ export default function AdminPage() {
   const [roomSort, setRoomSort] = useState({ key: 'name', direction: 'asc' });
   const [unsubscribedByTeam, setUnsubscribedByTeam] = useState<{ teamName: string, members: any[] }[]>([]);
   const [roomAssignments, setRoomAssignments] = useState<any[]>([]);
+  const [editingRoomId, setEditingRoomId] = useState<number | null>(null);
+  const [editRoomData, setEditRoomData] = useState({ name: '', building: '', room: '', notes: '' });
   const [newRoom, setNewRoom] = useState({ name: '', building: '', room: '', notes: '' });
 
   const [stats, setStats] = useState<any[]>([]);
@@ -91,6 +93,27 @@ export default function AdminPage() {
     if (!confirm('이 배정을 삭제하시겠습니까?')) return;
     const { error } = await supabase.from('room_assignments').delete().eq('id', id);
     if (!error) fetchRoomAssignments();
+  };
+
+  // 숙소 배정 수정
+  const handleUpdateRoom = async (id: number) => {
+    if (!editRoomData.name.trim() || !editRoomData.room.trim()) {
+      alert('이름과 방 번호는 필수입니다.');
+      return;
+    }
+    const { error } = await supabase.from('room_assignments').update({
+      name: editRoomData.name.trim(),
+      building: editRoomData.building.trim() || null,
+      room: editRoomData.room.trim(),
+      notes: editRoomData.notes.trim() || null,
+    }).eq('id', id);
+    
+    if (!error) {
+      setEditingRoomId(null);
+      fetchRoomAssignments();
+    } else {
+      alert('수정 실패: ' + error.message);
+    }
   };
 
   const handleRoomSort = (key: string) => {
@@ -946,18 +969,43 @@ export default function AdminPage() {
                     <tbody>
                       {sortedRoomAssignments.map((r: any) => (
                         <tr key={r.id} style={{ borderBottom: '1px solid #f1f3f5' }}>
-                          <td style={{ padding: '14px 16px', fontWeight: '700', color: '#1e1e1e' }}>{r.name}</td>
-                          <td style={{ padding: '14px 16px', color: '#495057' }}>{r.building || '-'}</td>
-                          <td style={{ padding: '14px 16px', color: 'var(--primary)', fontWeight: '600' }}>{r.room}</td>
-                          <td style={{ padding: '14px 16px', color: '#8b95a1', fontSize: '13px' }}>{r.notes || '-'}</td>
-                          <td style={{ padding: '14px 16px', textAlign: 'right' }}>
-                            <button
-                              onClick={() => handleDeleteRoom(r.id)}
-                              style={{ background: '#fff0f0', color: '#d32f2f', border: '1px solid #ffcdd2', borderRadius: '8px', padding: '6px 12px', cursor: 'pointer', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '4px', marginLeft: 'auto' }}
-                            >
-                              <Trash2 size={14} /> 삭제
-                            </button>
-                          </td>
+                          {editingRoomId === r.id ? (
+                            <>
+                              <td style={{ padding: '8px' }}><input type="text" value={editRoomData.name} onChange={(e) => setEditRoomData({...editRoomData, name: e.target.value})} style={{ width: '100%', padding: '6px', border: '1px solid #ddd', borderRadius: '4px' }} /></td>
+                              <td style={{ padding: '8px' }}><input type="text" value={editRoomData.building} onChange={(e) => setEditRoomData({...editRoomData, building: e.target.value})} style={{ width: '100%', padding: '6px', border: '1px solid #ddd', borderRadius: '4px' }} /></td>
+                              <td style={{ padding: '8px' }}><input type="text" value={editRoomData.room} onChange={(e) => setEditRoomData({...editRoomData, room: e.target.value})} style={{ width: '100%', padding: '6px', border: '1px solid #ddd', borderRadius: '4px' }} /></td>
+                              <td style={{ padding: '8px' }}><input type="text" value={editRoomData.notes} onChange={(e) => setEditRoomData({...editRoomData, notes: e.target.value})} style={{ width: '100%', padding: '6px', border: '1px solid #ddd', borderRadius: '4px' }} /></td>
+                              <td style={{ padding: '8px', textAlign: 'right' }}>
+                                <div style={{ display: 'flex', gap: '4px', justifyContent: 'flex-end' }}>
+                                  <button onClick={() => handleUpdateRoom(r.id)} style={{ background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '4px', padding: '6px 10px', cursor: 'pointer', fontSize: '12px' }}>저장</button>
+                                  <button onClick={() => setEditingRoomId(null)} style={{ background: '#f1f3f5', color: '#4e5968', border: 'none', borderRadius: '4px', padding: '6px 10px', cursor: 'pointer', fontSize: '12px' }}>취소</button>
+                                </div>
+                              </td>
+                            </>
+                          ) : (
+                            <>
+                              <td style={{ padding: '14px 16px', fontWeight: '700', color: '#1e1e1e' }}>{r.name}</td>
+                              <td style={{ padding: '14px 16px', color: '#495057' }}>{r.building || '-'}</td>
+                              <td style={{ padding: '14px 16px', color: 'var(--primary)', fontWeight: '600' }}>{r.room}</td>
+                              <td style={{ padding: '14px 16px', color: '#8b95a1', fontSize: '13px' }}>{r.notes || '-'}</td>
+                              <td style={{ padding: '14px 16px', textAlign: 'right' }}>
+                                <div style={{ display: 'flex', gap: '6px', justifyContent: 'flex-end' }}>
+                                  <button
+                                    onClick={() => { setEditingRoomId(r.id); setEditRoomData({ name: r.name, building: r.building || '', room: r.room, notes: r.notes || '' }); }}
+                                    style={{ background: '#f1f3f5', color: '#4e5968', border: '1px solid #e5e8eb', borderRadius: '8px', padding: '6px 12px', cursor: 'pointer', fontSize: '13px', display: 'flex', alignItems: 'center' }}
+                                  >
+                                    수정
+                                  </button>
+                                  <button
+                                    onClick={() => handleDeleteRoom(r.id)}
+                                    style={{ background: '#fff0f0', color: '#d32f2f', border: '1px solid #ffcdd2', borderRadius: '8px', padding: '6px 12px', cursor: 'pointer', fontSize: '13px', display: 'flex', alignItems: 'center' }}
+                                  >
+                                    <Trash2 size={14} style={{ marginRight: '4px' }} /> 삭제
+                                  </button>
+                                </div>
+                              </td>
+                            </>
+                          )}
                         </tr>
                       ))}
                     </tbody>
