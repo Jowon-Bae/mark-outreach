@@ -456,7 +456,6 @@ export default function Home() {
             textAlign: 'center',
             boxShadow: '0 10px 30px rgba(0,0,0,0.15)'
           }}>
-            <div style={{ fontSize: '48px', marginBottom: '16px' }}>📸</div>
             <h3 style={{ fontSize: '18px', fontWeight: '800', margin: '0 0 10px 0', color: '#1e1e1e' }}>
               프로필 사진을 추가해 주세요!
             </h3>
