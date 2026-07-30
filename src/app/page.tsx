@@ -57,6 +57,7 @@ export default function Home() {
     }
     return '';
   });
+  const [showAvatarWarning, setShowAvatarWarning] = useState(false);
 
   // 실시간 공지사항 상태
   const [notice, setNotice] = useState<string>('');
@@ -125,6 +126,23 @@ export default function Home() {
       setIsAdmin(sessionStorage.getItem('isAdmin') === 'true');
     }
     fetchLatestNotice();
+
+    // 프로필 사진 체크
+    const checkAvatar = async () => {
+      const user = localStorage.getItem('username');
+      if (user) {
+        const { data } = await supabase
+          .from('user_profiles')
+          .select('avatar_url')
+          .eq('username', user)
+          .single();
+        // 아바타가 없으면 경고 표시 (단, 웰컴 메시지가 끝난 후에 표시할 수도 있으나, 즉시 표시해도 무방함)
+        if (!data || !data.avatar_url) {
+          setShowAvatarWarning(true);
+        }
+      }
+    };
+    checkAvatar();
 
     // 5초마다 실시간 공지사항 체크
     const interval = setInterval(fetchLatestNotice, 5000);
@@ -412,6 +430,56 @@ export default function Home() {
               <span className="welcome-name">{username} 님</span>
               <br />
               <span className="welcome-greet">환영합니다!</span>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 프로필 사진 등록 요청 팝업 */}
+      {showAvatarWarning && !showWelcome && (
+        <div style={{
+          position: 'fixed',
+          top: 0, left: 0, right: 0, bottom: 0,
+          backgroundColor: 'rgba(0,0,0,0.55)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 9999,
+          padding: '20px'
+        }}>
+          <div style={{
+            background: 'white',
+            borderRadius: '24px',
+            padding: '30px 20px',
+            width: '100%',
+            maxWidth: '320px',
+            textAlign: 'center',
+            boxShadow: '0 10px 30px rgba(0,0,0,0.15)'
+          }}>
+            <div style={{ fontSize: '48px', marginBottom: '16px' }}>📸</div>
+            <h3 style={{ fontSize: '18px', fontWeight: '800', margin: '0 0 10px 0', color: '#1e1e1e' }}>
+              프로필 사진을 추가해 주세요!
+            </h3>
+            <p style={{ fontSize: '14px', color: '#4e5968', margin: '0 0 24px 0', lineHeight: 1.5 }}>
+              지체들이 얼굴을 확인할 수 있도록<br />
+              나의 프로필 사진을 등록해 주세요.
+            </p>
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <button 
+                onClick={() => setShowAvatarWarning(false)}
+                style={{ flex: 1, padding: '14px', borderRadius: '14px', border: 'none', background: '#f1f3f5', color: '#4e5968', fontWeight: '700', cursor: 'pointer', fontSize: '14px' }}
+              >
+                다음에
+              </button>
+              <button 
+                onClick={() => {
+                  setShowAvatarWarning(false);
+                  router.push('/settings');
+                }}
+                style={{ flex: 1, padding: '14px', borderRadius: '14px', border: 'none', background: 'var(--primary)', color: 'white', fontWeight: '700', cursor: 'pointer', fontSize: '14px' }}
+              >
+                설정으로 이동
+              </button>
             </div>
           </div>
         </div>
