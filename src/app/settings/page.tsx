@@ -223,11 +223,9 @@ export default function SettingsPage() {
 
       <div className="settings-content" style={{ padding: '24px 16px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
         {/* 프로필 카드 (숙소 배정 포함) */}
-        <div className="profile-card" style={{ flexDirection: 'column', alignItems: 'stretch', gap: '20px' }}>
-          {/* 프로필 헤더 (기존 프로필 영역) */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-            <div 
-              className="profile-avatar clickable" 
+        <div className="profile-card">
+          <div 
+            className="profile-avatar clickable" 
               onClick={() => !uploading && document.getElementById('avatar-upload')?.click()}
               title="프로필 사진 등록/변경"
               style={{ position: 'relative', cursor: 'pointer' }}
@@ -260,8 +258,9 @@ export default function SettingsPage() {
               style={{ display: 'none' }} 
               onChange={handleAvatarUpload} 
             />
-            <div className="profile-info">
-              <h3 className="profile-name">{username} 님</h3>
+          <div className="profile-info" style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <h3 className="profile-name" style={{ margin: 0 }}>{username} 님</h3>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
               <span className={`profile-role ${isAdmin ? 'admin' : 'member'}`}>
                 {isAdmin ? (
                   <>
@@ -272,26 +271,14 @@ export default function SettingsPage() {
                   '마가공동체 아웃리치 지체'
                 )}
               </span>
+              {roomAssignment && (
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', background: '#fcf6eb', color: '#a1814c', padding: '4px 10px', borderRadius: '12px', fontSize: '12px', fontWeight: '700' }}>
+                  <BedDouble size={14} />
+                  {roomAssignment.building && roomAssignment.building + ' '}{roomAssignment.room}
+                </span>
+              )}
             </div>
           </div>
-
-          {/* 내 숙소 배정 */}
-          {roomAssignment && (
-            <div style={{ paddingTop: '16px', borderTop: '1px solid #f1f3f5' }}>
-              <div style={{ fontSize: '13px', fontWeight: '600', color: '#8b95a1', marginBottom: '10px' }}>내 숙소 배정</div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', background: '#f8f9fa', padding: '16px', borderRadius: '16px' }}>
-                <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: '#fcf6eb', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#a1814c', flexShrink: 0 }}>
-                  <BedDouble size={20} />
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                  <span style={{ fontSize: '16px', fontWeight: '800', color: '#1e1e1e' }}>
-                    {roomAssignment.building && roomAssignment.building + ' '}{roomAssignment.room}
-                  </span>
-                  <span style={{ fontSize: '13px', color: '#4e5968' }}>{roomAssignment.notes || '배정 완료'}</span>
-                </div>
-              </div>
-            </div>
-          )}
         </div>
 
 
