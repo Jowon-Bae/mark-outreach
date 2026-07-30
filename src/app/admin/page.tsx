@@ -897,7 +897,7 @@ export default function AdminPage() {
                 </div>
                 <button
                   onClick={handleAddRoom}
-                  style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#1b64da', color: 'white', border: 'none', borderRadius: '10px', padding: '10px 20px', fontSize: '14px', fontWeight: '600', cursor: 'pointer', width: '100%', justifyContent: 'center' }}
+                  style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '10px', padding: '10px 20px', fontSize: '14px', fontWeight: '600', cursor: 'pointer', width: '100%', justifyContent: 'center' }}
                 >
                   <Plus size={16} /> 배정 추가
                 </button>
@@ -925,7 +925,7 @@ export default function AdminPage() {
                         <tr key={r.id} style={{ borderBottom: '1px solid #f1f3f5' }}>
                           <td style={{ padding: '14px 16px', fontWeight: '700', color: '#1e1e1e' }}>{r.name}</td>
                           <td style={{ padding: '14px 16px', color: '#495057' }}>{r.building || '-'}</td>
-                          <td style={{ padding: '14px 16px', color: '#1b64da', fontWeight: '600' }}>{r.room}</td>
+                          <td style={{ padding: '14px 16px', color: 'var(--primary)', fontWeight: '600' }}>{r.room}</td>
                           <td style={{ padding: '14px 16px', color: '#8b95a1', fontSize: '13px' }}>{r.notes || '-'}</td>
                           <td style={{ padding: '14px 16px', textAlign: 'right' }}>
                             <button
