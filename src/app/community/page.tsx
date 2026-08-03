@@ -5,7 +5,7 @@ import { supabase } from '@/lib/supabaseClient';
 import './community.css';
 
 export default function Community() {
-  const [activeTab, setActiveTab] = useState<'board' | 'gallery'>('board');
+  const [activeTab, setActiveTab] = useState<'board' | 'grace' | 'gallery'>('board');
   const [posts, setPosts] = useState<any[]>([]);
   const [showWriteModal, setShowWriteModal] = useState(false);
   const [newContent, setNewContent] = useState('');
@@ -60,11 +60,16 @@ export default function Community() {
       return;
     }
 
-    // 게시글과 댓글 합치기
+    // 게시글과 댓글 합치기 및 카테고리 분리
     const formattedPosts = postsData.map(post => {
+      const isGrace = post.content.startsWith('__GRACE__');
+      const cleanContent = isGrace ? post.content.replace('__GRACE__', '') : post.content;
+
       const postComments = commentsData.filter(c => c.post_id === post.id);
       return {
         ...post,
+        content: cleanContent,
+        category: isGrace ? 'grace' : 'board',
         comments: postComments,
         showComments: false,
         isLiked: false // 로컬 전용 상태
@@ -114,10 +119,11 @@ export default function Community() {
     }
 
     const currentUsername = localStorage.getItem('username') || '익명';
+    const finalContent = activeTab === 'grace' ? `__GRACE__${newContent}` : newContent;
 
     const { error } = await supabase
       .from('community_posts')
-      .insert([{ author: currentUsername, content: newContent }]);
+      .insert([{ author: currentUsername, content: finalContent }]);
 
     if (error) {
       alert('글 작성에 실패했습니다.');
@@ -223,8 +229,8 @@ export default function Community() {
       <div className="sticky-header-wrapper">
         {/* 상단 헤더 */}
         <div className="board-header">
-          <h2>소통 & 사진첩</h2>
-          {activeTab === 'board' && (
+          <h2>소통 & 은혜</h2>
+          {(activeTab === 'board' || activeTab === 'grace') && (
             <button 
               className="write-btn" 
               onClick={(e) => {
@@ -249,6 +255,15 @@ export default function Community() {
             소통 게시판
           </button>
           <button 
+            className={`tab-item ${activeTab === 'grace' ? 'active' : ''}`}
+            onClick={() => {
+              setActiveTab('grace');
+              window.scrollTo(0, 0);
+            }}
+          >
+            은혜의 나눔
+          </button>
+          <button 
             className={`tab-item ${activeTab === 'gallery' ? 'active' : ''}`}
             onClick={() => {
               setActiveTab('gallery');
@@ -260,14 +275,14 @@ export default function Community() {
         </div>
       </div>
 
-      {activeTab === 'board' ? (
+      {(activeTab === 'board' || activeTab === 'grace') ? (
         <div className="post-list">
           {isLoading ? (
             <div style={{ textAlign: 'center', padding: '40px', color: '#888' }}>로딩 중...</div>
-          ) : posts.length === 0 ? (
+          ) : posts.filter(p => p.category === activeTab).length === 0 ? (
             <div style={{ textAlign: 'center', padding: '40px', color: '#888' }}>첫 번째 글을 작성해보세요!</div>
           ) : (
-            posts.map(post => {
+            posts.filter(p => p.category === activeTab).map(post => {
               const lines = post.content.split('\n');
               const title = lines[0];
               const body = lines.slice(1).join('\n');
@@ -314,9 +329,7 @@ export default function Community() {
 
                   {/* 메타 정보 및 반응 버튼 */}
                   <div className="post-item-footer">
-                    <div className="post-meta-text">
-                      {/* 헤더로 이동하여 풋터는 깔끔히 비움 */}
-                    </div>
+                    <div className="post-meta-text"></div>
                     
                     <div className="post-interactions">
                       <button 
@@ -326,18 +339,20 @@ export default function Community() {
                         <ThumbsUp size={16} />
                         <span>{post.likes > 0 && post.likes}</span>
                       </button>
-                      <button 
-                        className="comment-action-btn"
-                        onClick={() => toggleComments(post.id)}
-                      >
-                        <MessageSquare size={16} />
-                        <span>{post.comments?.length > 0 && post.comments.length}</span>
-                      </button>
+                      {activeTab !== 'grace' && (
+                        <button 
+                          className="comment-action-btn"
+                          onClick={() => toggleComments(post.id)}
+                        >
+                          <MessageSquare size={16} />
+                          <span>{post.comments?.length > 0 && post.comments.length}</span>
+                        </button>
+                      )}
                     </div>
                   </div>
 
                   {/* 댓글 영역 (당근마켓 상세 스타일) */}
-                  {post.showComments && (
+                  {(post.showComments && activeTab !== 'grace') && (
                     <div className="comments-drawer">
                       <div className="comments-header">
                         <span className="comments-count">댓글 {post.comments?.length || 0}</span>
