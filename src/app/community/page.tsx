@@ -5,7 +5,7 @@ import { supabase } from '@/lib/supabaseClient';
 import './community.css';
 
 export default function Community() {
-  const [activeTab, setActiveTab] = useState<'board' | 'grace' | 'gallery'>('board');
+  const [activeTab, setActiveTab] = useState<'board' | 'gallery'>('board');
   const [posts, setPosts] = useState<any[]>([]);
   const [showWriteModal, setShowWriteModal] = useState(false);
   const [newContent, setNewContent] = useState('');
@@ -62,16 +62,11 @@ export default function Community() {
       return;
     }
 
-    // 게시글과 댓글 합치기 및 카테고리 분리
+    // 게시글과 댓글 합치기
     const formattedPosts = postsData.map(post => {
-      const isGrace = post.content.startsWith('__GRACE__');
-      const cleanContent = isGrace ? post.content.replace('__GRACE__', '') : post.content;
-
       const postComments = commentsData.filter(c => c.post_id === post.id);
       return {
         ...post,
-        content: cleanContent,
-        category: isGrace ? 'grace' : 'board',
         comments: postComments,
         showComments: false,
         isLiked: false // 로컬 전용 상태
@@ -121,12 +116,11 @@ export default function Community() {
     }
 
     const currentUsername = localStorage.getItem('username') || '익명';
-    const finalContent = activeTab === 'grace' ? `__GRACE__${newContent}` : newContent;
 
     if (editingPostId) {
       const { error } = await supabase
         .from('community_posts')
-        .update({ content: finalContent })
+        .update({ content: newContent })
         .eq('id', editingPostId);
         
       if (error) {
@@ -136,7 +130,7 @@ export default function Community() {
     } else {
       const { error } = await supabase
         .from('community_posts')
-        .insert([{ author: currentUsername, content: finalContent }]);
+        .insert([{ author: currentUsername, content: newContent }]);
 
       if (error) {
         alert('글 작성에 실패했습니다.');
@@ -244,8 +238,8 @@ export default function Community() {
       <div className="sticky-header-wrapper">
         {/* 상단 헤더 */}
         <div className="board-header">
-          <h2>소통 & 은혜</h2>
-          {(activeTab === 'board' || activeTab === 'grace') && (
+          <h2>소통 & 사진첩</h2>
+          {activeTab === 'board' && (
             <button 
               className="write-btn" 
               onClick={(e) => {
@@ -272,15 +266,6 @@ export default function Community() {
             소통 게시판
           </button>
           <button 
-            className={`tab-item ${activeTab === 'grace' ? 'active' : ''}`}
-            onClick={() => {
-              setActiveTab('grace');
-              window.scrollTo(0, 0);
-            }}
-          >
-            은혜의 나눔
-          </button>
-          <button 
             className={`tab-item ${activeTab === 'gallery' ? 'active' : ''}`}
             onClick={() => {
               setActiveTab('gallery');
@@ -292,14 +277,14 @@ export default function Community() {
         </div>
       </div>
 
-      {(activeTab === 'board' || activeTab === 'grace') ? (
+      {activeTab === 'board' ? (
         <div className="post-list">
           {isLoading ? (
             <div style={{ textAlign: 'center', padding: '40px', color: '#888' }}>로딩 중...</div>
-          ) : posts.filter(p => p.category === activeTab).length === 0 ? (
+          ) : posts.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '40px', color: '#888' }}>첫 번째 글을 작성해보세요!</div>
           ) : (
-            posts.filter(p => p.category === activeTab).map(post => {
+            posts.map(post => {
               const lines = post.content.split('\n');
               const title = lines[0];
               const body = lines.slice(1).join('\n');
@@ -382,31 +367,29 @@ export default function Community() {
                   </div>
 
                   {/* 메타 정보 및 반응 버튼 */}
-                  {activeTab !== 'grace' && (
-                    <div className="post-item-footer">
-                      <div className="post-meta-text"></div>
-                      
-                      <div className="post-interactions">
-                        <button 
-                          className={`like-action-btn ${post.isLiked ? 'liked' : ''}`}
-                          onClick={() => toggleLike(post.id, post.likes, post.isLiked)}
-                        >
-                          <ThumbsUp size={16} />
-                          <span>{post.likes > 0 && post.likes}</span>
-                        </button>
-                        <button 
-                          className="comment-action-btn"
-                          onClick={() => toggleComments(post.id)}
-                        >
-                          <MessageSquare size={16} />
-                          <span>{post.comments?.length > 0 && post.comments.length}</span>
-                        </button>
-                      </div>
+                  <div className="post-item-footer">
+                    <div className="post-meta-text"></div>
+                    
+                    <div className="post-interactions">
+                      <button 
+                        className={`like-action-btn ${post.isLiked ? 'liked' : ''}`}
+                        onClick={() => toggleLike(post.id, post.likes, post.isLiked)}
+                      >
+                        <ThumbsUp size={16} />
+                        <span>{post.likes > 0 && post.likes}</span>
+                      </button>
+                      <button 
+                        className="comment-action-btn"
+                        onClick={() => toggleComments(post.id)}
+                      >
+                        <MessageSquare size={16} />
+                        <span>{post.comments?.length > 0 && post.comments.length}</span>
+                      </button>
                     </div>
-                  )}
+                  </div>
 
                   {/* 댓글 영역 (당근마켓 상세 스타일) */}
-                  {(post.showComments && activeTab !== 'grace') && (
+                  {post.showComments && (
                     <div className="comments-drawer">
                       <div className="comments-header">
                         <span className="comments-count">댓글 {post.comments?.length || 0}</span>
@@ -563,12 +546,12 @@ export default function Community() {
         <div className="write-modal-overlay">
           <div className="write-modal">
             <div className="write-modal-header">
-              <h3>{activeTab === 'grace' ? (editingPostId ? '은혜 나눔 수정' : '은혜 나눔') : (editingPostId ? '게시글 수정' : '소통 게시판 글쓰기')}</h3>
+              <h3>{editingPostId ? '게시글 수정' : '소통 게시판 글쓰기'}</h3>
               <button className="close-btn" onClick={() => setShowWriteModal(false)}>✕</button>
             </div>
             <textarea 
               className="write-textarea" 
-              placeholder={activeTab === 'grace' ? '아웃리치에서 받은 은혜를 나눠주세요^^' : '팀원들과 나누고 싶은 이야기를 자유롭게 적어주세요.'}
+              placeholder="팀원들과 나누고 싶은 이야기를 자유롭게 적어주세요."
               value={newContent}
               onChange={(e) => setNewContent(e.target.value)}
               autoFocus
