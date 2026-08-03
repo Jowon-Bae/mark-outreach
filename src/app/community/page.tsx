@@ -509,12 +509,12 @@ export default function Community() {
         <div className="write-modal-overlay">
           <div className="write-modal">
             <div className="write-modal-header">
-              <h3>동네생활 글쓰기</h3>
+              <h3>{activeTab === 'grace' ? '은혜 나눔' : '소통 게시판 글쓰기'}</h3>
               <button className="close-btn" onClick={() => setShowWriteModal(false)}>✕</button>
             </div>
             <textarea 
               className="write-textarea" 
-              placeholder="우리 동네 이웃들과 나누고 싶은 이야기를 자유롭게 적어주세요."
+              placeholder={activeTab === 'grace' ? '아웃리치에서 받은 은혜를 나눠주세요^^' : '팀원들과 나누고 싶은 이야기를 자유롭게 적어주세요.'}
               value={newContent}
               onChange={(e) => setNewContent(e.target.value)}
               autoFocus
