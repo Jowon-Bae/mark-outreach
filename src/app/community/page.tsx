@@ -9,6 +9,8 @@ export default function Community() {
   const [posts, setPosts] = useState<any[]>([]);
   const [showWriteModal, setShowWriteModal] = useState(false);
   const [newContent, setNewContent] = useState('');
+  const [editingPostId, setEditingPostId] = useState<string | null>(null);
+  const [activeOptionsMenuId, setActiveOptionsMenuId] = useState<string | null>(null);
   const [commentInputs, setCommentInputs] = useState<Record<string, string>>({});
   const [replyingTo, setReplyingTo] = useState<Record<string, { id: string, author: string } | null>>({});
   const [isLoading, setIsLoading] = useState(true);
@@ -121,17 +123,30 @@ export default function Community() {
     const currentUsername = localStorage.getItem('username') || '익명';
     const finalContent = activeTab === 'grace' ? `__GRACE__${newContent}` : newContent;
 
-    const { error } = await supabase
-      .from('community_posts')
-      .insert([{ author: currentUsername, content: finalContent }]);
+    if (editingPostId) {
+      const { error } = await supabase
+        .from('community_posts')
+        .update({ content: finalContent })
+        .eq('id', editingPostId);
+        
+      if (error) {
+        alert('글 수정에 실패했습니다.');
+        return;
+      }
+    } else {
+      const { error } = await supabase
+        .from('community_posts')
+        .insert([{ author: currentUsername, content: finalContent }]);
 
-    if (error) {
-      alert('글 작성에 실패했습니다.');
-      return;
+      if (error) {
+        alert('글 작성에 실패했습니다.');
+        return;
+      }
     }
 
     setNewContent('');
     setShowWriteModal(false);
+    setEditingPostId(null);
     fetchPosts();
   };
 
@@ -235,6 +250,8 @@ export default function Community() {
               className="write-btn" 
               onClick={(e) => {
                 e.preventDefault();
+                setEditingPostId(null);
+                setNewContent('');
                 setShowWriteModal(true);
               }}
             >
@@ -316,9 +333,46 @@ export default function Community() {
                         <span style={{ fontSize: '11px', color: '#8b95a1' }}>{formatTime(post.created_at)}</span>
                       </div>
                     </div>
-                    <button className="more-options-btn">
-                      <MoreVertical size={16} color="#888" />
-                    </button>
+                    <div style={{ position: 'relative' }}>
+                      <button 
+                        className="more-options-btn"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setActiveOptionsMenuId(activeOptionsMenuId === post.id ? null : post.id);
+                        }}
+                      >
+                        <MoreVertical size={16} color="#888" />
+                      </button>
+                      
+                      {activeOptionsMenuId === post.id && (
+                        <div className="post-options-dropdown" style={{
+                          position: 'absolute',
+                          right: '0',
+                          top: '100%',
+                          backgroundColor: 'white',
+                          boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+                          borderRadius: '8px',
+                          zIndex: 10,
+                          width: '100px',
+                          overflow: 'hidden'
+                        }}>
+                          {post.author === (localStorage.getItem('username') || '익명') && (
+                            <button 
+                              style={{ width: '100%', padding: '12px', border: 'none', background: 'none', textAlign: 'center', fontSize: '14px', cursor: 'pointer', color: '#1e1e1e' }}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setNewContent(post.content);
+                                setEditingPostId(post.id);
+                                setShowWriteModal(true);
+                                setActiveOptionsMenuId(null);
+                              }}
+                            >
+                              수정하기
+                            </button>
+                          )}
+                        </div>
+                      )}
+                    </div>
                   </div>
 
                   {/* 본문 영역 */}
@@ -509,7 +563,7 @@ export default function Community() {
         <div className="write-modal-overlay">
           <div className="write-modal">
             <div className="write-modal-header">
-              <h3>{activeTab === 'grace' ? '은혜 나눔' : '소통 게시판 글쓰기'}</h3>
+              <h3>{activeTab === 'grace' ? (editingPostId ? '은혜 나눔 수정' : '은혜 나눔') : (editingPostId ? '게시글 수정' : '소통 게시판 글쓰기')}</h3>
               <button className="close-btn" onClick={() => setShowWriteModal(false)}>✕</button>
             </div>
             <textarea 
@@ -520,7 +574,7 @@ export default function Community() {
               autoFocus
             />
             <button className="submit-btn" onClick={handlePostSubmit}>
-              작성 완료
+              {editingPostId ? '수정 완료' : '작성 완료'}
             </button>
           </div>
         </div>
