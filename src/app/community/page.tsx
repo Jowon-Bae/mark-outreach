@@ -328,18 +328,18 @@ export default function Community() {
                   </div>
 
                   {/* 메타 정보 및 반응 버튼 */}
-                  <div className="post-item-footer">
-                    <div className="post-meta-text"></div>
-                    
-                    <div className="post-interactions">
-                      <button 
-                        className={`like-action-btn ${post.isLiked ? 'liked' : ''}`}
-                        onClick={() => toggleLike(post.id, post.likes, post.isLiked)}
-                      >
-                        <ThumbsUp size={16} />
-                        <span>{post.likes > 0 && post.likes}</span>
-                      </button>
-                      {activeTab !== 'grace' && (
+                  {activeTab !== 'grace' && (
+                    <div className="post-item-footer">
+                      <div className="post-meta-text"></div>
+                      
+                      <div className="post-interactions">
+                        <button 
+                          className={`like-action-btn ${post.isLiked ? 'liked' : ''}`}
+                          onClick={() => toggleLike(post.id, post.likes, post.isLiked)}
+                        >
+                          <ThumbsUp size={16} />
+                          <span>{post.likes > 0 && post.likes}</span>
+                        </button>
                         <button 
                           className="comment-action-btn"
                           onClick={() => toggleComments(post.id)}
@@ -347,9 +347,9 @@ export default function Community() {
                           <MessageSquare size={16} />
                           <span>{post.comments?.length > 0 && post.comments.length}</span>
                         </button>
-                      )}
+                      </div>
                     </div>
-                  </div>
+                  )}
 
                   {/* 댓글 영역 (당근마켓 상세 스타일) */}
                   {(post.showComments && activeTab !== 'grace') && (
